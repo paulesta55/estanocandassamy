@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include <string.h>
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include <SFML/Graphics.hpp>
 
@@ -18,8 +18,13 @@ int main(int argc,char* argv[])
 {
     Exemple exemple;
     exemple.setX(53);
+    if(argc != 1) {
+        if(strcmp(argv[1],"hello")== 0) {
+            cout << "bonjour les potes" << endl;
+        }
+    }
 
-    cout << "It works !" << endl;
+
 
     return 0;
 }
