@@ -1,4 +1,4 @@
-\documentclass{article}
+
 \documentclass[a4paper,12pt]{article}
 \usepackage{times}
 \usepackage[francais]{babel}
@@ -19,26 +19,26 @@
 {â}{{\^a}}1
 }
 \lstset{language=C++,
-                basicstyle=\footnotesize,
-                keywordstyle=\footnotesize\color{blue},
-                otherkeywords={override,nullptr}
+basicstyle=\footnotesize,
+keywordstyle=\footnotesize\color{blue},
+otherkeywords={override,nullptr}
 }
 \definecolor{orange}{rgb}{0.8,0.4,0.0}
 \definecolor{darkblue}{rgb}{0.0,0.0,0.6}
 \definecolor{cyan}{rgb}{0.0,0.6,0.6}
 \lstdefinelanguage{JSON}
 {
-  basicstyle=\normalsize,
-  columns=fullflexible,
-  showstringspaces=false,
-  commentstyle=\color{gray}\upshape,
-  morestring=[b]",
-  morestring=[s]{>}{<},
-  morecomment=[s]{<?}{?>},
-  stringstyle=\color{orange},
-  identifierstyle=\color{darkblue},
-  keywordstyle=\color{blue},
-  morekeywords={string,number,array,object}% list your attributes here
+basicstyle=\normalsize,
+columns=fullflexible,
+showstringspaces=false,
+commentstyle=\color{gray}\upshape,
+morestring=[b]",
+morestring=[s]{>}{<},
+morecomment=[s]{<?}{?>},
+stringstyle=\color{orange},
+identifierstyle=\color{darkblue},
+keywordstyle=\color{blue},
+morekeywords={string,number,array,object}% list your attributes here
 }
 
 \sloppy
@@ -53,124 +53,133 @@
 
 \begin{document}
 
-\thispagestyle{empty}
+    \thispagestyle{empty}
 
-\begin{titlepage}
+    \begin{titlepage}
 
-\vspace*{2cm}
+        \vspace*{2cm}
 
-\begin{center}\textbf{\Huge Projet Logiciel Transversal}\end{center}{\Large \par}
+        \begin{center}\textbf{\Huge Projet Logiciel Transversal}\end{center}{\Large \par}
 
-\begin{center}\textbf{\large Auteurs}\end{center}{\large \par}
+        \begin{center}\textbf{\large Anand Candassamy \& Paul Estano}\end{center}{\large \par}
 
-\vspace{2cm}
+        \vspace{2cm}
 
-%\begin{figure}[h]
-%\begin{center}
-%\includegraphics[width=\textwidth]{exemple.png}
-%\caption{\label{pacmangame}Exemple du jeu}
-%\end{center}
-%\end{figure}
+        %\begin{figure}[h]
+        %\begin{center}
+        %\includegraphics[width=\textwidth]{exemple.png}
+        %\caption{\label{pacmangame}Exemple du jeu}
+        %\end{center}
+        %\end{figure}
 
-\clearpage
+        \clearpage
 
-{\small
-\tableofcontents
-}
+        {\small
+        \tableofcontents
+        }
 
-\end{titlepage}
+    \end{titlepage}
 
-\clearpage
-\section{Présentation Générale}
+    \clearpage
+    \section{Présentation Générale}
 
-\subsection{Archétype}
+    \subsection{Archétype}
+    Notre jeu s'inspirera principalement du jeu \emph{Pokemon}. En effet, nous avons prévu de conserver le mécanisme des combats de ce jeu sans conserver le "monde ouvert" dans lequel se déplace le joueur.
+    \\Dans notre logiciel l'utilisateur se déplace dans les salles d'un donjon qui contiennent chacune des pokemons qui peuvent l'"agresser".
+    \\L'utilisateur possède plusieurs pokemons qu'il peut utiliser lors de ses combats dans les salles du donjon.
+    \\Pour simplifier le jeu nous abandonnons également les mécanismes d'entraînement et d'évolution des pokemons.
 
-
-\subsection{Règles du jeu}
-
-\subsection{Ressources}
-
-
-
-\clearpage
-\section{Description et conception des états}
-
-\subsection{Description des états}
-
-
-\subsection{Conception Logiciel}
+    \subsection{Règles du jeu}
+    Le donjon contient un nombre fini de salle et le joueur gagne lorsqu'il sort de la dernière salle du donjon.
+    Lorsque l'utilisateur est provoqué en duel par un pokemon, il choisit un pokemon pour combattre. Si ce pokemon meurt, l'utilisateur retourne au début de la salle; si il survit, il peut continuer son chemin.
+    \\Les combats fonctionnent en tour par tour. A chaque tour, l'utilisateur et le pokemon peuvent effectuer une seule action au choix: \begin{itemize}
+                                                                                                                                             \item
+    \end{itemize}
 
 
-%\begin{landscape}
-%\begin{figure}[p]
-%\includegraphics[width=0.9\paperheight]{state.pdf}
-%\caption{\label{uml:state}Diagramme des classes d'état.} 
-%\end{figure}
-%\end{landscape}
-
-\clearpage
-\section{Rendu: Stratégie et Conception}
-
-\subsection{Stratégie de rendu d'un état}
+    \subsection{Ressources}
 
 
-\subsection{Conception logiciel}
 
-%\begin{landscape}
-%\begin{figure}[p]
-%\includegraphics[width=0.9\paperheight]{render.pdf}
-%\caption{\label{uml:render}Diagramme des classes de rendu.} 
-%\end{figure}
-%\end{landscape}
+    \clearpage
+    \section{Description et conception des états}
 
-\clearpage
-\section{Règles de changement d'états et moteur de jeu}
-
-\subsection{Règles}
-
-\clearpage
-\subsection{Conception logiciel}
+    \subsection{Description des états}
 
 
-%\begin{landscape}
-%\begin{figure}[p]
-%\includegraphics[width=0.9\paperheight]{engine.pdf}
-%\caption{\label{uml:engine}Diagramme des classes de moteur de jeu.} 
-%\end{figure}
-%\end{landscape}
+    \subsection{Conception Logiciel}
 
 
-\section{Intelligence Artificielle}
+    %\begin{landscape}
+    %\begin{figure}[p]
+    %\includegraphics[width=0.9\paperheight]{state.pdf}
+    %\caption{\label{uml:state}Diagramme des classes d'état.}
+    %\end{figure}
+    %\end{landscape}
 
-\subsection{Stratégies}
+    \clearpage
+    \section{Rendu: Stratégie et Conception}
 
-\clearpage
-\subsection{Conception logiciel}
-
-
-%\begin{landscape}
-%\begin{figure}[p]
-%\includegraphics[width=0.9\paperheight]{ai.pdf}
-%\caption{\label{uml:ai}Diagramme des classes d'intelligence artificielle.} 
-%\end{figure}
-%\end{landscape}
+    \subsection{Stratégie de rendu d'un état}
 
 
-\section{Modularisation}
-\label{sec:module}
+    \subsection{Conception logiciel}
 
-\subsection{Organisation des modules}
+    %\begin{landscape}
+    %\begin{figure}[p]
+    %\includegraphics[width=0.9\paperheight]{render.pdf}
+    %\caption{\label{uml:render}Diagramme des classes de rendu.}
+    %\end{figure}
+    %\end{landscape}
 
-\clearpage
-\subsection{Conception logiciel}
+    \clearpage
+    \section{Règles de changement d'états et moteur de jeu}
+
+    \subsection{Règles}
+
+    \clearpage
+    \subsection{Conception logiciel}
 
 
-%
-%\begin{landscape}
-%\begin{figure}[p]
-%\includegraphics[width=0.9\paperheight]{module.pdf}
-%\caption{\label{uml:module}Diagramme des classes pour la modularisation.} 
-%\end{figure}
-%\end{landscape}
+    %\begin{landscape}
+    %\begin{figure}[p]
+    %\includegraphics[width=0.9\paperheight]{engine.pdf}
+    %\caption{\label{uml:engine}Diagramme des classes de moteur de jeu.}
+    %\end{figure}
+    %\end{landscape}
+
+
+    \section{Intelligence Artificielle}
+
+    \subsection{Stratégies}
+
+    \clearpage
+    \subsection{Conception logiciel}
+
+
+    %\begin{landscape}
+    %\begin{figure}[p]
+    %\includegraphics[width=0.9\paperheight]{ai.pdf}
+    %\caption{\label{uml:ai}Diagramme des classes d'intelligence artificielle.}
+    %\end{figure}
+    %\end{landscape}
+
+
+    \section{Modularisation}
+    \label{sec:module}
+
+    \subsection{Organisation des modules}
+
+    \clearpage
+    \subsection{Conception logiciel}
+
+
+    %
+    %\begin{landscape}
+    %\begin{figure}[p]
+    %\includegraphics[width=0.9\paperheight]{module.pdf}
+    %\caption{\label{uml:module}Diagramme des classes pour la modularisation.}
+    %\end{figure}
+    %\end{landscape}
 
 \end{document}
