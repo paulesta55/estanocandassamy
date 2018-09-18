@@ -1,71 +1,106 @@
-cmake_minimum_required (VERSION 2.8)
-project (plt)
+cmake_minimum_required(VERSION 3.12)
+project(estanocandassamy)
 
-# Directories
-include_directories ("${PROJECT_SOURCE_DIR}/src/client")
-include_directories ("${PROJECT_SOURCE_DIR}/src/server")
-include_directories ("${PROJECT_SOURCE_DIR}/src/shared")
+set(CMAKE_CXX_STANDARD 14)
 
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
+include_directories(extern/dia2code/src)
+include_directories(extern/jsoncpp-1.8.0/json)
+include_directories(extern/libxml2)
+include_directories(extern/libxml2/include)
+include_directories(extern/libxml2/include/libxml)
+include_directories(src)
+include_directories(src/client)
+include_directories(src/shared)
+include_directories(src/shared/state)
 
-# Enable C++11
-set(CMAKE_BUILD_TYPE Release)
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-IF(CMAKE_COMPILER_IS_GNUCC)
-	SET(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -Wall -std=c11   -pthread -g")
-	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11 -pthread -g")
-ENDIF(CMAKE_COMPILER_IS_GNUCC)
-
-
-# Generate headers
-set(DIA2CODE "${PROJECT_SOURCE_DIR}/bin/dia2code")
-exec_program(${DIA2CODE} ARGS -ns state  -d ../src/shared -t cpp ../src/state.dia)
-#exec_program(${DIA2CODE} ARGS -ns render -d ../src/client -t cpp ../src/render.dia)
-#exec_program(${DIA2CODE} ARGS -ns engine -d ../src/shared -t cpp ../src/engine.dia)
-#exec_program(${DIA2CODE} ARGS -ns ai     -d ../src/shared -t cpp ../src/ai.dia)
-#exec_program(${DIA2CODE} ARGS -ns client -d ../src/client -t cpp ../src/module.dia)
-#exec_program(${DIA2CODE} ARGS -ns server -d ../src/server -t cpp ../src/module.dia)
-
-# Sources
-file(GLOB_RECURSE client_sources src/client/*.cpp)
-#file(GLOB_RECURSE server_sources src/server/*.cpp)
-file(GLOB_RECURSE shared_sources src/shared/*.cpp)
-
-#jsoncpp
-#include_directories ("${PROJECT_SOURCE_DIR}/extern/jsoncpp-1.8.0")
-#file(GLOB_RECURSE jsoncpp_sources extern/jsoncpp-1.8.0/*.cpp)
-
-
-# Executables
-add_executable(client ${client_sources} ${shared_sources})
-#add_executable(server ${server_sources} ${shared_sources} ${jsoncpp_sources})
-
-# SFML
-if(WIN32)
-set(SFML_ROOT "D:/Utils/SFML-2.3")
-set(CMAKE_MODULE_PATH "${SFML_ROOT}/cmake/Modules" ${CMAKE_MODULE_PATH})
-else(WIN32)
-set(CMAKE_MODULE_PATH "/usr/share/SFML/cmake/Modules/" ${CMAKE_MODULE_PATH})
-endif(WIN32)
-if($ENV{MACHINE_ENSEA})
-set(SFML_ROOT "/usr/lsa")
-set(CMAKE_MODULE_PATH "${SFML_ROOT}/share/SFML/cmake/Modules/" ${CMAKE_MODULE_PATH})
-endif($ENV{MACHINE_ENSEA})
-find_package(SFML 2 COMPONENTS graphics window system network)
-if(SFML_FOUND)
-  include_directories(${SFML_INCLUDE_DIR})
-  target_link_libraries(client ${SFML_LIBRARIES})
-endif()
-
-# libmicrohttpd
-find_library(
-	MHD_LIBRARY
-	NAMES microhttpd microhttpd-10 libmicrohttpd libmicrohttpd-dll
-	DOC "microhttpd library"
-)
-#target_link_libraries(server ${MHD_LIBRARY})
-
+add_executable(estanocandassamy
+        bin/client
+        bin/dia2code
+        build/cmake_install.cmake
+        build/CMakeCache.txt
+        build/Makefile
+        docker/check_repo.sh
+        docker/docker_clean.sh
+        docker/plt-initial
+        docker/run_docker_bash.sh
+        docker/validate.sh
+        extern/dia2code/src/code_generators.h
+        extern/dia2code/src/comment_helper.c
+        extern/dia2code/src/comment_helper.h
+        extern/dia2code/src/decls.c
+        extern/dia2code/src/decls.h
+        extern/dia2code/src/dia2code.c
+        extern/dia2code/src/dia2code.h
+        extern/dia2code/src/generate_code_cpp.c
+        extern/dia2code/src/includes.c
+        extern/dia2code/src/includes.h
+        extern/dia2code/src/main.c
+        extern/dia2code/src/parse_diagram.c
+        extern/dia2code/src/parse_diagram.h
+        extern/dia2code/src/scan_tree.c
+        extern/dia2code/src/source_parser.c
+        extern/dia2code/src/source_parser.h
+        extern/jsoncpp-1.8.0/json/json-forwards.h
+        extern/jsoncpp-1.8.0/json/json.h
+        extern/jsoncpp-1.8.0/jsoncpp.cpp
+        extern/libxml2/include/libxml/c14n.h
+        extern/libxml2/include/libxml/catalog.h
+        extern/libxml2/include/libxml/chvalid.h
+        extern/libxml2/include/libxml/debugXML.h
+        extern/libxml2/include/libxml/dict.h
+        extern/libxml2/include/libxml/DOCBparser.h
+        extern/libxml2/include/libxml/encoding.h
+        extern/libxml2/include/libxml/entities.h
+        extern/libxml2/include/libxml/globals.h
+        extern/libxml2/include/libxml/hash.h
+        extern/libxml2/include/libxml/HTMLparser.h
+        extern/libxml2/include/libxml/HTMLtree.h
+        extern/libxml2/include/libxml/list.h
+        extern/libxml2/include/libxml/nanoftp.h
+        extern/libxml2/include/libxml/nanohttp.h
+        extern/libxml2/include/libxml/parser.h
+        extern/libxml2/include/libxml/parserInternals.h
+        extern/libxml2/include/libxml/pattern.h
+        extern/libxml2/include/libxml/relaxng.h
+        extern/libxml2/include/libxml/SAX.h
+        extern/libxml2/include/libxml/SAX2.h
+        extern/libxml2/include/libxml/schemasInternals.h
+        extern/libxml2/include/libxml/schematron.h
+        extern/libxml2/include/libxml/threads.h
+        extern/libxml2/include/libxml/tree.h
+        extern/libxml2/include/libxml/uri.h
+        extern/libxml2/include/libxml/valid.h
+        extern/libxml2/include/libxml/xinclude.h
+        extern/libxml2/include/libxml/xlink.h
+        extern/libxml2/include/libxml/xmlautomata.h
+        extern/libxml2/include/libxml/xmlerror.h
+        extern/libxml2/include/libxml/xmlexports.h
+        extern/libxml2/include/libxml/xmlIO.h
+        extern/libxml2/include/libxml/xmlmemory.h
+        extern/libxml2/include/libxml/xmlmodule.h
+        extern/libxml2/include/libxml/xmlreader.h
+        extern/libxml2/include/libxml/xmlregexp.h
+        extern/libxml2/include/libxml/xmlsave.h
+        extern/libxml2/include/libxml/xmlschemas.h
+        extern/libxml2/include/libxml/xmlschemastypes.h
+        extern/libxml2/include/libxml/xmlstring.h
+        extern/libxml2/include/libxml/xmlunicode.h
+        extern/libxml2/include/libxml/xmlversion.h
+        extern/libxml2/include/libxml/xmlwin32version.h
+        extern/libxml2/include/libxml/xmlwriter.h
+        extern/libxml2/include/libxml/xpath.h
+        extern/libxml2/include/libxml/xpathInternals.h
+        extern/libxml2/include/libxml/xpointer.h
+        extern/Makefile
+        lib/libxml2.dll
+        lib/libxml2.lib
+        rapport/ModeleRapport.odt
+        rapport/Rapport.tex
+        src/client/main.cpp
+        src/shared/state/Exemple.cpp
+        src/shared/state/Exemple.h
+        src/shared/state.h
+        src/state.dia
+        CMakeLists.txt
+        Makefile
+        Rapport.pdf)
