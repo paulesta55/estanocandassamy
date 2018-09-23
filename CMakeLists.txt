@@ -1,5 +1,11 @@
 cmake_minimum_required (VERSION 2.8)
-project (plt)
+project (estanocandassamy)
+
+#macro to copy resources in bin directory
+
+
+
+
 
 # Directories
 include_directories ("${PROJECT_SOURCE_DIR}/src/client")
@@ -36,12 +42,12 @@ file(GLOB_RECURSE client_sources src/client/*.cpp)
 file(GLOB_RECURSE shared_sources src/shared/*.cpp)
 
 #jsoncpp
-#include_directories ("${PROJECT_SOURCE_DIR}/extern/jsoncpp-1.8.0")
-#file(GLOB_RECURSE jsoncpp_sources extern/jsoncpp-1.8.0/*.cpp)
-
+include_directories ("${PROJECT_SOURCE_DIR}/extern/jsoncpp-1.8.0")
+file(GLOB_RECURSE jsoncpp_sources extern/jsoncpp-1.8.0/*.cpp)
+#add_library(json ${jsoncpp_sources})
 
 # Executables
-add_executable(client ${client_sources} ${shared_sources})
+add_executable(client ${client_sources} ${shared_sources} src/client/PixelsLoader.h src/client/PixelsLoader.cpp ${jsoncpp_sources} src/client/FileReader.h src/client/FileReader.cpp src/client/FileReader.cpp src/client/FileReader.h)
 #add_executable(server ${server_sources} ${shared_sources} ${jsoncpp_sources})
 
 # SFML
@@ -58,7 +64,7 @@ endif($ENV{MACHINE_ENSEA})
 find_package(SFML 2 COMPONENTS graphics window system network)
 if(SFML_FOUND)
   include_directories(${SFML_INCLUDE_DIR})
-  target_link_libraries(client ${SFML_LIBRARIES})
+  target_link_libraries(client ${SFML_LIBRARIES} ${json})
 endif()
 
 # libmicrohttpd
@@ -68,4 +74,17 @@ find_library(
 	DOC "microhttpd library"
 )
 #target_link_libraries(server ${MHD_LIBRARY})
+macro(configure_files srcDir destDir)
+	message(STATUS "Configuring directory ${destDir}")
+	make_directory(${destDir})
+	file(GLOB templateFiles RELATIVE ${srcDir} ${srcDir}/*)
+	foreach(templateFile ${templateFiles})
+		set(srcTemplatePath ${srcDir}/${templateFile})
+		if(NOT IS_DIRECTORY ${srcTemplatePath})
+			message(STATUS "Configuring file ${templateFile}")
+			file(COPY ${srcTemplatePath} DESTINATION ${destDir})
+		endif(NOT IS_DIRECTORY ${srcTemplatePath})
+	endforeach(templateFile)
+endmacro(configure_files)
 
+configure_files(${PROJECT_SOURCE_DIR}/res ${PROJECT_SOURCE_DIR}/bin/res)
