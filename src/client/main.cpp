@@ -18,12 +18,11 @@ using namespace state;
 int main(int argc,char* argv[]) 
 {
 
-    PixelsLoader *pixelsLoader = new PixelsLoader("res/map.json", "res/timemap.json","res/tilemap.png");
+    PixelsLoader *pixelsLoader = new PixelsLoader("res/timemap.json");
     if(!pixelsLoader->init()) {
         cout << "cannot parse metadata" << endl;
     }
     std::shared_ptr<std::vector<sf::Texture>> cachePtr = pixelsLoader->textureCache;
-    delete pixelsLoader;
     // check the number of arguments
     if(argc != 1) {
         // check the 1st argument
@@ -34,6 +33,9 @@ int main(int argc,char* argv[])
         else{
             cout << "Je ne comprends pas!" << endl;
         }
+    }
+    else {
+        cout << "you could say hello !" << endl;
     }
 
     sf::RenderWindow window(sf::VideoMode(526,601),"test window");
@@ -54,14 +56,14 @@ int main(int argc,char* argv[])
             window.clear();
             int x= 0;
             int y = 0;
-            for (int i = 0; i<504;i++)
+            for (int i = 0; i<pixelsLoader->getTileCount();i++)
             {
                 auto *sprite = new sf::Sprite();
                 sprite->setTexture(cachePtr.get()->at(i));
-                sprite->setPosition(x*24,y*24);
+                sprite->setPosition(x*pixelsLoader->getTileWidth(),y*pixelsLoader->getTileHeight());
                 window.draw(*sprite);
                 x++;
-                if (x > 20)
+                if (x > pixelsLoader->getTileSetColumns()-1)
                 {
                     y++;
                     x = 0;

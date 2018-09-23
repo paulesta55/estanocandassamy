@@ -20,21 +20,24 @@ using namespace std;
         shared_ptr<std::vector<sf::Texture>> textureCache;
     private:
 
-        std::string mapJsonPath     = "";
-        int tileWidth     = 0;
-        int tileHeight     = 0;
-        int widthMapNorm, heightMapNorm = 0;
-        int widthMapPx, heightMapPx = 0;
-        std::string tileSetPath, tileSetImagePath     = "";
+
+        uint tileWidth     = 0;
+        uint tileHeight     = 0;
+        std::string tileSetPath    = "";
         uint tileSetColumns = 0;
+        uint tileCount = 0;
+        string tilesetImageName = "";
         // Operations
         bool pixelPicker(sf::Image image, uint tileIndex);
     public:
-        PixelsLoader (std::string mapJsonPath, std::string tileSetPath, std::string tileSetImagePath);
+        PixelsLoader (std::string tileSetPath);
         bool init ();
-        sf::Color getPixel (int pixelNb);
         ~PixelsLoader();
         // Setters and Getters
+        uint getTileCount();
+        uint getTileSetColumns();
+        uint getTileWidth();
+        uint getTileHeight();
     };
 
 
