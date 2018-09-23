@@ -33,6 +33,7 @@ using namespace std;
         PixelsLoader (std::string mapJsonPath, std::string tileSetPath, std::string tileSetImagePath);
         bool init ();
         sf::Color getPixel (int pixelNb);
+        ~PixelsLoader();
         // Setters and Getters
     };
 

@@ -17,20 +17,13 @@ using namespace state;
 
 int main(int argc,char* argv[]) 
 {
-    std::shared_ptr<std::vector<int>> v;
-    v.reset(new vector<int>(10,10));
 
-    for(int n : *v ){
-        cout << n << endl;
-        cout << &n << endl;
-    }
-
-    PixelsLoader pixelsLoader("res/map.json", "res/timemap.json","res/tilemap.png");
-    if(!pixelsLoader.init()) {
+    PixelsLoader *pixelsLoader = new PixelsLoader("res/map.json", "res/timemap.json","res/tilemap.png");
+    if(!pixelsLoader->init()) {
         cout << "cannot parse metadata" << endl;
     }
-
-
+    std::shared_ptr<std::vector<sf::Texture>> cachePtr = pixelsLoader->textureCache;
+    delete pixelsLoader;
     // check the number of arguments
     if(argc != 1) {
         // check the 1st argument
@@ -54,14 +47,28 @@ int main(int argc,char* argv[])
         {
             if(event.type == sf::Event::Closed)
             {
+                cachePtr.reset();
                 window.close();
-
+                return 0;
             }
             window.clear();
-            sf::Sprite sprite;
-            sprite.setTexture(pixelsLoader.textureCache.get()->at(45));
-            window.draw(sprite);
+            int x= 0;
+            int y = 0;
+            for (int i = 0; i<504;i++)
+            {
+                auto *sprite = new sf::Sprite();
+                sprite->setTexture(cachePtr.get()->at(i));
+                sprite->setPosition(x*24,y*24);
+                window.draw(*sprite);
+                x++;
+                if (x > 20)
+                {
+                    y++;
+                    x = 0;
+                }
+                delete sprite;
 
+            }
             window.display();
         }
     }

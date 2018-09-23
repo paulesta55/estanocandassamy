@@ -58,7 +58,8 @@ bool PixelsLoader::init() {
         }
 
 //        this->pixelPicker(tileSetImage,25);
-
+        ifsMap.close();
+        ifsTiles.close();
         return true;
     }
 
@@ -113,6 +114,9 @@ bool PixelsLoader::pixelPicker(sf::Image image, uint tileIndex) {
     return false;
 }
 
+PixelsLoader::~PixelsLoader() {
+    this->textureCache.reset();
+}
 
 
 
