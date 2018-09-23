@@ -30,6 +30,7 @@ int main(int argc,char* argv[])
         cout << "cannot parse metadata" << endl;
     }
 
+
     // check the number of arguments
     if(argc != 1) {
         // check the 1st argument
@@ -42,7 +43,28 @@ int main(int argc,char* argv[])
         }
     }
 
+    sf::RenderWindow window(sf::VideoMode(526,601),"test window");
 
+
+
+    while (window.isOpen()) {
+
+        sf::Event event;
+        while(window.pollEvent(event))
+        {
+            if(event.type == sf::Event::Closed)
+            {
+                window.close();
+
+            }
+            window.clear();
+            sf::Sprite sprite;
+            sprite.setTexture(pixelsLoader.textureCache.get()->at(45));
+            window.draw(sprite);
+
+            window.display();
+        }
+    }
 
     return 0;
 }

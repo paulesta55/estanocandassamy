@@ -8,15 +8,18 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <memory>
+#include <string.h>
 
 
 using namespace std;
+
     /// class PixelsLoader -
     class PixelsLoader {
         // Attributes
     public:
-        std::shared_ptr<std::map<uint,sf::Texture>> textureCache;
+        shared_ptr<std::vector<sf::Texture>> textureCache;
     private:
+
         std::string mapJsonPath     = "";
         int tileWidth     = 0;
         int tileHeight     = 0;

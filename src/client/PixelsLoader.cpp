@@ -33,6 +33,7 @@ bool PixelsLoader::init() {
         this->tileSetColumns = obj2["columns"].asUInt();
         cout << "nb columns" << this->tileSetColumns << endl;
         tilecount = obj2["tilecount"].asUInt();
+
     }
     else {
         cout << "cannot parse tileset" << endl;
@@ -50,6 +51,7 @@ bool PixelsLoader::init() {
 
         auto layer = layers[0];
         auto data = layer["data"];
+        this->textureCache.get()->reserve(tilecount);
 
         for(uint i=1; i<=tilecount;i++) {
             this->pixelPicker(tileSetImage,i);
@@ -77,7 +79,7 @@ bool PixelsLoader::init() {
 
 PixelsLoader::PixelsLoader(std::string mapJsonPath, std::string tileSetPath, string tileSetImagePath):mapJsonPath
 (mapJsonPath),tileSetPath(tileSetPath), tileSetImagePath(tileSetImagePath) {
-    this->textureCache.reset(new std::map<uint,sf::Texture>() );
+    this->textureCache.reset( new std::vector<sf::Texture>);
 }
 
 bool PixelsLoader::pixelPicker(sf::Image image, uint tileIndex) {
@@ -88,22 +90,26 @@ bool PixelsLoader::pixelPicker(sf::Image image, uint tileIndex) {
     uint xIndex = tileIndex-1;
 
 
-    if (tileIndex > this->tileSetColumns) {
-      yIndex   = tileIndex/tileSetColumns;
-      xIndex -= this->tileWidth * (this->tileSetColumns);
+    if (tileIndex > this->tileSetColumns ) {
+      yIndex   = (tileIndex - 1)/tileSetColumns;
+      xIndex = xIndex - yIndex * this->tileSetColumns;
+
     }
+    cout << "yIndex " << yIndex <<endl;
+    cout << "xIndex " << xIndex << endl;
     uint xPx = xIndex + 1 + xIndex * tileWidth;
     uint yPx = yIndex + 1 + yIndex * tileHeight;
     texture.loadFromImage(image,sf::IntRect(xPx,yPx,tileWidth,tileHeight));
+    this->textureCache.get()->push_back(texture);
 
-    this->textureCache.get()->insert(std::make_pair(tileIndex,texture));
 
 //    sprite.setTexture(texture);
 
-    cout << "texture width : " << texture.getSize().x << endl;
-    cout << "texture heigth : " << texture.getSize().y << endl;
+//    cout << "texture width : " << texture.getSize().x << endl;
+//    cout << "texture heigth : " << texture.getSize().y << endl;
 
     cout << "tile number " << tileIndex << endl;
+
     return false;
 }
 
