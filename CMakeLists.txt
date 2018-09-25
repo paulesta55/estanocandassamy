@@ -47,7 +47,7 @@ file(GLOB_RECURSE jsoncpp_sources extern/jsoncpp-1.8.0/*.cpp)
 #add_library(json ${jsoncpp_sources})
 
 # Executables
-add_executable(client ${client_sources} ${shared_sources} src/client/PixelsLoader.h src/client/PixelsLoader.cpp ${jsoncpp_sources} src/client/FileReader.h src/client/FileReader.cpp src/client/FileReader.cpp src/client/FileReader.h src/client/MapPrinter.cpp src/client/MapPrinter.h)
+add_executable(client ${client_sources} ${shared_sources} ${jsoncpp_sources} )
 #add_executable(server ${server_sources} ${shared_sources} ${jsoncpp_sources})
 
 # SFML

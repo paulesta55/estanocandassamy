@@ -2,7 +2,6 @@
 #include <string.h>
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include <SFML/Graphics.hpp>
-#include <PixelsLoader.h>
 #include "state.h"
 void testSFML() {
     sf::Texture texture;
@@ -17,9 +16,8 @@ using namespace state;
 int main(int argc,char* argv[]) 
 {
 
-
+    //load tileset metadata
     ResManager *resManager = new ResManager("res/poketile.json");
-//    PixelsLoader *pixelsLoader = new PixelsLoader("res/poketile.json");
     if(!resManager->init()) {
         cout << "cannot parse metadata" << endl;
     }

@@ -5,7 +5,7 @@
 #ifndef ESTANOCANDASSAMY_MAPPRINTER_H
 #define ESTANOCANDASSAMY_MAPPRINTER_H
 
-#include <PixelsLoader.h>
+
 
 
 using namespace std;
