@@ -150,6 +150,60 @@ extern/jsoncpp-1.8.0/jsoncpp.cpp.s:
 	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/extern/jsoncpp-1.8.0/jsoncpp.cpp.s
 .PHONY : extern/jsoncpp-1.8.0/jsoncpp.cpp.s
 
+src/client/FileReader.o: src/client/FileReader.cpp.o
+
+.PHONY : src/client/FileReader.o
+
+# target to build an object file
+src/client/FileReader.cpp.o:
+	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/src/client/FileReader.cpp.o
+.PHONY : src/client/FileReader.cpp.o
+
+src/client/FileReader.i: src/client/FileReader.cpp.i
+
+.PHONY : src/client/FileReader.i
+
+# target to preprocess a source file
+src/client/FileReader.cpp.i:
+	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/src/client/FileReader.cpp.i
+.PHONY : src/client/FileReader.cpp.i
+
+src/client/FileReader.s: src/client/FileReader.cpp.s
+
+.PHONY : src/client/FileReader.s
+
+# target to generate assembly for a file
+src/client/FileReader.cpp.s:
+	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/src/client/FileReader.cpp.s
+.PHONY : src/client/FileReader.cpp.s
+
+src/client/MapPrinter.o: src/client/MapPrinter.cpp.o
+
+.PHONY : src/client/MapPrinter.o
+
+# target to build an object file
+src/client/MapPrinter.cpp.o:
+	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/src/client/MapPrinter.cpp.o
+.PHONY : src/client/MapPrinter.cpp.o
+
+src/client/MapPrinter.i: src/client/MapPrinter.cpp.i
+
+.PHONY : src/client/MapPrinter.i
+
+# target to preprocess a source file
+src/client/MapPrinter.cpp.i:
+	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/src/client/MapPrinter.cpp.i
+.PHONY : src/client/MapPrinter.cpp.i
+
+src/client/MapPrinter.s: src/client/MapPrinter.cpp.s
+
+.PHONY : src/client/MapPrinter.s
+
+# target to generate assembly for a file
+src/client/MapPrinter.cpp.s:
+	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/src/client/MapPrinter.cpp.s
+.PHONY : src/client/MapPrinter.cpp.s
+
 src/client/PixelsLoader.o: src/client/PixelsLoader.cpp.o
 
 .PHONY : src/client/PixelsLoader.o
@@ -243,6 +297,12 @@ help:
 	@echo "... extern/jsoncpp-1.8.0/jsoncpp.o"
 	@echo "... extern/jsoncpp-1.8.0/jsoncpp.i"
 	@echo "... extern/jsoncpp-1.8.0/jsoncpp.s"
+	@echo "... src/client/FileReader.o"
+	@echo "... src/client/FileReader.i"
+	@echo "... src/client/FileReader.s"
+	@echo "... src/client/MapPrinter.o"
+	@echo "... src/client/MapPrinter.i"
+	@echo "... src/client/MapPrinter.s"
 	@echo "... src/client/PixelsLoader.o"
 	@echo "... src/client/PixelsLoader.i"
 	@echo "... src/client/PixelsLoader.s"
