@@ -17,7 +17,7 @@ using namespace std;
     class PixelsLoader {
         // Attributes
     public:
-        shared_ptr<std::vector<sf::Texture>> textureCache;
+        shared_ptr<std::vector<sf::Texture>> textureCache = nullptr;
     private:
 
 

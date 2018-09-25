@@ -64,7 +64,7 @@ endif($ENV{MACHINE_ENSEA})
 find_package(SFML 2 COMPONENTS graphics window system network)
 if(SFML_FOUND)
   include_directories(${SFML_INCLUDE_DIR})
-  target_link_libraries(client ${SFML_LIBRARIES} ${json})
+  target_link_libraries(client ${SFML_LIBRARIES})
 endif()
 
 # libmicrohttpd
