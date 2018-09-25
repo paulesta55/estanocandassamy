@@ -7,8 +7,8 @@
 #include <fstream>
 #include <json/json.h>
 
-state::ResManager::ResManager(std::string tileSetPath) {
-
+state::ResManager::ResManager(std::string tileSetPath): tileSetPath(tileSetPath) {
+    this->textureCache.reset(new std::vector<sf::Texture> );
 }
 
 using namespace std;
@@ -65,5 +65,31 @@ uint state::ResManager::getTileWidth() {
 }
 
 bool state::ResManager::pixelPicker(sf::Image image, uint tileIndex) {
-    return false;
+    sf::Texture texture;
+    sf::Sprite sprite;
+
+    uint yIndex = 0;
+    uint xIndex = tileIndex-1;
+
+
+    if (tileIndex > this->tileSetColumns ) {
+        yIndex   = (tileIndex - 1)/tileSetColumns;
+        xIndex = xIndex - yIndex * this->tileSetColumns;
+
+    }
+    cout << "yIndex " << yIndex <<endl;
+    cout << "xIndex " << xIndex << endl;
+    uint xPx = xIndex + 1 + xIndex * tileWidth;
+    uint yPx = yIndex + 1 + yIndex * tileHeight;
+
+    // get the tile from tileset image
+    texture.loadFromImage(image,sf::IntRect(xPx,yPx,tileWidth,tileHeight));
+    this->textureCache.get()->push_back(texture);
+    cout << "tile number " << tileIndex << endl;
+
+    return true;
+}
+
+uint state::ResManager::getTileHeight() {
+    return this->tileHeight;
 }

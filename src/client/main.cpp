@@ -3,7 +3,7 @@
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include <SFML/Graphics.hpp>
 #include <PixelsLoader.h>
-
+#include "state.h"
 void testSFML() {
     sf::Texture texture;
 }
@@ -12,17 +12,18 @@ void testSFML() {
 
 
 using namespace std;
-//using namespace state;
+using namespace state;
 
 int main(int argc,char* argv[]) 
 {
 
 
-    PixelsLoader *pixelsLoader = new PixelsLoader("res/timemap.json");
-    if(!pixelsLoader->init()) {
+    ResManager *resManager = new ResManager("res/poketile.json");
+//    PixelsLoader *pixelsLoader = new PixelsLoader("res/poketile.json");
+    if(!resManager->init()) {
         cout << "cannot parse metadata" << endl;
     }
-    std::shared_ptr<std::vector<sf::Texture>> cachePtr = pixelsLoader->textureCache;
+    std::shared_ptr<std::vector<sf::Texture>> cachePtr = resManager->textureCache;
     // check the number of arguments
     if(argc == 2) {
         // check the 1st argument
@@ -55,14 +56,14 @@ int main(int argc,char* argv[])
             window.clear();
             int x= 0;
             int y = 0;
-            for (int i = 0; i < (int) pixelsLoader->getTileCount();i++)
+            for (int i = 0; i < (int) resManager->getTileCount();i++)
             {
                 auto *sprite = new sf::Sprite();
                 sprite->setTexture(cachePtr.get()->at(i));
-                sprite->setPosition(x*pixelsLoader->getTileWidth(),y*pixelsLoader->getTileHeight());
+                sprite->setPosition(x*resManager->getTileWidth(),y*resManager->getTileHeight());
                 window.draw(*sprite);
                 x++;
-                if (x >(int) pixelsLoader->getTileSetColumns()-1)
+                if (x >(int) resManager->getTileSetColumns()-1)
                 {
                     y++;
                     x = 0;
