@@ -16,8 +16,9 @@ using namespace state;
 int main(int argc,char* argv[]) 
 {
 
-    //load tileset metadata
+
     ResManager *resManager = new ResManager("res/poketile.json");
+//    PixelsLoader *pixelsLoader = new PixelsLoader("res/poketile.json");
     if(!resManager->init()) {
         cout << "cannot parse metadata" << endl;
     }
@@ -36,43 +37,42 @@ int main(int argc,char* argv[])
         cout << "you can only say hello" << endl;
     }
 
-    sf::RenderWindow window(sf::VideoMode(526,601),"test window");
+//    sf::RenderWindow window(sf::VideoMode(526,601),"test window");
 
 
 
-    while (window.isOpen()) {
-
-        sf::Event event;
-        while(window.pollEvent(event))
-        {
-            if(event.type == sf::Event::Closed)
-            {
-                cachePtr.reset();
-                window.close();
-                return 0;
-            }
-            window.clear();
-            int x= 0;
-            int y = 0;
-            // reconstruct the tileset without margin and spacing
-            for (int i = 0; i < (int) resManager->getTileCount();i++)
-            {
-                auto *sprite = new sf::Sprite();
-                sprite->setTexture(cachePtr.get()->at(i));
-                sprite->setPosition(x*resManager->getTileWidth(),y*resManager->getTileHeight());
-                window.draw(*sprite);
-                x++;
-                if (x >(int) resManager->getTileSetColumns()-1)
-                {
-                    y++;
-                    x = 0;
-                }
-                delete sprite;
-
-            }
-            window.display();
-        }
-    }
+//    while (window.isOpen()) {
+//
+//        sf::Event event;
+//        while(window.pollEvent(event))
+//        {
+//            if(event.type == sf::Event::Closed)
+//            {
+//                cachePtr.reset();
+//                window.close();
+//                return 0;
+//            }
+//            window.clear();
+//            int x= 0;
+//            int y = 0;
+//            for (int i = 0; i < (int) resManager->getTileCount();i++)
+//            {
+//                auto *sprite = new sf::Sprite();
+//                sprite->setTexture(cachePtr.get()->at(i));
+//                sprite->setPosition(x*resManager->getTileWidth(),y*resManager->getTileHeight());
+//                window.draw(*sprite);
+//                x++;
+//                if (x >(int) resManager->getTileSetColumns()-1)
+//                {
+//                    y++;
+//                    x = 0;
+//                }
+//                delete sprite;
+//
+//            }
+//            window.display();
+//        }
+//    }
 
     return 0;
 }
