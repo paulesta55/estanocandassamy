@@ -29,7 +29,9 @@ int main(int argc,char* argv[])
             cout << "Bonjour le monde !" << endl;
         }
         // display a warning when a wrong number of arguments is given
-
+        else{
+            cout << "I don't understand" << endl;
+        }
     }
     else {
         cout << "I don't understand"<< endl;
