@@ -13,11 +13,18 @@ state::ResManager::ResManager(std::string tileSetPath): tileSetPath(tileSetPath)
 
 using namespace std;
 
+/**
+ * Fill the textureCache with tiles of the given tileset (specified by tileSetPath)
+ * @return true if the process worked
+ */
 bool state::ResManager::init() {
+    // open the tileSet metadata file
     ifstream ifsTiles(this->tileSetPath);
 
     Json::Reader reader;
     Json::Value obj;
+
+    // parse the the json file
     if( reader.parse(ifsTiles, obj)) {
         this->tileSetColumns = obj["columns"].asUInt();
         cout << "nb columns" << this->tileSetColumns << endl;
@@ -31,9 +38,11 @@ bool state::ResManager::init() {
         this->textureCache.get()->reserve(this->tileCount);
 
 
+        // open the tileset image
         sf::Image tileSetImage;
         tileSetImage.loadFromFile("res/"+tilesetImageName);
 
+        // fill the cache with pixelPicker method
         for(uint i=1; i<=this->tileCount;i++) {
             this->pixelPicker(tileSetImage,i);
         }
@@ -64,14 +73,21 @@ uint state::ResManager::getTileWidth() {
     return this->tileWidth;
 }
 
+/**
+ * Load the tile of index tileIndex in the tileset in the @code{textureCache}
+ * @param image tilesetImage
+ * @param tileIndex tile loaded
+ * @return true if the process worked
+ */
 bool state::ResManager::pixelPicker(sf::Image image, uint tileIndex) {
     sf::Texture texture;
     sf::Sprite sprite;
 
+    // set the first element at (0,0)
     uint yIndex = 0;
     uint xIndex = tileIndex-1;
 
-
+    // compute the tile normalized position (xIndex,yIndex)
     if (tileIndex > this->tileSetColumns ) {
         yIndex   = (tileIndex - 1)/tileSetColumns;
         xIndex = xIndex - yIndex * this->tileSetColumns;
@@ -79,11 +95,15 @@ bool state::ResManager::pixelPicker(sf::Image image, uint tileIndex) {
     }
     cout << "yIndex " << yIndex <<endl;
     cout << "xIndex " << xIndex << endl;
+
+    // compute tile position in pixels
     uint xPx = xIndex + 1 + xIndex * tileWidth;
     uint yPx = yIndex + 1 + yIndex * tileHeight;
 
     // get the tile from tileset image
     texture.loadFromImage(image,sf::IntRect(xPx,yPx,tileWidth,tileHeight));
+
+    // store the image in the cache
     this->textureCache.get()->push_back(texture);
     cout << "tile number " << tileIndex << endl;
 

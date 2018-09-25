@@ -54,6 +54,7 @@ int main(int argc,char* argv[])
             window.clear();
             int x= 0;
             int y = 0;
+            // reconstruct the tileset without margin and spacing
             for (int i = 0; i < (int) resManager->getTileCount();i++)
             {
                 auto *sprite = new sf::Sprite();
