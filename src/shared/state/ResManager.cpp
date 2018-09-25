@@ -63,3 +63,7 @@ uint state::ResManager::getTileSetColumns() {
 uint state::ResManager::getTileWidth() {
     return this->tileWidth;
 }
+
+bool state::ResManager::pixelPicker(sf::Image image, uint tileIndex) {
+    return false;
+}
