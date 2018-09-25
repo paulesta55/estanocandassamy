@@ -34,9 +34,11 @@ bool FileReader ::printFile() {
             cout << line << '\n';
         }
         myfile.close();
+        return true;
     }
 
     else cout << "Unable to open file";
+    return false;
 }
 
 FileReader::FileReader(char *filePath): filePath(filePath) {}
