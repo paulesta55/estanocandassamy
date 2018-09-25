@@ -27,7 +27,7 @@ bool state::ResManager::init() {
     // parse the the json file
     if( reader.parse(ifsTiles, obj)) {
         this->tileSetColumns = obj["columns"].asUInt();
-        cout << "nb columns" << this->tileSetColumns << endl;
+        cout << "nb columns " << this->tileSetColumns << endl;
         this->tileCount = obj["tilecount"].asUInt();
         cout << "nb tiles " << this->tileCount << endl;
         this->tileWidth = obj["tilewidth"].asUInt();
@@ -93,8 +93,8 @@ bool state::ResManager::pixelPicker(sf::Image image, uint tileIndex) {
         xIndex = xIndex - yIndex * this->tileSetColumns;
 
     }
-    cout << "yIndex " << yIndex <<endl;
-    cout << "xIndex " << xIndex << endl;
+//    cout << "yIndex " << yIndex <<endl;
+//    cout << "xIndex " << xIndex << endl;
 
     // compute tile position in pixels
     uint xPx = xIndex + 1 + xIndex * tileWidth;
@@ -105,7 +105,7 @@ bool state::ResManager::pixelPicker(sf::Image image, uint tileIndex) {
 
     // store the image in the cache
     this->textureCache.get()->push_back(texture);
-    cout << "tile number " << tileIndex << endl;
+//    cout << "tile number " << tileIndex << " ok" << endl;
 
     return true;
 }

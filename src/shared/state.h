@@ -6,4 +6,5 @@
 #include "state/Layer.h"
 #include "state/TileSet.h"
 #include "state/Map.h"
+#include "state/MapLoader.h"
 #endif
