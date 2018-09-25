@@ -2,5 +2,5 @@
 #ifndef __STATE__H
 #define __STATE__H
 
-#include "state/Exemple.h"
+#include "state/ResManager.h"
 #endif

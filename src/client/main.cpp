@@ -10,14 +10,14 @@ void testSFML() {
 
 // Fin test SFML
 
-#include "state.h"
 
 using namespace std;
-using namespace state;
+//using namespace state;
 
 int main(int argc,char* argv[]) 
 {
-    
+
+
     PixelsLoader *pixelsLoader = new PixelsLoader("res/timemap.json");
     if(!pixelsLoader->init()) {
         cout << "cannot parse metadata" << endl;
