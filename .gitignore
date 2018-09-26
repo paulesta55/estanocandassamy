@@ -3,3 +3,4 @@ build
 bin
 nbproject
 .idea/
+cmake-build-debug/
