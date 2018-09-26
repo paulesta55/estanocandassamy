@@ -3,6 +3,7 @@
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include <SFML/Graphics.hpp>
 #include "state.h"
+#include "resources.h"
 void testSFML() {
     sf::Texture texture;
 }
@@ -12,12 +13,13 @@ void testSFML() {
 
 using namespace std;
 using namespace state;
+using namespace resources;
 
 int main(int argc,char* argv[]) 
 {
 
 
-    ResManager *resManager = new ResManager("res/poketile.json");
+    ResManager *resManager = new ResManager("res/timemap.json");
 //    PixelsLoader *pixelsLoader = new PixelsLoader("res/poketile.json");
     if(!resManager->init()) {
         cout << "cannot parse metadata" << endl;

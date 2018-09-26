@@ -6,8 +6,12 @@
 #include <iostream>
 #include <fstream>
 #include <json/json.h>
+#include "state.h"
+using namespace state;
+using namespace std;
+using namespace resources;
 
-state::ResManager::ResManager(std::string tileSetPath): tileSetPath(tileSetPath) {
+ResManager::ResManager(string tileSetPath): tileSetPath(tileSetPath) {
     this->textureCache.reset(new std::vector<sf::Texture> );
 }
 
@@ -17,7 +21,7 @@ using namespace std;
  * Fill the textureCache with tiles of the given tileset (specified by tileSetPath)
  * @return true if the process worked
  */
-bool state::ResManager::init() {
+bool ResManager::init() {
     // open the tileSet metadata file
     ifstream ifsTiles(this->tileSetPath);
 
@@ -57,19 +61,19 @@ bool state::ResManager::init() {
     return false;
 }
 
-state::ResManager::~ResManager() {
+ResManager::~ResManager() {
     this->textureCache.reset();
 }
 
-uint state::ResManager::getTileCount() {
+uint ResManager::getTileCount() {
     return this->tileCount;
 }
 
-uint state::ResManager::getTileSetColumns() {
+uint ResManager::getTileSetColumns() {
     return this->tileSetColumns;
 }
 
-uint state::ResManager::getTileWidth() {
+uint ResManager::getTileWidth() {
     return this->tileWidth;
 }
 
@@ -79,7 +83,7 @@ uint state::ResManager::getTileWidth() {
  * @param tileIndex tile loaded
  * @return true if the process worked
  */
-bool state::ResManager::pixelPicker(sf::Image image, uint tileIndex) {
+bool ResManager::pixelPicker(sf::Image image, uint tileIndex) {
     sf::Texture texture;
     sf::Sprite sprite;
 
@@ -110,6 +114,6 @@ bool state::ResManager::pixelPicker(sf::Image image, uint tileIndex) {
     return true;
 }
 
-uint state::ResManager::getTileHeight() {
+uint ResManager::getTileHeight() {
     return this->tileHeight;
 }
