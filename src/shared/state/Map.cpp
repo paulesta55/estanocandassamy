@@ -8,8 +8,9 @@
 using namespace state;
 using namespace std;
 
-state::Map::Map(std::vector<Layer> layers, std::vector<TileSet> tileSets, uint height, uint width, uint tileWidth,
-                uint tileHeight): layers(layers),tileSets(tileSets),height(height),width(width),tileWidth(tileWidth),
+
+state::Map::Map(std::vector<Layer> layers, TileSet tileset, uint height, uint width, uint tileWidth,
+                uint tileHeight): layers(layers),tileSet(tileSet),height(height),width(width),tileWidth(tileWidth),
                 tileHeight(tileHeight){}
 
 uint Map::getTileHeight() {
@@ -28,8 +29,8 @@ uint Map::getHeight() {
     return this->height;
 }
 
-std::vector<TileSet> Map::getTileSets() {
-    return this->getTileSets();
+TileSet Map::getTileSet() {
+    return this->getTileSet();
 }
 
 std::vector<Layer> Map::getLayers() {
