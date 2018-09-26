@@ -6,14 +6,19 @@
 #include <iostream>
 #include <fstream>
 #include <json/json.h>
+#include "state.h"
 
-state::ResManager::ResManager(std::string tileSetPath): tileSetPath(tileSetPath) {
+using namespace resources;
+using namespace std;
+using namespace state;
+
+ResManager::ResManager(std::string tileSetPath): tileSetPath(tileSetPath) {
     this->textureCache.reset(new std::vector<sf::Texture> );
 }
 
 using namespace std;
 
-bool state::ResManager::init() {
+bool ResManager::init() {
     ifstream ifsTiles(this->tileSetPath);
 
     Json::Reader reader;
@@ -48,23 +53,23 @@ bool state::ResManager::init() {
     return false;
 }
 
-state::ResManager::~ResManager() {
+ResManager::~ResManager() {
     this->textureCache.reset();
 }
 
-uint state::ResManager::getTileCount() {
+uint ResManager::getTileCount() {
     return this->tileCount;
 }
 
-uint state::ResManager::getTileSetColumns() {
+uint ResManager::getTileSetColumns() {
     return this->tileSetColumns;
 }
 
-uint state::ResManager::getTileWidth() {
+uint ResManager::getTileWidth() {
     return this->tileWidth;
 }
 
-bool state::ResManager::pixelPicker(sf::Image image, uint tileIndex) {
+bool ResManager::pixelPicker(sf::Image image, uint tileIndex) {
     sf::Texture texture;
     sf::Sprite sprite;
 
@@ -90,6 +95,6 @@ bool state::ResManager::pixelPicker(sf::Image image, uint tileIndex) {
     return true;
 }
 
-uint state::ResManager::getTileHeight() {
+uint ResManager::getTileHeight() {
     return this->tileHeight;
 }

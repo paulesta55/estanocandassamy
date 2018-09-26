@@ -2,5 +2,11 @@
 #ifndef __STATE__H
 #define __STATE__H
 
-#include "state/ResManager.h"
+#include "state/Layer.h"
+#include "state/TileSet.h"
+#include "state/Map.h"
+#include "state/Stats.h"
+#include "state/Pokemon.h"
+#include "state/Player.h"
+#include "state/State.h"
 #endif
