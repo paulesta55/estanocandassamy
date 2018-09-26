@@ -112,8 +112,21 @@ morekeywords={string,number,array,object}% list your attributes here
     \section{Description et conception des états}
 
     \subsection{Description des états}
+    Un état du jeu est formé d'une carte qui est statique au cours du temps et d'une liste de joueurs dont l'état varie au cours du jeu.
 
+    \subsubsection{Etat de la carte}
+    Une carte est composée de plusieurs couches, d'une longueur en nombre de tiles, d'une largeur en nombre de tiles, de la largeur de ses tiles en pixels, de la longueur de ses tiles en pixels et d'un tileset.
 
+    Chaque couche de la carte comporte un nom, une largeur et une longueur en nombre de tiles, d'une position correspondant à la position de sa première tile et d'une liste d'index correspondant aux tiles utilisé pour chaque case, ces tiles doivent se trouver dans le tileset de la carte.
+
+    Un tileset comprend une chaine de charactères correspondant au chemin de l'image du tileset et un identifiant.
+
+    \subsubsection{Etat des joueurs}
+    Un joueur est soit vivant, soit mort, soit un robot, soit un humain et il lui est attribué un pokemon en début de niveau/partie.
+
+    Un pokemon possède une position, un nombre de point de vie à l'état t, un nom et un ensemble de statistiques qui lui sont attribués en début de partie.
+
+    Ces statistiques correspondent aux attaques qu'il peut utiliser, à son nombre de point de vie en début de partie et son type (eau, feu, herbe).
     \subsection{Conception Logiciel}
 
 
