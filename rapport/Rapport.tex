@@ -142,17 +142,25 @@ morekeywords={string,number,array,object}% list your attributes here
 
     Ces statistiques correspondent aux attaques qu'il peut utiliser, à son nombre de point de vie en début de partie et son type (eau, feu, herbe).
     \subsection{Conception Logiciel}
+    Le package état peut se diviser en trois sous-partie:\begin{itemize}
+        \item Une partie gérant les personnages, en bleu
+        \item Une partie gérant l'environnement, en rouge
+        \item Une classe représentant l'état global du jeu, en vert
+    \end{itemize}
 
-
-
+    La classe \emph{player} contient l'ensemble des éléments permettant de caractériser l'état d'un joueur. Chaque joueur est lié à un pokemon par une relation de composition : un pokémon ne peut pas exister sans joueur. Dans le cas où le pokémon est contrôlé par l'IA, l'IA est considérée comme un joueur.
+    \\Chaque pokémon possède une relation d'agrégation avec des statistiques qui lui sont attribués en début de partie.
+    \\La partie environnement est calqué sur le modèle proposé par les fichiers exporter par le logiciel \emph{Tiled Map Editor}. Les objets les plus consommateurs en mémoire tels les \emph{data} dans la classe \emph{Layer} sont par ailleurs stockés dans le tas pour éviter les copies entre les différentes classes.
+    \\L'état global contient un pointeur vers l'état de l'environnement et et une liste de pointeur de contenant l'état des différents joueurs de la partie.
     \begin{landscape}
     \begin{figure}[p]
-    \includegraphics[width=0.5\paperheight]{state.pdf}
+    \includegraphics[width=0.8\paperheight]{state.png}
     \caption{\label{uml:state}Diagramme des classes d'état.}
     \end{figure}
     \end{landscape}
-
     \clearpage
+
+
     \section{Rendu: Stratégie et Conception}
 
     \subsection{Stratégie de rendu d'un état}
