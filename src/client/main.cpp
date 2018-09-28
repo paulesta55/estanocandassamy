@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "state.h"
 #include "resources.h"
+#include <map>
 void testSFML() {
     sf::Texture texture;
 }
@@ -40,7 +41,6 @@ int main(int argc,char* argv[])
         cout << "I don't understand"<< endl;
         cout << "you can only say hello" << endl;
     }
-
 //    sf::RenderWindow window(sf::VideoMode(526,601),"test window");
 
 
