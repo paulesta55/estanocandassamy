@@ -41,3 +41,7 @@ std::shared_ptr<std::vector<uint>> Layer::getData() {
 Layer::~Layer() {
     this->data.reset();
 }
+
+std::string Layer::getImage() {
+    return this->image;
+}

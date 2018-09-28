@@ -30,7 +30,7 @@ uint Map::getHeight() {
 }
 
 TileSet Map::getTileSet() {
-    return this->getTileSet();
+    return this->tileSet;
 }
 
 std::vector<Layer> Map::getLayers() {
