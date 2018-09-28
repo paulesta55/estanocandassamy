@@ -4,7 +4,6 @@
 #include <SFML/Graphics.hpp>
 #include "state.h"
 #include "resources.h"
-#include <map>
 void testSFML() {
     sf::Texture texture;
 }
@@ -16,7 +15,7 @@ using namespace std;
 using namespace state;
 using namespace resources;
 
-int main(int argc,char* argv[]) 
+int main(int argc,char* argv[])
 {
 
 
@@ -33,18 +32,17 @@ int main(int argc,char* argv[])
             cout << "Bonjour le monde !" << endl;
         }
         // display a warning when a wrong number of arguments is given
-        else{
-            cout << "I don't understand" << endl;
-        }
+
     }
     else {
         cout << "I don't understand"<< endl;
         cout << "you can only say hello" << endl;
     }
+
 //    sf::RenderWindow window(sf::VideoMode(526,601),"test window");
-
-
-
+//
+//
+//
 //    while (window.isOpen()) {
 //
 //        sf::Event event;

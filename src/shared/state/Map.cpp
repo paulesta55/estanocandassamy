@@ -9,7 +9,7 @@ using namespace state;
 using namespace std;
 
 
-state::Map::Map(std::vector<Layer> layers, TileSet tileset, uint height, uint width, uint tileWidth,
+state::Map::Map(std::vector<Layer> layers, TileSet tileSet, uint height, uint width, uint tileWidth,
                 uint tileHeight): layers(layers),tileSet(tileSet),height(height),width(width),tileWidth(tileWidth),
                 tileHeight(tileHeight){}
 

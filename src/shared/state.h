@@ -9,4 +9,5 @@
 #include "state/Pokemon.h"
 #include "state/Player.h"
 #include "state/State.h"
+#include "state/PokeFactory.h"
 #endif
