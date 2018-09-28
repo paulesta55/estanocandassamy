@@ -5,7 +5,7 @@
 #include "state/Layer.h"
 #include "state/TileSet.h"
 #include "state/Map.h"
-#include "state/Stats.h"
+#include "state/Pokedata.h"
 #include "state/Pokemon.h"
 #include "state/Player.h"
 #include "state/State.h"
