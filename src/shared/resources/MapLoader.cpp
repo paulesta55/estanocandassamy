@@ -10,3 +10,14 @@ using namespace std;
 using namespace resources;
 
 
+MapLoader::MapLoader(string metaMapPath) {
+
+}
+
+bool MapLoader::load() {
+    return false;
+}
+
+MapLoader::~MapLoader() {
+    this->map.reset();
+}
