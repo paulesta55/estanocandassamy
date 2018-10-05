@@ -25,8 +25,7 @@ void Pokemon::setCurrentLife(int currentLife) {
     this->currentLife = currentLife;
 }
 
-Pokemon::Pokemon(std::vector<int> position, int currentLife, std::string name): position(position),currentLife(currentLife),name(name) {
-}
+Pokemon::Pokemon(std::vector<int> position, int currentLife, std::string name): position(position),currentLife(currentLife),name(name) {}
 
 Pokemon::~Pokemon() {
     delete this->pokedata;

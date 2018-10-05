@@ -6,7 +6,8 @@
 #include <iostream>
 #include <fstream>
 #include <json/json.h>
-
+#include <algorithm>
+#include <string>
 using namespace state;
 using namespace std;
 
@@ -56,8 +57,17 @@ Map::Map(std::string mapPath) {
         this->tileWidth = obj["tilewidth"].asUInt();
         cout << "tilewidth: " << this->tileWidth << endl;
 
+
         const Json::Value& layers = obj["layers"];
         this->tileHeight = obj["tileheight"].asUInt();
+
+        const Json::Value& tileSetValue = obj["tilesets"];
+
+        string tilesetName = tileSetValue[0]["source"].asString();
+        tilesetName = tilesetName.replace(tilesetName.begin(),tilesetName.end(),".tsx",".json");
+
+        this->tileSet = TileSet(tileSetValue[0]["firstgid"].asInt(), tilesetName);
+
         for (int i =0 ;i < layers.size();i++)
         {
             uint height = layers[layers.size()-i-1]["height"].asUInt();
@@ -85,4 +95,5 @@ Map::Map(std::string mapPath) {
 
         }
     }
+
 }
