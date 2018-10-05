@@ -1,3 +1,5 @@
+#include <utility>
+
 //
 // Created by paul on 25/09/18.
 //
@@ -7,15 +9,8 @@
 using namespace std;
 using namespace  state;
 
-Layer::Layer(std::shared_ptr<std::vector<uint>> data, uint height, uint width, int x, int y): data(data), height(height), width(width), x(x), y(y) {
-    if(data)
-    {
-        this->data = data;
-    }
-    else
-    {
-        data.reset(new std::vector<uint>);
-    }
+Layer::Layer(shared_ptr<std::vector<uint>> data, uint height, uint width, int x, int y, string name): data(
+        std::move(data)), height(height), width(width), x(x), y(y), name(name) {
 }
 
 int Layer::getY() {
@@ -42,6 +37,3 @@ Layer::~Layer() {
     this->data.reset();
 }
 
-std::string Layer::getImage() {
-    return this->image;
-}

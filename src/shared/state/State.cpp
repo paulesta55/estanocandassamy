@@ -10,3 +10,7 @@ using namespace std;
 std::vector<Player*> State::getPlayers() {return this->players;}
 
 std::shared_ptr<Map> State::getMap() {return this->map;}
+
+State::State() {
+    this->map = nullptr;
+}
