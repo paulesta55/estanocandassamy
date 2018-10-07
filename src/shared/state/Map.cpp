@@ -6,11 +6,12 @@
 #include <iostream>
 #include <fstream>
 #include <json/json.h>
+#include <algorithm>
+#include <string>
+
 
 using namespace state;
 using namespace std;
-
-
 
 
 uint Map::getTileHeight() {
@@ -29,13 +30,15 @@ uint Map::getHeight() {
     return this->height;
 }
 
-TileSet Map::getTileSet() {
+shared_ptr<TileSet> Map::getTileSet() {
     return this->tileSet;
 }
 
 std::vector<Layer> Map::getLayers() {
     return this->layers;
 }
+
+
 
 Map::Map(std::string mapPath, string tileSetPath) {
     //open the map.json file
@@ -92,5 +95,20 @@ Map::Map(std::string mapPath, string tileSetPath) {
             this->layers.emplace_back(data,height,width,x,y,name);
 
         }
+
+        const Json::Value& tilesets = obj["tilesets"];
+
+        std::string tilesetSource = tilesets[0]["source"].asString();
+//        cout << tilesetSource << endl;
+
+        ulong ind = tilesetSource.find("tsx");
+        if(ind != string::npos)
+        {
+            tilesetSource.replace(ind, 3, "json");
+        }
+
+//        cout << tilesetSource <<endl;
+        this->tileSet = make_shared<TileSet>(tilesets[0]["firstgid"].asInt(),tilesetSource);
     }
 }
+

@@ -33,6 +33,10 @@ std::shared_ptr<std::vector<uint>> Layer::getData() {
     return this->data;
 }
 
+string Layer::getName() {
+    return this->name;
+}
+
 Layer::~Layer() {
     this->data.reset();
 }

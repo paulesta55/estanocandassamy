@@ -18,11 +18,15 @@ using namespace resources;
 int main(int argc,char* argv[])
 {
 
-    state::State state1 = state::State();
+    State state1 = State();
 
-    cout << "nb layers = " << state1.getMap().get()->getLayers().size() << endl;
-
-    shared_ptr<vector<uint>> data = state1.getMap().get()->getLayers().at(0).getData();
+//    vector<uint> data = *state1.getMap().get()->getLayers()[0].getData().get();
+//
+//    for (uint unit : data)
+//    {
+//        cout << unit << endl;
+//    }
+    cout << "tileset info : " << state1.getMap().get()->getTileSet()->getSource() << endl;
 
 //    ResManager *resManager = new ResManager("res/timemap.json");
 //    if(!resManager->init()) {
