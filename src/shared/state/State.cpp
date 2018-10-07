@@ -11,6 +11,8 @@ std::vector<Player*> State::getPlayers() {return this->players;}
 
 std::shared_ptr<Map> State::getMap() {return this->map;}
 
-State::State() {
-    this->map = nullptr;
+State::State(string mapPath, string tileSetPath) {
+    this->map = make_shared<Map>(mapPath,tileSetPath);
+
 }
+
