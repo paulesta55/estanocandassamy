@@ -8,26 +8,26 @@
 using namespace std;
 using namespace state;
 
-std::vector<int> state::Pokemon::getPosition() {
-    return this->position;
-}
-
-int Pokemon::getCurrentLife() {
-    return this->currentLife;
-}
-
-void Pokemon::setPosition(std::vector<int> position) {
-    this->position = position;
-
-}
-
-void Pokemon::setCurrentLife(int currentLife) {
-    this->currentLife = currentLife;
-}
-
-Pokemon::Pokemon(std::vector<int> position, int currentLife, std::string name): position(position),currentLife(currentLife),name(name) {
+std::string Pokemon::getName() {
+    return this->name;
 }
 
 Pokemon::~Pokemon() {
-    delete this->pokedata;
+
+}
+
+uint Pokemon::getFullLife() {
+    return this->fullLife;
+}
+
+int Pokemon::getRaceId() {
+    return this->raceId;
+}
+
+std::string Pokemon::getRace() {
+    return this->race;
+}
+
+int Pokemon::getPokeId() {
+    return this->pokeId;
 }
