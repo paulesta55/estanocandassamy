@@ -51,20 +51,21 @@ Map::Map(std::string mapPath, string tileSetPath) {
     if( reader.parse(ifsMap, obj))
     {
         this->width= obj["width"].asUInt();
-        cout << "width: " << this->width << endl;
+//        cout << "width: " << this->width << endl;
 
         this->height = obj["height"].asUInt();
-        cout << "height: " << this->height << endl;
+//        cout << "height: " << this->height << endl;
 
         this->tileWidth = obj["tilewidth"].asUInt();
-        cout << "tilewidth: " << this->tileWidth << endl;
+//        cout << "tilewidth: " << this->tileWidth << endl;
 
         const Json::Value& layers = obj["layers"];
 
-        cout << "nb layers : " << layers.size() << endl;
+//        cout << "nb layers : " << layers.size() << endl;
 
         this->tileHeight = obj["tileheight"].asUInt();
 
+        //parse the layers
         for (uint i =0 ;i < layers.size();i++)
         {
             uint height = layers[layers.size()-i-1]["height"].asUInt();
@@ -99,15 +100,15 @@ Map::Map(std::string mapPath, string tileSetPath) {
         const Json::Value& tilesets = obj["tilesets"];
 
         std::string tilesetSource = tilesets[0]["source"].asString();
-//        cout << tilesetSource << endl;
 
+        //delete the tsx extension cause we converted to json
         ulong ind = tilesetSource.find("tsx");
         if(ind != string::npos)
         {
             tilesetSource.replace(ind, 3, "json");
         }
 
-//        cout << tilesetSource <<endl;
+        //create a new ptr for the tileset
         this->tileSet = make_shared<TileSet>(tilesets[0]["firstgid"].asInt(),tilesetSource);
     }
 }
