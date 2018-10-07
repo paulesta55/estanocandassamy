@@ -36,17 +36,10 @@ void Player::setAlive(bool alive) {
     this->alive = alive;
 }
 
-Pokemon *Player::getPokemon() {
-    if(this->pokemon)
-    {
-        return this->pokemon;
-    }
-    return nullptr;
+shared_ptr<Pokemon> Player::getPokemon() {
+   return this->pokemon;
 }
 
-Player::Player(bool IA, std::string name, int ID, Pokemon *pokemon): IA(IA),name(name), pokemon(pokemon) {}
+Player::Player(bool IA, std::string name, int ID, shared_ptr<Pokemon> pokemon): IA(IA),name(name), pokemon(pokemon) {}
 
 
-Player::~Player() {
-    delete this->pokemon;
-}
