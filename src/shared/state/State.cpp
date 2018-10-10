@@ -7,8 +7,10 @@
 using namespace state;
 using namespace std;
 
-std::vector<Player*> State::getPlayers() {return this->players;}
+std::shared_ptr<std::vector<Player*>> State::getPlayers() {return this->players;}
 
 std::shared_ptr<Map> State::getMap() {return this->map;}
 
-State::State(shared_ptr<Map> map) : map(map){}
+State::State(shared_ptr<Map> map) : map(map){
+    players.reset(new vector<Player*>());
+}

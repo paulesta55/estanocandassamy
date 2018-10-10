@@ -16,6 +16,7 @@ Pokemon::~Pokemon() {
 
 }
 
+
 uint Pokemon::getFullLife() {
     return this->fullLife;
 }
@@ -31,3 +32,4 @@ std::string Pokemon::getRace() {
 int Pokemon::getPokeId() {
     return this->pokeId;
 }
+

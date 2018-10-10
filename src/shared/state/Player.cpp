@@ -40,6 +40,8 @@ shared_ptr<Pokemon> Player::getPokemon() {
    return this->pokemon;
 }
 
-Player::Player(bool IA, std::string name, int ID, shared_ptr<Pokemon> pokemon): IA(IA),name(name), pokemon(pokemon) {}
+std::string Player::getName() { return this->name;}
+
+Player::Player(bool IA, std::string name, int ID, shared_ptr<Pokemon> pokemon): IA(IA),name(name), ID(ID), pokemon(pokemon) {}
 
 

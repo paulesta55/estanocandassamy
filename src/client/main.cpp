@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string.h>
+
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include <SFML/Graphics.hpp>
 #include "state.h"
@@ -20,15 +21,25 @@ int main(int argc,char* argv[])
 
     State state1 = State();
 
-//    vector<uint> data = *state1.getMap().get()->getLayers()[0].getData().get();
-//
-//    for (uint unit : data)
-//    {
-//        cout << unit << endl;
-//    }
-    cout << "tileset info : " << state1.getMap().get()->getTileSet()->getSource() << endl;
+    string name = "sala1";
+    int id = 1;
+    shared_ptr<Salameche> sal;
+    sal.reset(new Salameche(name,id));
 
-//    ResManager *resManager = new ResManager("res/timemap.json");
+
+
+    state1.getPlayers().get()->push_back(new Player(false,"Bob",1,sal));
+
+    auto it = state1.getPlayers().get()->begin();
+
+    while(it != state1.getPlayers().get()->end())
+    {
+        cout << (*it)->getID() << endl;
+        cout << (*it)->getName() << endl;
+        cout << (*it)->getPokemon().get()->getName() << endl;
+        it++;
+    }
+    //    ResManager *resManager = new ResManager("res/timemap.json");
 //    if(!resManager->init()) {
 //        cout << "cannot parse metadata" << endl;
 //    }
