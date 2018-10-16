@@ -38,7 +38,19 @@ std::shared_ptr<vector<Layer>> Map::getLayers() {
     return this->layers;
 }
 
-
+class CustomException : exception{
+private:
+    char * somedesc;
+public:
+    CustomException(char * somedesc)
+    {
+        this->somedesc = somedesc;
+    }
+    char* what()
+    {
+        return this->somedesc;
+    }
+};
 
 Map::Map(std::string mapPath, string tileSetPath) {
     //open the map.json file
@@ -113,5 +125,8 @@ Map::Map(std::string mapPath, string tileSetPath) {
         //create a new ptr for the tileset
         this->tileSet = make_shared<TileSet>(tilesets[0]["firstgid"].asInt(),tilesetSource);
     }
+    CustomException exception("Bad Json exception");
+    throw exception;
+
 }
 

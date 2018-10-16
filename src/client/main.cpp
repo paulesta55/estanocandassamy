@@ -28,6 +28,14 @@ int main(int argc,char* argv[])
     state1.getPlayers().get()->push_back(new Player(false,"Bob",1,sal));
     cout << state1.getPlayers()->at(0)->getName() << endl;
 
+    if(argc == 1){
+        if(!strcmp(argv[0],"state")){
+
+
+        }
+    }
+
+
     //    ResManager *resManager = new ResManager("res/timemap.json");
 //    if(!resManager->init()) {
 //        cout << "cannot parse metadata" << endl;
