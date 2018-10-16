@@ -7,13 +7,11 @@
 using namespace std;
 using namespace state;
 
-Bulbizarre::Bulbizarre(std::string &name, int &pokeId, uint currentLife, state::Position position, bool alive) {
-    this->name = name;
+Bulbizarre::Bulbizarre(int &pokeId, uint currentLife, state::Position position, bool alive) {
     this->currentLife = currentLife;
     this->position = position;
     this->alive = alive;
-    this->race = "Bulbizarre";
-    this->raceId = 2;
+    this->name = "Bulbizarre";
     this->pokeId = pokeId;
     fullLife = 250;
 }

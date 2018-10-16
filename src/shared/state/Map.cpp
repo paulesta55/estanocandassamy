@@ -34,7 +34,7 @@ shared_ptr<TileSet> Map::getTileSet() {
     return this->tileSet;
 }
 
-std::vector<Layer> Map::getLayers() {
+std::shared_ptr<vector<Layer>> Map::getLayers() {
     return this->layers;
 }
 
@@ -65,6 +65,8 @@ Map::Map(std::string mapPath, string tileSetPath) {
 
         this->tileHeight = obj["tileheight"].asUInt();
 
+        this->layers = make_shared<vector<Layer>();
+
         //parse the layers
         for (uint i =0 ;i < layers.size();i++)
         {
@@ -93,7 +95,7 @@ Map::Map(std::string mapPath, string tileSetPath) {
             int y = layers[i]["y"].asInt();
 
 
-            this->layers.emplace_back(data,height,width,x,y,name);
+            this->layers.get()->emplace_back(data,height,width,x,y,name);
 
         }
 

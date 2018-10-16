@@ -18,27 +18,16 @@ using namespace resources;
 
 int main(int argc,char* argv[])
 {
-
     State state1 = State();
 
     string name = "sala1";
     int id = 1;
     shared_ptr<Salameche> sal;
-    sal.reset(new Salameche(name,id));
-
-
+    sal.reset(new Salameche(id));
 
     state1.getPlayers().get()->push_back(new Player(false,"Bob",1,sal));
+    cout << state1.getPlayers()->at(0)->getName() << endl;
 
-    auto it = state1.getPlayers().get()->begin();
-
-    while(it != state1.getPlayers().get()->end())
-    {
-        cout << (*it)->getID() << endl;
-        cout << (*it)->getName() << endl;
-        cout << (*it)->getPokemon().get()->getName() << endl;
-        it++;
-    }
     //    ResManager *resManager = new ResManager("res/timemap.json");
 //    if(!resManager->init()) {
 //        cout << "cannot parse metadata" << endl;

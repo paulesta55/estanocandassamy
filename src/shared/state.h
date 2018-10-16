@@ -9,7 +9,6 @@
 #include "state/Pokemon.h"
 #include "state/Player.h"
 #include "state/State.h"
-#include "state/Pokedata.h"
 #include "state/Salameche.h"
 #include "state/Carapuce.h"
 #include "state/Bulbizarre.h"
