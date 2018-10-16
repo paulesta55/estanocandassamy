@@ -65,7 +65,7 @@ Map::Map(std::string mapPath, string tileSetPath) {
 
         this->tileHeight = obj["tileheight"].asUInt();
 
-        this->layers = make_shared<vector<Layer>();
+        this->layers = make_shared<vector<Layer>>();
 
         //parse the layers
         for (uint i =0 ;i < layers.size();i++)
