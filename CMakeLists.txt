@@ -88,4 +88,5 @@ macro(configure_files srcDir destDir)
 	endforeach(templateFile)
 endmacro(configure_files)
 
-configure_files(${PROJECT_SOURCE_DIR}/res ${PROJECT_SOURCE_DIR}/bin/res)
+configure_files(${PROJECT_SOURCE_DIR}/res/src ${PROJECT_SOURCE_DIR}/bin/res/src)
+configure_files(${PROJECT_SOURCE_DIR}/res/test ${PROJECT_SOURCE_DIR}/bin/res/test)
