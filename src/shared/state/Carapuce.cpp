@@ -7,7 +7,7 @@
 using namespace state;
 using namespace std;
 
-Carapuce::Carapuce(int& pokeId, state::Position position, bool alive) {
+Carapuce::Carapuce(uint& pokeId, state::Position position, bool alive) {
     this->currentLife = currentLife;
     this->position = position;
     this->alive = alive;

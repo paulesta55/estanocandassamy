@@ -7,7 +7,6 @@
 #include "resources.h"
 #include "MapTest.h"
 #include <cassert>
-
 void testSFML() {
     sf::Texture texture;
 }
@@ -22,16 +21,20 @@ using namespace resources;
 
 int main(int argc,char* argv[])
 {
-//    State state1 = State();
+//    unique_ptr<State> state1;
+//    state1.reset(new State());
 //
 //    string name = "sala1";
-//    int id = 1;
-//    shared_ptr<Salameche> sal;
+//    uint id = 1;
+//    shared_ptr<Salameche> sal = nullptr;
 //    sal.reset(new Salameche(id));
-//
-//    state1.getPlayers().get()->push_back(new Player(false,"Bob",1,sal));
-//    cout << state1.getPlayers()->at(0)->getName() << endl;
-
+//    string playerName = "bob";
+//    state1->getPlayers().get()->push_back(new Player(false,playerName,id,sal));
+//    playerName = "tom";
+//    id++;
+//    state1->getPlayers()->push_back(new Player(true,playerName,id));
+//    cout << state1->getPlayers()->at(0)->getName() << endl;
+//    cout << state1->getPlayers()->at(1)->getName() << endl;
     if(argc == 2){
         if(!strcmp(argv[1],"state")){
             int success = 0;
@@ -39,7 +42,7 @@ int main(int argc,char* argv[])
             // working case
             if(MapTest::testMap("res/src/map.json")){
                 success++;
-                cerr << "working case test success" <<endl;
+                cout << "working case test success" <<endl;
             }else{
                 fails++;
                 cerr << "working case test failes" << endl;
@@ -48,7 +51,7 @@ int main(int argc,char* argv[])
             // test map.json extension
             if(!MapTest::testMap("res/test/test.txt")){
                 success++;
-                cerr << "json extension test success" << endl;
+                cout << "json extension test success" << endl;
             }else{
                 fails++;
                 cerr << "json extension test failes" << endl;
@@ -57,7 +60,7 @@ int main(int argc,char* argv[])
             // test map format
             if(!MapTest::testMap("res/test/mapformattest.json")){
                 success++;
-                cerr << "map format test success" <<endl;
+                cout << "map format test success" <<endl;
             }else{
                 fails++;
                 cerr << "map format test failes" << endl;
@@ -66,7 +69,7 @@ int main(int argc,char* argv[])
             // test layers format
             if(!MapTest::testMap("res/test/layerdatatest.json")){
                 success++;
-                cerr << "layer data test success" <<endl;
+                cout << "layer data test success" <<endl;
             }else{
                 fails++;
                 cerr << "layer data test failes" << endl;
@@ -75,14 +78,15 @@ int main(int argc,char* argv[])
             // test layers dimension
             if(!MapTest::testMap("res/test/layerdimensionstest.json")){
                 success++;
-                cerr << "layer dimensions test success" <<endl;
+                cout << "layer dimensions test success" <<endl;
             }else{
                 fails++;
                 cerr << "layer dimensions test failes" << endl;
             }
 
-            cerr << success << " tests success out of " << success + fails << endl;
-            cerr << fails << " tests fails out of " << success + fails << endl;
+
+            cout << success << " tests success out of " << success + fails << endl;
+            cout << fails << " tests fails out of " << success + fails << endl;
 
         }
     }

@@ -106,7 +106,7 @@ Map::Map(std::string mapPath, string tileSetPath) {
 
                         string name = layers[i]["name"].asString();
 
-                        cout << "layer name : " << name << endl;
+//                        cout << "layer name : " << name << endl;
 
                         int x = layers[i]["x"].asInt();
                         int y = layers[i]["y"].asInt();

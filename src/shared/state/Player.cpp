@@ -1,3 +1,5 @@
+#include <utility>
+
 //
 // Created by paul on 28/09/18.
 //
@@ -20,11 +22,11 @@ void Player::setIA(bool IA) {
     this->IA = IA;
 }
 
-int Player::getID() {
+uint Player::getID() {
     return this->ID;
 }
 
-void Player::setID(int ID) {
+void Player::setID(uint& ID) {
     this->ID = ID;
 }
 
@@ -42,6 +44,7 @@ shared_ptr<Pokemon> Player::getPokemon() {
 
 std::string Player::getName() { return this->name;}
 
-Player::Player(bool IA, std::string name, int ID, shared_ptr<Pokemon> pokemon): IA(IA),name(name), ID(ID), pokemon(pokemon) {}
+Player::Player(bool IA, std::string& name, uint& ID, shared_ptr<Pokemon> pokemon): IA(IA),name(name), ID(ID), pokemon(
+        std::move(pokemon)) {}
 
 

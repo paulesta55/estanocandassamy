@@ -7,7 +7,7 @@
 using namespace std;
 using namespace state;
 
-Bulbizarre::Bulbizarre(int &pokeId, uint currentLife, state::Position position, bool alive) {
+Bulbizarre::Bulbizarre(uint &pokeId, uint currentLife, state::Position position, bool alive) {
     this->currentLife = currentLife;
     this->position = position;
     this->alive = alive;

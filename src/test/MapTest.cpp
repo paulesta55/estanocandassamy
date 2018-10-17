@@ -19,7 +19,7 @@ bool MapTest ::testMap(string mapPath, string tilesetPath) {
     }
     catch(CustomException& e)
     {
-        cout << e.what() << endl;
+        cerr << e.what() << endl;
         return false;
     }
     catch(ios_base::failure& failure)
