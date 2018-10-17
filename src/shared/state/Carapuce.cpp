@@ -18,9 +18,3 @@ Carapuce::Carapuce(int& pokeId, state::Position position, bool alive) {
 
 
 
-void Carapuce::heal() {
-    if (currentLife <= fullLife-5)
-    {
-        currentLife += 5;
-    }
-}

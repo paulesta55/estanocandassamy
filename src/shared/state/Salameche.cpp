@@ -17,10 +17,3 @@ Salameche::Salameche(int& pokeId, uint currentLife, state::Position position, bo
     this->alive = alive;
     this->fullLife = 200;
 }
-
-void Salameche::heal() {
-    if (currentLife<=fullLife-10)
-    {
-        currentLife += 10;
-    }
-}

@@ -21,3 +21,12 @@ int Pokemon::getPokeId() {
     return this->pokeId;
 }
 
+void Pokemon::heal() {
+    if (currentLife <= fullLife-5)
+    {
+        currentLife += 5;
+    }
+}
+
+void Pokemon::setCurrentLife(int currentLife) {
+this->currentLife=(uint)currentLife;}

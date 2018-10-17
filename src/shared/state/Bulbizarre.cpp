@@ -15,11 +15,3 @@ Bulbizarre::Bulbizarre(int &pokeId, uint currentLife, state::Position position, 
     this->pokeId = pokeId;
     fullLife = 250;
 }
-
-
-void Bulbizarre::heal() {
-    if (currentLife <= fullLife-20)
-    {
-        currentLife += 20;
-    }
-}
