@@ -73,7 +73,7 @@ int main(int argc,char* argv[])
             }
 
             // test layers dimension
-            if(!MapTest::testMap("res/test/layerdatatest.json")){
+            if(!MapTest::testMap("res/test/layerdimensionstest.json")){
                 success++;
                 cerr << "layer dimensions test success" <<endl;
             }else{
@@ -81,8 +81,8 @@ int main(int argc,char* argv[])
                 cerr << "layer dimensions test failes" << endl;
             }
 
-            cout << success << " tests success out of " << success + fails << endl;
-            cout << fails << " tests fails out of " << success + fails << endl;
+            cerr << success << " tests success out of " << success + fails << endl;
+            cerr << fails << " tests fails out of " << success + fails << endl;
 
         }
     }
