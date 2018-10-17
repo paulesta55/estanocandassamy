@@ -11,6 +11,7 @@ project (estanocandassamy)
 include_directories ("${PROJECT_SOURCE_DIR}/src/client")
 include_directories ("${PROJECT_SOURCE_DIR}/src/server")
 include_directories ("${PROJECT_SOURCE_DIR}/src/shared")
+include_directories("${PROJECT_SOURCE_DIR}/src/test")
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
@@ -42,13 +43,15 @@ file(GLOB_RECURSE client_sources src/client/*.cpp)
 #file(GLOB_RECURSE server_sources src/server/*.cpp)
 file(GLOB_RECURSE shared_sources src/shared/*.cpp)
 
+file(GLOB_RECURSE test_sources src/test/*.cpp)
+
 #jsoncpp
 include_directories ("${PROJECT_SOURCE_DIR}/extern/jsoncpp-1.8.0")
 file(GLOB_RECURSE jsoncpp_sources extern/jsoncpp-1.8.0/*.cpp)
 #add_library(json ${jsoncpp_sources})
 
 # Executables
-add_executable(client ${client_sources} ${shared_sources}  ${jsoncpp_sources})
+add_executable(client ${client_sources} ${shared_sources}  ${jsoncpp_sources} ${test_sources})
 #add_executable(server ${server_sources} ${shared_sources} ${jsoncpp_sources})
 
 # SFML

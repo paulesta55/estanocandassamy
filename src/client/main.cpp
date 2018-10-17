@@ -5,12 +5,16 @@
 #include <SFML/Graphics.hpp>
 #include "state.h"
 #include "resources.h"
+#include "MapTest.h"
+#include <cassert>
+
 void testSFML() {
     sf::Texture texture;
 }
 
 // Fin test SFML
 
+#undef NDEBUG
 
 using namespace std;
 using namespace state;
@@ -18,19 +22,67 @@ using namespace resources;
 
 int main(int argc,char* argv[])
 {
-    State state1 = State();
+//    State state1 = State();
+//
+//    string name = "sala1";
+//    int id = 1;
+//    shared_ptr<Salameche> sal;
+//    sal.reset(new Salameche(id));
+//
+//    state1.getPlayers().get()->push_back(new Player(false,"Bob",1,sal));
+//    cout << state1.getPlayers()->at(0)->getName() << endl;
 
-    string name = "sala1";
-    int id = 1;
-    shared_ptr<Salameche> sal;
-    sal.reset(new Salameche(id));
+    if(argc == 2){
+        if(!strcmp(argv[1],"state")){
+            int success = 0;
+            int fails = 0;
+            // working case
+            if(MapTest::testMap("res/src/map.json")){
+                success++;
+                cerr << "working case test success" <<endl;
+            }else{
+                fails++;
+                cerr << "working case test failes" << endl;
+            }
 
-    state1.getPlayers().get()->push_back(new Player(false,"Bob",1,sal));
-    cout << state1.getPlayers()->at(0)->getName() << endl;
+            // test map.json extension
+            if(!MapTest::testMap("res/test/test.txt")){
+                success++;
+                cerr << "json extension test success" << endl;
+            }else{
+                fails++;
+                cerr << "json extension test failes" << endl;
+            }
 
-    if(argc == 1){
-        if(!strcmp(argv[0],"state")){
+            // test map format
+            if(!MapTest::testMap("res/test/mapformattest.json")){
+                success++;
+                cerr << "map format test success" <<endl;
+            }else{
+                fails++;
+                cerr << "map format test failes" << endl;
+            }
 
+            // test layers format
+            if(!MapTest::testMap("res/test/layerdatatest.json")){
+                success++;
+                cerr << "layer data test success" <<endl;
+            }else{
+                fails++;
+                cerr << "layer data test failes" << endl;
+            }
+
+            // test layers dimension
+            if(!MapTest::testMap("res/test/layerdatatest.json")){
+                success++;
+                cerr << "layer dimensions test success" <<endl;
+            }else{
+                fails++;
+                cerr << "layer dimensions test failes" << endl;
+            }
+
+            cout << success << " tests success out of " << success + fails << endl;
+            cout << fails << " tests fails out of " << success + fails << endl;
 
         }
     }
