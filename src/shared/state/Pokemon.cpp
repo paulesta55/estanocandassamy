@@ -28,5 +28,4 @@ void Pokemon::heal() {
     }
 }
 
-void Pokemon::setCurrentLife(int currentLife) {
-this->currentLife=(uint)currentLife;}
+void Pokemon::setCurrentLife(uint currentLife) { this->currentLife=(uint)currentLife;}
