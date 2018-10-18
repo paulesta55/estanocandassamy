@@ -78,16 +78,16 @@ morekeywords={string,number,array,object}% list your attributes here
 
     \subsection{Archétype}
 	    Notre jeu s'inspirera principalement du jeu \emph{Pokemon Donjon Mystère}. En effet, nous avons prévu de conserver le mécanisme des combats et de donjon de ce jeu.
-	    \\Dans notre logiciel l'utilisateur incarnera un pokemon dans les salles d'un donjon qui contiennent chacune des pokemons qui peuvent l'"agresser".
+	    \\Dans notre logiciel l'utilisateur incarnera un pokemon dans les salles d'un donjon qui contiennent chacune des pokemons qui peuvent l'"agresser". Le nombre de pokemons dans une salle évolue en fonction de l'avancement du joueur dans le jeu.
 	    \\Pour simplifier le jeu nous abandonnons également d'évolution des pokemons.
 
     \subsection{Règles du jeu}
-	  Le donjon contient un nombre fini de salle et le joueur gagne lorsqu'il sort de la dernière salle du donjon.
-	  Un donjon a 10 étages, le pattern de chaque étage n'est pas tiré aléatoirement. Le joueur a la possibilité d'accéder à des étages bonus, dîtes arène de combat où il pourra se battre contre un autre joueur en ligne.
+	  Le donjon contient un nombre fini de salles et le joueur gagne lorsqu'il sort de la dernière salle du donjon.
+	  Un donjon a 10 salles, le pattern de chaque étage n'est pas tiré aléatoirement. Le joueur a la possibilité d'accéder à des étages bonus, dîtes arène de combat où il pourra se battre contre un autre joueur en ligne.
 	   \\Le joueur est provoqué en duel automatiquement par les pokemons qui sont autour de lui.
 \\Les combats fonctionnent en tour par tour. A chaque tour, l'utilisateur peut effectuer qu’une seule action :
 \begin{itemize}
-    \item attaquer
+    \item attaquer avec une compétence
     \item soigner le pokemon
     \item se déplacer
 \end{itemize}
@@ -147,9 +147,20 @@ morekeywords={string,number,array,object}% list your attributes here
     
     Chaque pokemon possède une relation d'agrégation avec des statistiques qui lui sont attribués en début de partie.
     
-    La partie environnement est calqué sur le modèle proposé par les fichiers exporter par le logiciel \emph{Tiled Map Editor}. Les objets les plus consommateurs en mémoire tels les \emph{data} dans la classe \emph{Layer} sont par ailleurs stockés dans le tas pour éviter les copies entre les différentes classes.
+    Pour notre implémentation du jeu, nous avons prévu d'utiliser que les trois pokémon suivant : \begin{itemize}
+        \item Carapuce
+        \item Salamèche
+        \item Bulbizarre
+    \end{itemize}
+    Le constructeur respectif de chacun de ces trois pokemons héritent de la classe Pokemon. Nous avons mis en place un identifiant pour chaque pokemon, ce qui permet d'avoir plusieurs pokemon construit à partir de la même classe.
+    
+    La partie environnement est calqué sur le modèle proposé par les fichiers exportés par le logiciel \emph{Tiled Map Editor}. Les objets les plus consommateurs en mémoire tels les \emph{data} dans la classe \emph{Layer} sont par ailleurs stockés dans le tas pour éviter les copies entre les différentes classes.
     
      L'état global contient un pointeur vers l'état de l'environnement et et une liste de pointeur de contenant l'état des différents joueurs de la partie.
+     
+     Afin d'éviter des problèmes techniques suite à notre implémentation, nous avons mis en place des fonctions afin de capturer les exceptions rencontrées lors de l'exécution, principalement dans la classe qui charge les données de la carte. De plus nous avons utilisés des entiers signé afin que les valeurs et statistiques des pokemons ne prennent jamais de valeurs négatives.
+     
+     Nous avons pour l'instant implémenter que les fonction set et get qui permettent d'instancier nos objets liés aux états . 
     \begin{landscape}
     \begin{figure}[p]
     \includegraphics[width=0.8\paperheight]{state.png}

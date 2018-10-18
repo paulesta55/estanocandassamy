@@ -35,6 +35,7 @@ int main(int argc,char* argv[])
 //    state1->getPlayers()->push_back(new Player(true,playerName,id));
 //    cout << state1->getPlayers()->at(0)->getName() << endl;
 //    cout << state1->getPlayers()->at(1)->getName() << endl;
+
     if(argc == 2){
         if(!strcmp(argv[1],"state")){
             int success = 0;
