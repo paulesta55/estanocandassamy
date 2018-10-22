@@ -7,7 +7,7 @@
 
 using namespace state;
 using namespace std;
-using namespace resources;
+using namespace render;
 
 
 MapLoader::MapLoader(string metaMapPath) {

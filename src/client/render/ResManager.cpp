@@ -9,7 +9,7 @@
 #include "state.h"
 using namespace state;
 using namespace std;
-using namespace resources;
+using namespace render;
 
 ResManager::ResManager(string tileSetPath): tileSetPath(tileSetPath) {
     this->textureCache.reset(new std::vector<sf::Texture> );

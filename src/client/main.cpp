@@ -4,7 +4,7 @@
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include <SFML/Graphics.hpp>
 #include "state.h"
-#include "resources.h"
+//#include "resources.h"
 #include "MapTest.h"
 #include <cassert>
 void testSFML() {
@@ -17,7 +17,7 @@ void testSFML() {
 
 using namespace std;
 using namespace state;
-using namespace resources;
+//using namespace resources;
 
 int main(int argc,char* argv[])
 {
