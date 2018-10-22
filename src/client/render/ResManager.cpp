@@ -1,3 +1,5 @@
+#include <utility>
+
 //
 // Created by paul on 25/09/18.
 //
@@ -12,7 +14,7 @@ using namespace state;
 using namespace std;
 using namespace render;
 
-ResManager::ResManager(string tileSetPath): tileSetPath(tileSetPath) {
+ResManager::ResManager(string tileSetPath): tileSetPath(std::move(tileSetPath)) {
     this->textureCache.reset(new std::vector<sf::Texture> );
 }
 
@@ -62,9 +64,6 @@ bool ResManager::init() {
     return false;
 }
 
-ResManager::~ResManager() {
-    this->textureCache.reset();
-}
 
 uint ResManager::getTileCount() {
     return this->tileCount;
@@ -118,3 +117,5 @@ bool ResManager::pixelPicker(sf::Image image, uint tileIndex) {
 uint ResManager::getTileHeight() {
     return this->tileHeight;
 }
+
+ResManager::ResManager() {}

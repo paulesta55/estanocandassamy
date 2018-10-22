@@ -134,7 +134,8 @@ int main(int argc,char* argv[])
                 window.close();
                 return 0;
             }
-            window.clear();
+//            Scene scene(state1,window,resManager);
+//            window.clear();
             for(auto layer: *(state1->getMap()->getLayers()))
             {
                 for(int i = 0 ; i <height; i++)
@@ -157,12 +158,14 @@ int main(int argc,char* argv[])
                 }
             }
 
-            sf::View view2(sf::Vector2f(1000.f, 300.f), sf::Vector2f(600.f, 600.f));
-            window.setView(view2);
-            window.display();
+
 
         }
+        sf::View view2(sf::Vector2f(1000.f, 300.f), sf::Vector2f(600.f, 600.f));
+        window.setView(view2);
+        window.display();
     }
 
+    delete resManager;
     return 0;
 }
