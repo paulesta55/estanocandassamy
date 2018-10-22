@@ -7,6 +7,7 @@
 #include <fstream>
 #include <json/json.h>
 #include "state.h"
+#include "CustomException.h"
 using namespace state;
 using namespace std;
 using namespace render;
@@ -44,7 +45,7 @@ bool ResManager::init() {
 
         // open the tileset image
         sf::Image tileSetImage;
-        tileSetImage.loadFromFile("res/"+tilesetImageName);
+        tileSetImage.loadFromFile("res/src/"+tilesetImageName);
 
         // fill the cache with pixelPicker method
         for(uint i=1; i<=this->tileCount;i++) {

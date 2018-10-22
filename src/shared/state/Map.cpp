@@ -96,11 +96,19 @@ Map::Map(std::string mapPath, string tileSetPath) {
 
                         //create a ptr vector for data
                         shared_ptr<vector<uint>> data;
-                        data.reset(new vector<uint>(dataValue.size()));
+                        data.reset(new vector<uint>());
 
                         for (uint k = 0; k < dataValue.size(); k++)
-                        {
-                            data->push_back(dataValue[k].asUInt());
+
+                        {   data->push_back(dataValue[k].asUInt());
+//                            if(dataValue[k].asUInt()!=0)
+//                            {
+//                                cerr<< dataValue[k].asUInt() << endl;
+//
+//                                cerr << data->at(k) << endl;
+//                            }
+
+
 
                         }
 
