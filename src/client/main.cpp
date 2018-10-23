@@ -119,12 +119,15 @@ int main(int argc,char* argv[])
 
     uint width = state1->getMap()->getHeight();
     uint height = state1->getMap()->getWidth();
-    sf::RenderWindow window(sf::VideoMode(600,600),"test window");
+    sf::RenderWindow window(sf::VideoMode(1000,720),"test window");
 
 
     TileMapRender map;
     if (!map.load("res/src/tilemap.png", sf::Vector2u(24, 24), state1->getMap()->getLayers()->at(0).getData(),
             width,height))
+        return -1;
+    TileMapRender map2;
+    if(!map2.load("res/src/tilemap.png",sf::Vector2u(24,24),state1->getMap()->getLayers()->at(1).getData(),width,height))
         return -1;
     // run the main loop
     while (window.isOpen())
@@ -140,6 +143,7 @@ int main(int argc,char* argv[])
         // draw the map
         window.clear();
         window.draw(map);
+        window.draw(map2);
         window.display();
     }
 //
