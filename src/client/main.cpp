@@ -121,7 +121,8 @@ int main(int argc,char* argv[])
     uint height = state1->getMap()->getWidth();
     sf::RenderWindow window(sf::VideoMode(1000,720),"test window");
 
-
+    ResManager* pokeManager = new ResManager(tileset2);
+    pokeManager->init();
     TileMapRender map;
     if (!map.load("res/src/tilemap.png", sf::Vector2u(24, 24), state1->getMap()->getLayers()->at(0).getData(),
             width,height))
@@ -140,6 +141,9 @@ int main(int argc,char* argv[])
                 window.close();
         }
 
+        unique_ptr<sf::Sprite> pokeSprite;
+        pokeSprite.reset(new sf::Sprite());
+        pokeSprite->setTexture(pokeManager->textureCache->at())
         // draw the map
         window.clear();
         window.draw(map);
