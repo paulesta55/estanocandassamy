@@ -97,12 +97,12 @@ int main(int argc,char* argv[])
         }
     }
 
-
-        ResManager *resManager = new ResManager(tileset);
-    if(!resManager->init()) {
-        cout << "cannot parse metadata" << endl;
-    }
-    std::shared_ptr<std::vector<sf::Texture>> cachePtr = resManager->textureCache;
+//
+//        ResManager *resManager = new ResManager(tileset);
+//    if(!resManager->init()) {
+//        cout << "cannot parse metadata" << endl;
+//    }
+//    std::shared_ptr<std::vector<sf::Texture>> cachePtr = resManager->textureCache;
     // check the number of arguments
     if(argc == 2) {
         // check the 1st argument
@@ -122,50 +122,70 @@ int main(int argc,char* argv[])
     sf::RenderWindow window(sf::VideoMode(600,600),"test window");
 
 
-
-    while (window.isOpen()) {
-
+    TileMapRender map;
+    if (!map.load("res/src/tilemap.png", sf::Vector2u(24, 24), state1->getMap()->getLayers()->at(0).getData(),
+            width,height))
+        return -1;
+    // run the main loop
+    while (window.isOpen())
+    {
+        // handle events
         sf::Event event;
-        while(window.pollEvent(event))
+        while (window.pollEvent(event))
         {
             if(event.type == sf::Event::Closed)
-            {
-                cachePtr.reset();
                 window.close();
-                return 0;
-            }
-//            Scene scene(state1,window,resManager);
-//            window.clear();
-            for(auto layer: *(state1->getMap()->getLayers()))
-            {
-                for(int i = 0 ; i <height; i++)
-                {
-                    for(int j = 0; j<width; j++)
-                    {
-                        uint tile = layer.getData()->at(i*width+j);
-
-                        if(tile != 0 )
-                        {
-                            shared_ptr<sf::Texture> texture;
-                            shared_ptr<sf::Sprite> sprite0;
-                            sprite0.reset(new sf::Sprite());
-                            sprite0->setTexture(cachePtr.get()->at(tile-1));
-                            sprite0->setPosition(j*24,i*24);
-                            window.draw(*sprite0);
-                        }
-
-                    }
-                }
-            }
-
-
-
         }
-        sf::View view2(sf::Vector2f(1000.f, 300.f), sf::Vector2f(600.f, 600.f));
-        window.setView(view2);
+
+        // draw the map
+        window.clear();
+        window.draw(map);
         window.display();
     }
-
-    delete resManager;
+//
+//    while (window.isOpen()) {
+//
+//        sf::Event event;
+//        while(window.pollEvent(event))
+//        {
+//            if(event.type == sf::Event::Closed)
+//            {
+//                cachePtr.reset();
+//                window.close();
+//                return 0;
+//            }
+//            Scene scene(state1,window,resManager);
+//            window.clear();
+//            for(auto layer: *(state1->getMap()->getLayers()))
+//            {
+//                for(int i = 0 ; i <height; i++)
+//                {
+//                    for(int j = 0; j<width; j++)
+//                    {
+//                        uint tile = layer.getData()->at(i*width+j);
+//
+//                        if(tile != 0 )
+//                        {
+//                            shared_ptr<sf::Texture> texture;
+//                            shared_ptr<sf::Sprite> sprite0;
+//                            sprite0.reset(new sf::Sprite());
+//                            sprite0->setTexture(cachePtr.get()->at(tile-1));
+//                            sprite0->setPosition(j*24,i*24);
+//                            window.draw(*sprite0);
+//                        }
+//
+//                    }
+//                }
+//            }
+//
+//
+//
+//        }
+//        sf::View view2(sf::Vector2f(1000.f, 300.f), sf::Vector2f(600.f, 600.f));
+//        window.setView(view2);
+//        window.display();
+//    }
+//
+//    delete resManager;
     return 0;
 }
