@@ -4,24 +4,15 @@
 
 #include "Pokemon.h"
 #include "state.h"
-
 using namespace std;
 using namespace state;
-
-std::string Pokemon::getName() {
-    return this->name;
-}
-
-uint Pokemon::getFullLife() {
-    return this->fullLife;
-}
 
 
 uint Pokemon::getPokeId() {
     return this->pokeId;
 }
 
-std::string Pokemon::getType() {
+state::PokeType Pokemon::getType() {
     return this->type;
 }
 
@@ -46,4 +37,16 @@ bool Pokemon::getAlive() {
 
 void Pokemon::setAlive(bool alive) {
     this->alive = alive;
+}
+
+Orientation Pokemon::getOrientation() {
+    return this->orientation;
+}
+
+void Pokemon::setOrientation(Orientation orientation) {
+    this->orientation = orientation;
+}
+
+uint Pokemon::getFullLife() {
+    return this->fullLife;
 }

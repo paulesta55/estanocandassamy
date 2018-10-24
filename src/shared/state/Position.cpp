@@ -3,7 +3,7 @@
 //
 
 #include "Position.h"
-
+#include <memory>
 using namespace state;
 
-Position::Position(int x, int y): x(x), y(y) {}
+Position::Position(uint x, uint y): x(x), y(y) {}

@@ -27,7 +27,7 @@ int main(int argc,char* argv[])
     string name = "sala1";
     uint id = 1;
     shared_ptr<Salameche> sal = nullptr;
-    sal.reset(new Salameche("south",id));
+    sal.reset(new Salameche(id,SOUTH,200,Position(10,10)));
     string playerName = "bob";
     state1->getPlayers().get()->push_back(new Player(false,playerName,id,sal));
     playerName = "tom";
