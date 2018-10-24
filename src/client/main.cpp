@@ -22,12 +22,12 @@ using namespace render;
 int main(int argc,char* argv[])
 {
     unique_ptr<State> state1;
-    state1.reset(new State());
+    state1.reset(new State(make_shared<Map>("res/src/map3.json")));
 
     string name = "sala1";
     uint id = 1;
     shared_ptr<Salameche> sal = nullptr;
-    sal.reset(new Salameche(id));
+    sal.reset(new Salameche("south",id));
     string playerName = "bob";
     state1->getPlayers().get()->push_back(new Player(false,playerName,id,sal));
     playerName = "tom";
@@ -97,12 +97,7 @@ int main(int argc,char* argv[])
         }
     }
 
-//
-//        ResManager *resManager = new ResManager(tileset);
-//    if(!resManager->init()) {
-//        cout << "cannot parse metadata" << endl;
-//    }
-//    std::shared_ptr<std::vector<sf::Texture>> cachePtr = resManager->textureCache;
+
     // check the number of arguments
     if(argc == 2) {
         // check the 1st argument
@@ -117,83 +112,51 @@ int main(int argc,char* argv[])
         cout << "you can only say hello" << endl;
     }
 
-    uint width = state1->getMap()->getHeight();
-    uint height = state1->getMap()->getWidth();
-    sf::RenderWindow window(sf::VideoMode(1000,720),"test window");
-
-    ResManager* pokeManager = new ResManager(tileset2);
-    pokeManager->init();
-    TileMapRender map;
-    if (!map.load("res/src/tilemap.png", sf::Vector2u(24, 24), state1->getMap()->getLayers()->at(0).getData(),
-            width,height))
-        return -1;
-    TileMapRender map2;
-    if(!map2.load("res/src/tilemap.png",sf::Vector2u(24,24),state1->getMap()->getLayers()->at(1).getData(),width,height))
-        return -1;
-    // run the main loop
-    while (window.isOpen())
-    {
-        // handle events
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if(event.type == sf::Event::Closed)
-                window.close();
-        }
-
-        unique_ptr<sf::Sprite> pokeSprite;
-        pokeSprite.reset(new sf::Sprite());
-        pokeSprite->setTexture(pokeManager->textureCache->at())
-        // draw the map
-        window.clear();
-        window.draw(map);
-        window.draw(map2);
-        window.display();
-    }
+//    uint width = state1->getMap()->getHeight();
+//    uint height = state1->getMap()->getWidth();
+//    sf::RenderWindow window(sf::VideoMode(720,720),"test window");
 //
-//    while (window.isOpen()) {
-//
+//    ResManager* pokeManager = new ResManager(tileset2);
+//    pokeManager->init();
+//    LayerRender map;
+//    if (!map.load("res/src/tilemap.png", sf::Vector2u(24, 24), state1->getMap()->getLayers()->at(0).getData(),
+//            width,height))
+//        return -1;
+//    LayerRender map2;
+//    if(!map2.load("res/src/tilemap.png",sf::Vector2u(24,24),state1->getMap()->getLayers()->at(1).getData(),width,height))
+//        return -1;
+//    // run the main loop
+//    while (window.isOpen())
+//    {
+//        // handle events
 //        sf::Event event;
-//        while(window.pollEvent(event))
+//        while (window.pollEvent(event))
 //        {
 //            if(event.type == sf::Event::Closed)
-//            {
-//                cachePtr.reset();
 //                window.close();
-//                return 0;
-//            }
-//            Scene scene(state1,window,resManager);
-//            window.clear();
-//            for(auto layer: *(state1->getMap()->getLayers()))
-//            {
-//                for(int i = 0 ; i <height; i++)
-//                {
-//                    for(int j = 0; j<width; j++)
-//                    {
-//                        uint tile = layer.getData()->at(i*width+j);
-//
-//                        if(tile != 0 )
-//                        {
-//                            shared_ptr<sf::Texture> texture;
-//                            shared_ptr<sf::Sprite> sprite0;
-//                            sprite0.reset(new sf::Sprite());
-//                            sprite0->setTexture(cachePtr.get()->at(tile-1));
-//                            sprite0->setPosition(j*24,i*24);
-//                            window.draw(*sprite0);
-//                        }
-//
-//                    }
-//                }
-//            }
-//
-//
-//
 //        }
-//        sf::View view2(sf::Vector2f(1000.f, 300.f), sf::Vector2f(600.f, 600.f));
-//        window.setView(view2);
+//
+//        unique_ptr<sf::Sprite> pokeSprite;
+//        pokeSprite.reset(new sf::Sprite());
+//        pokeSprite->setTexture(pokeManager->textureCache->at(33));
+//        pokeSprite->setPosition(24*10,24*10);
+//
+//        unique_ptr<sf::Sprite> pokeSprite2;
+//        pokeSprite2.reset(new sf::Sprite());
+//        pokeSprite2->setTexture(pokeManager->textureCache->at(54));
+//        pokeSprite2->setPosition(window.getView().getCenter());
+//
+//        // draw the map
+//        window.clear();
+//        window.draw(map);
+//        window.draw(map2);
+//        window.draw(*pokeSprite);
+//        window.draw(*pokeSprite2);
 //        window.display();
 //    }
-//
-//    delete resManager;
+//    delete pokeManager;
+
+
+Scene Scene(make_shared<State>(*state1),"res/src/tilemap.png");
     return 0;
 }

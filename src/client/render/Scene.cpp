@@ -1,46 +1,58 @@
+#include <utility>
+
 //
 // Created by paul on 22/10/18.
 //
 
+#include <SFML/Graphics/RenderWindow.hpp>
 #include "Scene.h"
 #include "CustomException.h"
-
+#include "render.h"
+#include <iostream>
 using namespace std;
 using namespace render;
-using namespace sf;
 
-Scene::Scene(state::State &state, shared_ptr<sf::RenderWindow> window, shared_ptr<ResManager> resManager) {
-    this->window = window;
-    this->state = state;
-    this->resManager = resManager;
-    if(!resManager)
+Scene::Scene(shared_ptr<state::State> state1,string tileSet) {
+    //good dimensions : 620 x 620
+    sf::RenderWindow window(sf::VideoMode(620,620),"test window");
+    vector<shared_ptr<LayerRender>> layerVec;
+    this->state = std::move(state1);
+    for(auto layer: *(this->state->getMap()->getLayers()))
     {
-        CustomException exception("no resources manager");
-        throw exception;
+        shared_ptr<LayerRender> layerRend;
+        layerRend.reset(new LayerRender());
+        uint tileWidth = this->state->getMap()->getTileWidth();
+        uint tileHeight = this->state->getMap()->getTileHeight();
+        if(!(layerRend->load(tileSet,sf::Vector2u(tileWidth,tileHeight),
+                layer.getData(),layer.getWidth(),layer.getHeight()))) throw  runtime_error("bad layer rendering");
+        layerVec.push_back(layerRend);
     }
-    std::shared_ptr<std::vector<sf::Texture>> cachePtr = this->resManager->textureCache;
-
-    window->clear();
-    for(auto layer: *(this->state.getMap()->getLayers()))
-    {
-        for(int i = 0 ; i <height; i++)
+    string tileset2 = "res/src/poketile.json";
+    unique_ptr<ResManager> resman;
+    resman.reset(new ResManager(tileset2));
+    resman->init();
+    unique_ptr<sf::Sprite> salaSprite;
+    salaSprite.reset(new sf::Sprite(resman->textureCache->at(54)));
+    while(window.isOpen()){
+        // handle events
+        sf::Event event;
+        while (window.pollEvent(event))
         {
-            for(int j = 0; j<width; j++)
-            {
-                uint tile = layer.getData()->at(i*width+j);
-
-                if(tile != 0 )
-                {
-                    shared_ptr<sf::Texture> texture;
-                    shared_ptr<sf::Sprite> sprite0;
-                    sprite0.reset(new sf::Sprite());
-                    sprite0->setTexture(cachePtr.get()->at(tile-1));
-                    sprite0->setPosition(j*24,i*24);
-                    this->window->draw(*sprite0);
-                }
-
-            }
+            if(event.type == sf::Event::Closed)
+                window.close();
         }
-    }
+        window.clear();
+        for(auto layerRend : layerVec)
+        {
+            window.draw(*layerRend);
+        }
 
+        // good dimensions 200x200
+        sf::View view2(sf::Vector2f(240.f, 300.f), sf::Vector2f(200.f, 200.f));
+
+        window.setView(view2);
+        salaSprite->setPosition(240,240);
+        window.draw(*salaSprite);
+        window.display();
+    }
 }

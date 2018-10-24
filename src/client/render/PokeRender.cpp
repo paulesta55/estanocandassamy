@@ -1,15 +1,22 @@
 //
-// Created by paul on 23/10/18.
+// Created by paul on 24/10/18.
 //
 
-#include "TileMapRender.h"
+#include "PokeRender.h"
+#include "Pokemon.h"
 
-bool render::TileMapRender::load(const std::string &tileset, sf::Vector2u tileSize,
-                                 const std::shared_ptr<std::vector<uint>> tiles, uint width, uint height) {
+using namespace state;
+using namespace std;
+
+bool render::PokeRender::load(const std::string &tileset, sf::Vector2u tileSize, state::Pokemon &pokemon, uint width,
+                              uint height) {
     // load the tileset texture
     if (!m_tileset.loadFromFile(tileset))
         return false;
 
+    switch(pokemon.getType()){
+        case :"Bulbizarre"
+    }
     // resize the vertex array to fit the level size
     m_vertices.setPrimitiveType(sf::Quads);
     m_vertices.resize(width * height * 4);
@@ -44,11 +51,10 @@ bool render::TileMapRender::load(const std::string &tileset, sf::Vector2u tileSi
             }
 
         }
-
     return true;
 }
 
-void render::TileMapRender::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+void render::PokeRender::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     // apply the transform
     states.transform *= getTransform();
 
