@@ -21,26 +21,39 @@ using namespace render;
 
 int main(int argc,char* argv[])
 {
+    //create first state
     unique_ptr<State> state1;
-    state1.reset(new State());
+    state1.reset(new State(Position(10,10), make_shared<Map>("res/src/map3.json")));
 
     string name = "sala1";
     uint id = 1;
     shared_ptr<Salameche> sal = nullptr;
-    sal.reset(new Salameche(id));
+    sal.reset(new Salameche(id,"south",200,Position(10,10)));
     string playerName = "bob";
     state1->getPlayers().get()->push_back(new Player(false,playerName,id,sal));
     playerName = "tom";
     id++;
     state1->getPlayers()->push_back(new Player(true,playerName,id));
-    cout << state1->getMap()->getTileSet()->getSource() << endl;
-    string tileset = "res/src/"+state1->getMap()->getTileSet()->getSource();
 
-    string tileset2 = "res/src/poketile.json";
-//    ResManager resManager(tileset);
-//    cout << state1->getPlayers()->at(0)->getName() << endl;
-//    cout << state1->getPlayers()->at(1)->getName() << endl;
 
+    //create 2nd state
+    shared_ptr<State> state2;
+    state2.reset(new State(Position(12,12),make_shared<Map>("res/src/map3.json")));
+    id++;
+    shared_ptr<Carapuce> car = make_shared<Carapuce>(id,"north",200,Position(12,12));
+    playerName = "Alice";
+    state2->getPlayers()->push_back(new Player(false,playerName,id,car));
+
+
+    //create 3rd state
+    shared_ptr<State> state3;
+    state3.reset(new State(Position(8,8),make_shared<Map>("res/src/map3.json")));
+//    id++;
+    uint id3 = id+1;
+    shared_ptr<Bulbizarre> bulbi = make_shared<Bulbizarre>(id3,"west",200,Position(8,8));
+    string playerName2 = "Bernard";
+
+    state3->getPlayers()->push_back(new Player(false,playerName2,id3,bulbi));
     if(argc == 2){
         if(!strcmp(argv[1],"state")){
             int success = 0;
@@ -97,12 +110,7 @@ int main(int argc,char* argv[])
         }
     }
 
-//
-//        ResManager *resManager = new ResManager(tileset);
-//    if(!resManager->init()) {
-//        cout << "cannot parse metadata" << endl;
-//    }
-//    std::shared_ptr<std::vector<sf::Texture>> cachePtr = resManager->textureCache;
+
     // check the number of arguments
     if(argc == 2) {
         // check the 1st argument
@@ -117,83 +125,12 @@ int main(int argc,char* argv[])
         cout << "you can only say hello" << endl;
     }
 
-    uint width = state1->getMap()->getHeight();
-    uint height = state1->getMap()->getWidth();
-    sf::RenderWindow window(sf::VideoMode(1000,720),"test window");
 
-    ResManager* pokeManager = new ResManager(tileset2);
-    pokeManager->init();
-    TileMapRender map;
-    if (!map.load("res/src/tilemap.png", sf::Vector2u(24, 24), state1->getMap()->getLayers()->at(0).getData(),
-            width,height))
-        return -1;
-    TileMapRender map2;
-    if(!map2.load("res/src/tilemap.png",sf::Vector2u(24,24),state1->getMap()->getLayers()->at(1).getData(),width,height))
-        return -1;
-    // run the main loop
-    while (window.isOpen())
-    {
-        // handle events
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if(event.type == sf::Event::Closed)
-                window.close();
-        }
-
-        unique_ptr<sf::Sprite> pokeSprite;
-        pokeSprite.reset(new sf::Sprite());
-        pokeSprite->setTexture(pokeManager->textureCache->at())
-        // draw the map
-        window.clear();
-        window.draw(map);
-        window.draw(map2);
-        window.display();
-    }
-//
-//    while (window.isOpen()) {
-//
-//        sf::Event event;
-//        while(window.pollEvent(event))
-//        {
-//            if(event.type == sf::Event::Closed)
-//            {
-//                cachePtr.reset();
-//                window.close();
-//                return 0;
-//            }
-//            Scene scene(state1,window,resManager);
-//            window.clear();
-//            for(auto layer: *(state1->getMap()->getLayers()))
-//            {
-//                for(int i = 0 ; i <height; i++)
-//                {
-//                    for(int j = 0; j<width; j++)
-//                    {
-//                        uint tile = layer.getData()->at(i*width+j);
-//
-//                        if(tile != 0 )
-//                        {
-//                            shared_ptr<sf::Texture> texture;
-//                            shared_ptr<sf::Sprite> sprite0;
-//                            sprite0.reset(new sf::Sprite());
-//                            sprite0->setTexture(cachePtr.get()->at(tile-1));
-//                            sprite0->setPosition(j*24,i*24);
-//                            window.draw(*sprite0);
-//                        }
-//
-//                    }
-//                }
-//            }
-//
-//
-//
-//        }
-//        sf::View view2(sf::Vector2f(1000.f, 300.f), sf::Vector2f(600.f, 600.f));
-//        window.setView(view2);
-//        window.display();
-//    }
-//
-//    delete resManager;
+Scene* scene1 = new Scene(make_shared<State>(*state1),"res/src/tilemap.png");
+    delete scene1;
+    Scene* scene2 = new Scene(state2,"res/src/tilemap.png");
+    delete scene2;
+    Scene* scene3 = new Scene(state3,"res/src/tilemap.png");
+    delete scene3;
     return 0;
 }
