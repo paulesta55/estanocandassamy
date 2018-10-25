@@ -23,7 +23,7 @@ int main(int argc,char* argv[])
 {
     //create first state
     unique_ptr<State> state1;
-    state1.reset(new State(Position(10,10), make_shared<Map>("res/src/map3.json")));
+    state1.reset(new State(Position(10,10), make_shared<Map>("res/src/etage3.json")));
 
     string name = "sala1";
     uint id = 1;
@@ -38,7 +38,7 @@ int main(int argc,char* argv[])
 
     //create 2nd state
     shared_ptr<State> state2;
-    state2.reset(new State(Position(12,12),make_shared<Map>("res/src/map3.json")));
+    state2.reset(new State(Position(12,12),make_shared<Map>("res/src/etage2.json")));
     id++;
     shared_ptr<Carapuce> car = make_shared<Carapuce>(id,"north",200,Position(12,12));
     playerName = "Alice";
@@ -47,7 +47,7 @@ int main(int argc,char* argv[])
 
     //create 3rd state
     shared_ptr<State> state3;
-    state3.reset(new State(Position(8,8),make_shared<Map>("res/src/map3.json")));
+    state3.reset(new State(Position(8,8),make_shared<Map>("res/src/etage1.json")));
 //    id++;
     uint id3 = id+1;
     shared_ptr<Bulbizarre> bulbi = make_shared<Bulbizarre>(id3,"west",200,Position(8,8));
@@ -59,7 +59,7 @@ int main(int argc,char* argv[])
             int success = 0;
             int fails = 0;
             // working case
-            if(MapTest::testMap("res/src/map.json")){
+            if(MapTest::testMap("res/src/etage1.json")){
                 success++;
                 cout << "working case test success" <<endl;
             }else{
@@ -126,11 +126,11 @@ int main(int argc,char* argv[])
     }
 
 
-Scene* scene1 = new Scene(make_shared<State>(*state1),"res/src/tilemap.png");
+    Scene* scene1 = new Scene(make_shared<State>(*state1),"res/src/tilemap2.png");
     delete scene1;
-    Scene* scene2 = new Scene(state2,"res/src/tilemap.png");
+    Scene* scene2 = new Scene(state2,"res/src/tilemap2.png");
     delete scene2;
-    Scene* scene3 = new Scene(state3,"res/src/tilemap.png");
+    Scene* scene3 = new Scene(state3,"res/src/tilemap2.png");
     delete scene3;
     return 0;
 }

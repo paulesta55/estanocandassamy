@@ -6,8 +6,6 @@
 #include "state/TileSet.h"
 #include "state/Map.h"
 #include "state/Position.h"
-#include "state/PokeType.h"
-#include "state/Orientation.h"
 #include "state/Pokemon.h"
 #include "state/Player.h"
 #include "state/State.h"

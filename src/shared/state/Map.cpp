@@ -39,7 +39,7 @@ std::shared_ptr<vector<Layer>> Map::getLayers() {
 }
 
 
-Map::Map(std::string mapPath, string tileSetPath) {
+Map::Map(std::string mapPath) {
     //open the map.json file
 
         if(mapPath.find(".json") == string::npos)

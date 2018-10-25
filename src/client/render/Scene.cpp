@@ -73,24 +73,26 @@ Scene::Scene(shared_ptr<state::State> state1,string tileSet) {
             window.draw(*pokeRend);
         }
 
-        sf::Font font;
-        font.loadFromFile("res/src/arial.ttf");
+//        sf::Font font;
+//        font.loadFromFile("res/src/arial.ttf");
+//
+//        sf::Text text;
+//        text.setFont(font);
+//        text.setString("close the window to \n display an other state");
+//        // choix de la taille des caractères
+//        text.setCharacterSize(10); // exprimée en pixels, pas en points !
+//
+//// choix de la couleur du texte
+//        text.setColor(sf::Color::Black);
+//
+//// choix du style du texte
+//        text.setStyle(sf::Text::Bold | sf::Text::Underlined);
+//        text.setPosition(sf::Vector2f(x-5, y));
 
-        sf::Text text;
-        text.setFont(font);
-        text.setString("close the window to \n display an other state");
-        // choix de la taille des caractères
-        text.setCharacterSize(10); // exprimée en pixels, pas en points !
 
-// choix de la couleur du texte
-        text.setColor(sf::Color::Black);
-
-// choix du style du texte
-        text.setStyle(sf::Text::Bold | sf::Text::Underlined);
-        text.setPosition(sf::Vector2f(x-5, y));
-
+        // good size : 200 x 200
         sf::View view2(sf::Vector2f(x, y), sf::Vector2f(200.f, 200.f));
-        window.draw(text);
+//        window.draw(text);
 
         window.setView(view2);
         window.display();
