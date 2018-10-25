@@ -12,4 +12,6 @@
 #include "state/Salameche.h"
 #include "state/Carapuce.h"
 #include "state/Bulbizarre.h"
+#include "state/Orientation.h"
+#include "state/PokeType.h"
 #endif
