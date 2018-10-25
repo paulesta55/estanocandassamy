@@ -127,10 +127,19 @@ int main(int argc,char* argv[])
 
 
     Scene* scene1 = new Scene(make_shared<State>(*state1),"res/src/tilemap2.png");
+
+    scene1->draw();
+    scene1->updateState(state2);
+    scene1->draw();
     delete scene1;
+
     Scene* scene2 = new Scene(state2,"res/src/tilemap2.png");
+    scene2->draw();
     delete scene2;
+
     Scene* scene3 = new Scene(state3,"res/src/tilemap2.png");
+    scene3->draw();
     delete scene3;
+
     return 0;
 }

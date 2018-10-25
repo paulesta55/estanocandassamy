@@ -173,16 +173,31 @@ morekeywords={string,number,array,object}% list your attributes here
     \section{Rendu: Stratégie et Conception}
 
     \subsection{Stratégie de rendu d'un état}
+    
+Notre stratégie de rendu d'un état se base sur l'utilisation de l'interface SFML qui s'appuie sur OpenGL afin de générer un rendu en 2D. Nous avons utiliser les fonctions de SFML afin de charger dans le processeur, la liste des éléments à afficher par le processeur graphique. 
+    
+Nous avons découper notre affichage graphique sur deux niveaux, la carte avec les éléments décoratifs (mur, sol, escalier) et les éléments mobiles à savoir les pokemons (Carapuce, Salamèche, Bulbizarre) qui se superpose sur le claque précédent. On transmet l'état du jeu ainsi que les textures de toute la carte avec leurs coordonnées et la texture des pokemons avec leurs coordonnées et leur orientation à afficher.
+        
+La carte étant très grande, nous avons entièrement chargé dans la mémoire pour l'affichage et on a crée une vue (un zoom) centrée sur le pokemon du joueur qui évolue sur la carte, car le but du jeu reste avant tout d'évoluer dans un labyrinthe.
+     
+Lorsque qu'un changement d'état se produit, nous regardons si le rendu doit être modifié, dans ce cas là, nous mettons à jour la vue et l'état des éléments mobiles. 
+        
+Pour simplifier au mieux notre logiciel, nous n'avons pas inclut les animations de déplacements lorsque le pokemon évolue d'une case à l'autre ainsi que les animations d'attaques quand un pokémon lance une compétence sur un autre.
 
 
     \subsection{Conception logiciel}
+Pour afficher un état on crée une scène qui génère instancie un ensemble de pointeurs sur des objets graphiques de types \emph{LayerRender} pour la carte et \emph{PokerRender} pour les pokemons. Puis, on utilise la méthode \emph{Scene::draw()} pour déclencher l'ouverture de la fenêtre et l'affichage de l'état.
+Lorsqu'un changement d'état survient on peut mettre à jour les objets graphiques sans interrompre l'affichage grâce à la méthode \emph{Scene::updateState()}. Cette méthode n'est utilisable que si les ressources graphiques de la carte ne changent pas. Si l'on veut utiliser de nouvelles ressources graphiques pour afficher la carte, il est nécessaire de réinstancier une scène (ce qui fermera la fenêtre).
 
-    %\begin{landscape}
-    %\begin{figure}[p]
-    %\includegraphics[width=0.9\paperheight]{render.pdf}
-    %\caption{\label{uml:render}Diagramme des classes de rendu.}
-    %\end{figure}
-    %\end{landscape}
+Chaque objet \emph{LayerRender} parcourt l'ensemble des tuiles d'un étage de la carte, détecte la position de la tuile sur la ressource graphique (i.e : l'image du tileset) et calcule sa position sur la fenêtre. Pour optimiser les performances seule l'image du tileset est chargée dans une \emph{Texture}, l'objet \emph{LayerRender} conserve seulement la position de chaque tuile de la carte sur cette texture.
+L'objet \emph{PokeRender}fait des opérations identiques pour cette fois ci un seul objet : le pokemon désiré.
+
+    \begin{landscape}
+    \begin{figure}[p]
+    \includegraphics[width=0.9\paperheight]{render.png}
+    \caption{\label{uml:render}Diagramme des classes de rendu.}
+    \end{figure}
+    \end{landscape}
 
     \clearpage
     \section{Règles de changement d'états et moteur de jeu}
