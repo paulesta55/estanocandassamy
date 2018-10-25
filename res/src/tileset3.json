@@ -1,0 +1,12 @@
+{ "columns":21,
+ "image":"tilemap.png",
+ "imageheight":601,
+ "imagewidth":526,
+ "margin":1,
+ "name":"44650960_709917086059734_3093292702788222976_n",
+ "spacing":1,
+ "tilecount":504,
+ "tileheight":24,
+ "tilewidth":24,
+ "type":"tileset"
+}
