@@ -8,15 +8,16 @@
 using namespace std;
 using namespace state;
 
-Bulbizarre::Bulbizarre( uint &pokeId, string orientation,uint currentLife, state::Position position, bool alive) {
+
+
+Bulbizarre::Bulbizarre(unsigned int &ID, Orientation orientation, unsigned int currentLife, Position position,
+                       bool alive) {
+
+    this->ID = ID;
     this->currentLife = currentLife;
     this->position = position;
     this->alive = alive;
-    this->type = "Bulbizarre";
-    this->pokeId = pokeId;
+    this->orientation = orientation;
+    this->type = PokeType ::BULBIZARRE;
     fullLife = 250;
-    if(orientation == "south" || orientation == "north" || orientation == "west" || orientation == "est")
-    {
-        this->orientation= orientation;
-    }
 }

@@ -85,7 +85,7 @@ int main(int argc,char* argv[])
             string name = "sala1";
             uint id = 1;
             shared_ptr<Salameche> sal = nullptr;
-            sal.reset(new Salameche(id,"south",200,Position(10,10)));
+            sal.reset(new Salameche(id,Orientation ::SOUTH,200,Position(10,10)));
             string playerName = "bob";
             state1->getPlayers().get()->push_back(new Player(false,playerName,id,sal));
             playerName = "tom";
@@ -97,7 +97,7 @@ int main(int argc,char* argv[])
             shared_ptr<State> state2;
             state2.reset(new State(Position(12,12),make_shared<Map>("res/src/etage2.json")));
             id++;
-            shared_ptr<Carapuce> car = make_shared<Carapuce>(id,"north",200,Position(12,12));
+            shared_ptr<Carapuce> car = make_shared<Carapuce>(id,Orientation ::NORTH,200,Position(12,12));
             playerName = "Alice";
             state2->getPlayers()->push_back(new Player(false,playerName,id,car));
 
@@ -107,7 +107,7 @@ int main(int argc,char* argv[])
             state3.reset(new State(Position(8,8),make_shared<Map>("res/src/etage1.json")));
 //    id++;
             uint id3 = id+1;
-            shared_ptr<Bulbizarre> bulbi = make_shared<Bulbizarre>(id3,"west",200,Position(8,8));
+            shared_ptr<Bulbizarre> bulbi = make_shared<Bulbizarre>(id3,Orientation ::EST,200,Position(8,8));
             string playerName2 = "Bernard";
 
             state3->getPlayers()->push_back(new Player(false,playerName2,id3,bulbi));

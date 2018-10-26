@@ -8,19 +8,13 @@
 using namespace state;
 using namespace std;
 
-Carapuce::Carapuce(uint& pokeId, string orientation,  uint currentLife, state::Position position, bool alive) {
+
+Carapuce::Carapuce(unsigned int &id, Orientation orientation, unsigned int currentLife, Position position, bool alive) {
     this->currentLife = currentLife;
     this->position = position;
     this->alive = alive;
-    this->pokeId = pokeId;
+    this->orientation = orientation;
     fullLife = 200;
-    this->type = "Carapuce";
-//    this->orientation = orientation;
-    if(orientation == "south" || orientation == "north" || orientation == "west" || orientation == "est")
-    {
-        this->orientation= orientation;
-    }
+    this->type = PokeType ::CARAPUCE;
+    this->ID = ID;
 }
-
-
-

@@ -16,8 +16,11 @@ using namespace render;
 Scene::Scene(shared_ptr<state::State> state1,string tileSet) {
 
 
+
 //    vector<shared_ptr<LayerRender>> layerVec;
-    this->tileset =tileSet;
+    this->tileset=tileSet;
+    this->pokeTileSet.reset(new sf::Texture());
+    this->pokeTileSet->loadFromFile(this->tileset);
     this->state = std::move(state1);
     if(state->getPlayers()->size() <=0){
         throw new runtime_error("cannot render a state with no players");
@@ -48,7 +51,8 @@ Scene::Scene(shared_ptr<state::State> state1,string tileSet) {
         pokeRender.reset(new PokeRender());
         if(player->getPokemon()){
             state::Pokemon pokemon = *(player->getPokemon());
-            if(!(pokeRender->load(tileset2,sf::Vector2u(tileWidth,tileHeight),pokemon))) throw runtime_error("bad pokemon rendering");
+
+            if(!(pokeRender->load(this->pokeTileSet,sf::Vector2u(tileWidth,tileHeight),pokemon))) throw runtime_error("bad pokemon rendering");
             pokeVec.push_back(pokeRender);
         }
 
@@ -121,6 +125,21 @@ void Scene::draw() {
 }
 
 void Scene::updateState(std::shared_ptr<state::State> state1) {
+        char n = 3;
+    switch(3)
+    {
+        case 1:
+            cout << "not ok" <<endl;
+            break;
+        case 3:
+            cout <<"ok"<<endl;
+            break;
+        default:
+            cout << "ntm" << endl;
+            break;
+
+    }
+
     this->layerVec.clear();
     this->pokeVec.clear();
     this->state = std::move(state1);
@@ -153,7 +172,7 @@ void Scene::updateState(std::shared_ptr<state::State> state1) {
         pokeRender.reset(new PokeRender());
         if(player->getPokemon()){
             state::Pokemon pokemon = *(player->getPokemon());
-            if(!(pokeRender->load(tileset2,sf::Vector2u(tileWidth,tileHeight),pokemon))) throw runtime_error("bad pokemon rendering");
+            if(!(pokeRender->load(this->pokeTileSet,sf::Vector2u(tileWidth,tileHeight),pokemon))) throw runtime_error("bad pokemon rendering");
             pokeVec.push_back(pokeRender);
         }
 

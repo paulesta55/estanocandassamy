@@ -3,7 +3,7 @@
 //
 
 #include "State.h"
-
+#include <iostream>
 using namespace state;
 using namespace std;
 
@@ -14,6 +14,8 @@ std::shared_ptr<Map> State::getMap() {return this->map;}
 State::State(Position center,shared_ptr<Map> map) : map(map), center(center){
     players.reset(new vector<Player*>());
     epoch = 0;
+        char n = 3;
+
 }
 
 void State::setMap(std::shared_ptr<state::Map> map) {this->map = map;}

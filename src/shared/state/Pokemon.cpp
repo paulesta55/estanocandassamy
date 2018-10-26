@@ -8,11 +8,11 @@ using namespace std;
 using namespace state;
 
 
-uint Pokemon::getPokeId() {
-    return this->pokeId;
+uint Pokemon::getID() {
+    return this->ID;
 }
 
-string Pokemon::getType() {
+PokeType Pokemon::getType() {
     return this->type;
 }
 
@@ -39,14 +39,15 @@ void Pokemon::setAlive(bool alive) {
     this->alive = alive;
 }
 
-string Pokemon::getOrientation() {
+Orientation Pokemon::getOrientation() {
     return this->orientation;
 }
 
-void Pokemon::setOrientation(string orientation) {
-    this->orientation = orientation;
-}
 
 uint Pokemon::getFullLife() {
     return this->fullLife;
+}
+
+void Pokemon::setOrientation(Orientation orientation) {
+    this->orientation = orientation;
 }
