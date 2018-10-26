@@ -18,5 +18,8 @@
 #include "state/Event.h"
 #include "state/Observer.h"
 #include "state/Observable.h"
-#include "state/StateEventID.h"
+#include "state/StateEventId.h"
+#include "state/StateEvent.h"
+#include "state/TabEventId.h"
+#include "state/TabEvent.h"
 #endif
