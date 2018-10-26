@@ -67,8 +67,21 @@ void Scene::draw() {
         sf::Event event;
         while (window.pollEvent(event))
         {
+            switch(event.type) {
+                case sf::Event::Closed :
+                    window.close();
+                    break;
+                case sf::Event::KeyPressed:
+                    this->clock.restart();
+                    break;
+                case sf::Event::KeyReleased:
+                    cout << this->clock.getElapsedTime().asMilliseconds() << endl;
+                    break;
+
+            }
             if(event.type == sf::Event::Closed)
                 window.close();
+
         }
         window.clear();
         for(auto layerRend : layerVec)

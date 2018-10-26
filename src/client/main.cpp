@@ -126,6 +126,10 @@ int main(int argc,char* argv[])
             scene3->draw();
             delete scene3;
         }
+        if(!strcmp(argv[1],"engine"))
+        {
+
+        }
     }
 
 
