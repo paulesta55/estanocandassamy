@@ -40,7 +40,6 @@ exec_program(${DIA2CODE} ARGS -ns render -d ../src/client -t cpp ../src/render.d
 
 # Sources
 file(GLOB_RECURSE client_sources src/client/*.cpp)
-file(GLOB_RECURSE client_render_sources src/client/render/*.cpp)
 #file(GLOB_RECURSE server_sources src/server/*.cpp)
 file(GLOB_RECURSE shared_sources src/shared/*.cpp)
 
@@ -52,7 +51,7 @@ file(GLOB_RECURSE jsoncpp_sources extern/jsoncpp-1.8.0/*.cpp)
 #add_library(json ${jsoncpp_sources})
 
 # Executables
-add_executable(client ${client_sources} ${shared_sources}  ${jsoncpp_sources} ${test_sources} ${client_render_sources})
+add_executable(client ${client_sources} ${shared_sources}  ${jsoncpp_sources} ${test_sources})
 #add_executable(server ${server_sources} ${shared_sources} ${jsoncpp_sources})
 
 # SFML

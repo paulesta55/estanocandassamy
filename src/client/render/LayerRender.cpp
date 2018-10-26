@@ -1,3 +1,4 @@
+
 //
 // Created by paul on 23/10/18.
 //
@@ -5,12 +6,19 @@
 #include "LayerRender.h"
 #include <iostream>
 using namespace std;
+using namespace render;
 bool render::LayerRender::load(const std::string &tileset, sf::Vector2u tileSize,
                                  const std::shared_ptr<std::vector<uint>> tiles, uint width, uint height) {
     // load the tileset texture
     if (!m_tileset.loadFromFile(tileset))
         return false;
-
+    //n'affiche rien !!!!!
+    switch(3)
+    {
+        case 3:
+            cout << "ok" << endl;
+            break;
+    }
     // resize the vertex array to fit the level size
     m_vertices.setPrimitiveType(sf::Quads);
     m_vertices.resize(width * height * 4);

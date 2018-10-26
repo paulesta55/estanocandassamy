@@ -1,4 +1,3 @@
-#include <utility>
 
 //
 // Created by paul on 22/10/18.
@@ -6,7 +5,6 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "Scene.h"
-#include "CustomException.h"
 #include "render.h"
 #include <iostream>
 #include <string>
@@ -15,12 +13,11 @@ using namespace render;
 
 Scene::Scene(shared_ptr<state::State> state1,string tileSet) {
 
-
-
 //    vector<shared_ptr<LayerRender>> layerVec;
     this->tileset=tileSet;
+    string tileset2 = "res/src/tilestPokemon.png";
     this->pokeTileSet.reset(new sf::Texture());
-    this->pokeTileSet->loadFromFile(this->tileset);
+    this->pokeTileSet->loadFromFile("res/src/tilestPokemon.png");
     this->state = std::move(state1);
     if(state->getPlayers()->size() <=0){
         throw new runtime_error("cannot render a state with no players");
@@ -43,7 +40,7 @@ Scene::Scene(shared_ptr<state::State> state1,string tileSet) {
                 layer.getData(),layer.getWidth(),layer.getHeight()))) throw  runtime_error("bad layer rendering");
         layerVec.push_back(layerRend);
     }
-    string tileset2 = "res/src/tilestPokemon.png";
+
 //    vector<shared_ptr<PokeRender>> layerPoke;
     for( auto player : *(this->state->getPlayers()))
     {
@@ -98,22 +95,6 @@ void Scene::draw() {
             window.draw(*pokeRend);
         }
 
-//        sf::Font font;
-//        font.loadFromFile("res/src/arial.ttf");
-//
-//        sf::Text text;
-//        text.setFont(font);
-//        text.setString("close the window to \n display an other state");
-//        // choix de la taille des caractères
-//        text.setCharacterSize(10); // exprimée en pixels, pas en points !
-//
-//// choix de la couleur du texte
-//        text.setColor(sf::Color::Black);
-//
-//// choix du style du texte
-//        text.setStyle(sf::Text::Bold | sf::Text::Underlined);
-//        text.setPosition(sf::Vector2f(x-5, y));
-
 
         // good size : 200 x 200
         sf::View view2(sf::Vector2f(this->xCenter, this->yCenter), sf::Vector2f(200.f, 200.f));
@@ -125,20 +106,6 @@ void Scene::draw() {
 }
 
 void Scene::updateState(std::shared_ptr<state::State> state1) {
-        char n = 3;
-    switch(3)
-    {
-        case 1:
-            cout << "not ok" <<endl;
-            break;
-        case 3:
-            cout <<"ok"<<endl;
-            break;
-        default:
-            cout << "ntm" << endl;
-            break;
-
-    }
 
     this->layerVec.clear();
     this->pokeVec.clear();
