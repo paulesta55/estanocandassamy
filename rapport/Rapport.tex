@@ -154,7 +154,7 @@ morekeywords={string,number,array,object}% list your attributes here
     \end{itemize}
     Le constructeur respectif de chacun de ces trois pokemons héritent de la classe Pokemon. Nous avons mis en place un identifiant pour chaque pokemon, ce qui permet d'avoir plusieurs pokemon construit à partir de la même classe.
     
-    La partie environnement est calqué sur le modèle proposé par les fichiers exportés par le logiciel \emph{Tiled Map Editor}. Les objets les plus consommateurs en mémoire tels les \emph{data} dans la classe \emph{Layer} sont par ailleurs stockés dans le tas pour éviter les copies entre les différentes classes.
+    La partie environnement est calqué sur le modèle proposé par les fichiers exportés par le logiciel \emph{Tiled Map Editor} au format JSON. Les objets les plus consommateurs en mémoire tels les \emph{data} dans la classe \emph{Layer} sont par ailleurs stockés dans le tas pour éviter les copies entre les différentes classes.
     
      L'état global contient un pointeur vers l'état de l'environnement et et une liste de pointeur de contenant l'état des différents joueurs de la partie.
      
@@ -187,6 +187,7 @@ Pour simplifier au mieux notre logiciel, nous n'avons pas inclut les animations 
 
     \subsection{Conception logiciel}
 Pour afficher un état on crée une scène qui génère instancie un ensemble de pointeurs sur des objets graphiques de types \emph{LayerRender} pour la carte et \emph{PokerRender} pour les pokemons. Puis, on utilise la méthode \emph{Scene::draw()} pour déclencher l'ouverture de la fenêtre et l'affichage de l'état.
+Il est à noter que l'état contient d'ores et déjà toutes les informations nécessaires à l'affichage de la carte. En effet, à la création de l'état celui-ci parse un fichier JSON (ici \emph{map.json})contenant toutes les informations nécessaires à l'affichage de la carte.
 Lorsqu'un changement d'état survient on peut mettre à jour les objets graphiques sans interrompre l'affichage grâce à la méthode \emph{Scene::updateState()}. Cette méthode n'est utilisable que si les ressources graphiques de la carte ne changent pas. Si l'on veut utiliser de nouvelles ressources graphiques pour afficher la carte, il est nécessaire de réinstancier une scène (ce qui fermera la fenêtre).
 
 Chaque objet \emph{LayerRender} parcourt l'ensemble des tuiles d'un étage de la carte, détecte la position de la tuile sur la ressource graphique (i.e : l'image du tileset) et calcule sa position sur la fenêtre. Pour optimiser les performances seule l'image du tileset est chargée dans une \emph{Texture}, l'objet \emph{LayerRender} conserve seulement la position de chaque tuile de la carte sur cette texture.
