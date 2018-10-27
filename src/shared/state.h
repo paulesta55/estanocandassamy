@@ -12,8 +12,6 @@
 #include "state/Observable.h"
 #include "state/PokeType.h"
 #include "state/Orientation.h"
-#include "state/TabEventId.h"
-#include "state/TabEvent.h"
 #include "state/Pokemon.h"
 #include "state/Player.h"
 #include "state/State.h"
@@ -22,4 +20,6 @@
 #include "state/Bulbizarre.h"
 #include "state/StateEventId.h"
 #include "state/StateEvent.h"
+#include "state/TabEventId.h"
+#include "state/TabEvent.h"
 #endif
