@@ -151,3 +151,44 @@ void Scene::updateState() {
     }
 
 }
+
+
+void Scene::stateChanged(const state::Event& e) {
+
+    this->layerVec.clear();
+    this->pokeVec.clear();
+    if(state->getPlayers()->size() <=0){
+        throw new runtime_error("cannot render a state with no players");
+    }
+    if(!state->getMap())
+    {
+        throw new runtime_error("cannot render a state with no map");
+    }
+    uint tileWidth = this->state->getMap()->getTileWidth();
+    uint tileHeight = this->state->getMap()->getTileHeight();
+
+    this->xCenter = state->center.x*tileWidth;
+    this->yCenter = state->center.y*tileHeight;
+    for(auto layer: *(this->state->getMap()->getLayers()))
+    {
+        shared_ptr<LayerRender> layerRend;
+        layerRend.reset(new LayerRender());
+
+        if(!(layerRend->load(this->tileset,sf::Vector2u(tileWidth,tileHeight),
+                             layer.getData(),layer.getWidth(),layer.getHeight()))) throw  runtime_error("bad layer rendering");
+        layerVec.push_back(layerRend);
+    }
+    string tileset2 = "res/src/tilestPokemon.png";
+//    vector<shared_ptr<PokeRender>> layerPoke;
+    for( auto player : *(this->state->getPlayers()))
+    {
+        shared_ptr<PokeRender> pokeRender;
+        pokeRender.reset(new PokeRender());
+        if(player->getPokemon()){
+            state::Pokemon pokemon = *(player->getPokemon());
+            if(!(pokeRender->load(this->pokeTileSet,sf::Vector2u(tileWidth,tileHeight),pokemon))) throw runtime_error("bad pokemon rendering");
+            pokeVec.push_back(pokeRender);
+        }
+
+    }
+}
