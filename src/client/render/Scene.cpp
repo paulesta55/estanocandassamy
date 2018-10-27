@@ -49,7 +49,7 @@ Scene::Scene(shared_ptr<state::State> state1,string tileSet) {
 
         player.reset( this->state->getPlayers()->at(i));
         pokeRender.reset(new PokeRender());
-        cout << player->getName() <<endl;
+//        cout << player->getName() <<endl;
 
         if(player->getPokemon()){
             state::Pokemon pokemon = *(player->getPokemon());
