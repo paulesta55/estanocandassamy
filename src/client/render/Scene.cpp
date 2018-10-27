@@ -109,6 +109,7 @@ void Scene::updateState() {
         }
 
     }
+    this->pokeVec.at(0)->setPosition(state::Position(this->pokeVec.at(0)->getPosition().x+1,this->pokeVec.at(0)->getPosition().y+1));
 
 }
 
