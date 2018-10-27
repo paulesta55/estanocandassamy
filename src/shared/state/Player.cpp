@@ -36,6 +36,7 @@ bool Player::isAlive() {
 
 void Player::setAlive(bool alive) {
     this->alive = alive;
+
 }
 
 shared_ptr<Pokemon> Player::getPokemon() {

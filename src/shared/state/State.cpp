@@ -23,3 +23,4 @@ void State::setMap(std::shared_ptr<state::Map> map) {this->map = map;}
 void State::setEpoch(uint &epoch) {this->epoch = epoch;}
 
 uint State::getEpoch() {return epoch;}
+

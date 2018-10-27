@@ -41,14 +41,20 @@ Scene::Scene(shared_ptr<state::State> state1,string tileSet) {
         layerVec.push_back(layerRend);
     }
 
+    unique_ptr<state::Player> player;
+    shared_ptr<PokeRender> pokeRender;
 //    vector<shared_ptr<PokeRender>> layerPoke;
-    for( auto player : *(this->state->getPlayers()))
+    for(int i = 0; i< this->state->getPlayers()->size(); i++)
     {
-        shared_ptr<PokeRender> pokeRender;
+
+        player.reset( this->state->getPlayers()->at(i));
         pokeRender.reset(new PokeRender());
+        cout << player->getName() <<endl;
+
         if(player->getPokemon()){
             state::Pokemon pokemon = *(player->getPokemon());
 
+            cout << player->getName() <<endl;
             if(!(pokeRender->load(this->pokeTileSet,sf::Vector2u(tileWidth,tileHeight),pokemon))) throw runtime_error("bad pokemon rendering");
             pokeVec.push_back(pokeRender);
         }
@@ -105,11 +111,10 @@ void Scene::draw() {
     }
 }
 
-void Scene::updateState(std::shared_ptr<state::State> state1) {
+void Scene::updateState() {
 
     this->layerVec.clear();
     this->pokeVec.clear();
-    this->state = std::move(state1);
     if(state->getPlayers()->size() <=0){
         throw new runtime_error("cannot render a state with no players");
     }

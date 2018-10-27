@@ -123,6 +123,10 @@ int main(int argc,char* argv[])
 //            delete scene2;
 
             Scene* scene3 = new Scene(state3,"res/src/tilemap2.png");
+            string name3 = "toto";
+            uint id4 = 10;
+            state3->getPlayers()->push_back(new Player(false,name3,id4,make_shared<state::Salameche>(id4,SOUTH,200,Position(8,7))));
+            scene3->updateState();
             scene3->draw();
             delete scene3;
         }

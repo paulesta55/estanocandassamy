@@ -36,14 +36,14 @@ bool PokeRender::load(std::shared_ptr<sf::Texture> tileset, sf::Vector2u tileSiz
     int type = pokemon.type;
     uint tileNumber = 0;
 
-    switch (type) {
-        case 0://bulbizarre
+    switch (pokemon.getType()) {
+        case PokeType ::BULBIZARRE://bulbizarre
             tileNumber = 12;
             break;
-        case 1://salameche
+        case PokeType ::SALAMECHE://salameche
             tileNumber = 33;
             break;
-        case 2://carapuce
+        case CARAPUCE://carapuce
             tileNumber = 54;
             break;
         default:
