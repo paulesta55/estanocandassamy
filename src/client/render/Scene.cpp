@@ -8,9 +8,10 @@
 #include "render.h"
 #include <iostream>
 #include <string>
+#include "state.h"
 using namespace std;
 using namespace render;
-
+using namespace state;
 Scene::Scene(shared_ptr<state::State> state1,string tileSet) {
 
 //    vector<shared_ptr<LayerRender>> layerVec;
@@ -115,5 +116,14 @@ void Scene::updateState() {
 
 
 void Scene::stateChanged(const state::Event& e) {
+
+    if(e.getEventType() == TAB_EVENT )
+    {
+        state::TabEvent event = *(TabEvent*)(e.clone());
+        switch(event.tabEventId) {
+            case MOVE:
+
+        }
+    }
     this->updateState();
 }

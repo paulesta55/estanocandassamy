@@ -14,7 +14,12 @@ void engine::Engine::addCommand(Command* command, unsigned int priority) {
 
 void engine::Engine::runCommands() {
 
-
+    auto it = commands.begin();
+    while(it!=commands.cend())
+    {
+        it->second->execute(currentState);
+        it++;
+    }
 }
 
 state::State &engine::Engine::getState() {

@@ -59,9 +59,7 @@ bool PokeRender::load(std::shared_ptr<sf::Texture> tileset, sf::Vector2u tileSiz
     this->tileNumber = tileNumber;
     m_vertices.setPrimitiveType(sf::Quads);
     m_vertices.resize(4);
-
     this->setPosition(position);
-
 
 
     return true;
