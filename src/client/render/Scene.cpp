@@ -114,6 +114,11 @@ void Scene::updateState() {
 
 }
 
+void movePokeRender(unsigned int pokeId)
+{
+
+}
+
 
 void Scene::stateChanged(const state::Event& e) {
 
@@ -122,8 +127,11 @@ void Scene::stateChanged(const state::Event& e) {
         state::TabEvent event = *(TabEvent*)(e.clone());
         switch(event.tabEventId) {
             case MOVE:
+                event.playerId
 
         }
     }
     this->updateState();
 }
+
+
