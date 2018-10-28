@@ -14,6 +14,7 @@ void engine::Engine::addCommand(Command* command, unsigned int priority) {
 
 void engine::Engine::runCommands() {
 
+
 }
 
 state::State &engine::Engine::getState() {
