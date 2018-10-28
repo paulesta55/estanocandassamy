@@ -6,6 +6,7 @@
 #include "state.h"
 #include "render.h"
 #include "MapTest.h"
+#include "engine.h"
 #include <cassert>
 void testSFML() {
     sf::Texture texture;
@@ -23,6 +24,9 @@ int main(int argc,char* argv[])
 {
 
     if(argc == 2){
+        if(strcmp(argv[1],"hello")== 0) {
+            cout << "Bonjour le monde !" << endl;
+        }
         if(!strcmp(argv[1],"state")){
             int success = 0;
             int fails = 0;
@@ -135,18 +139,8 @@ int main(int argc,char* argv[])
         }
         if(!strcmp(argv[1],"engine"))
         {
-
+            cout << "engine" <<endl;
         }
-    }
-
-
-    // check the number of arguments
-    if(argc == 2) {
-        // check the 1st argument
-        if(strcmp(argv[1],"hello")== 0) {
-            cout << "Bonjour le monde !" << endl;
-        }
-        // display a warning when a wrong number of arguments is given
 
     }
     else {

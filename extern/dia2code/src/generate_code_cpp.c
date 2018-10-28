@@ -476,7 +476,7 @@ gen_class (umlclassnode *node)
             umlclassnode *ref;
             if (assoc->name[0] != '\0')
             {
-                add_setter_getter(node,assoc->key->name,assoc->name);
+//                add_setter_getter(node,assoc->key->name,assoc->name);
             }
             assoc = assoc->next;
         }
