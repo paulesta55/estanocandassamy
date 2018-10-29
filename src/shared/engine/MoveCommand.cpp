@@ -19,11 +19,11 @@ void MoveCommand::execute(state::State &state) {
     State& state_ref = state;
     unique_ptr<Player> player_ptr;
     unique_ptr<Pokemon> poke_ptr;
-    for( auto player : *(state_ref.getPlayers()))
+    for( auto player : state_ref.getPlayers())
     {
-        if(player->getID() == idPlayer)
+        if(player.second->getID()== idPlayer)
         {
-            player_ptr.reset(player);
+            player_ptr.reset(player.second);
         }
     }
     if(!player_ptr.get())

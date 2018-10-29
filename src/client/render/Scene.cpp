@@ -59,7 +59,7 @@ void Scene::draw() {
         for(auto pokeRend: pokeVec)
         {
 
-            window.draw(*pokeRend);
+            window.draw(*(pokeRend.second));
         }
 
 
@@ -75,8 +75,7 @@ void Scene::draw() {
 void Scene::updateState() {
 
     this->layerVec.clear();
-    this->pokeVec.clear();
-    if(state->getPlayers()->size() <=0){
+    if(state->getPlayers().size() <=0){
         throw new runtime_error("cannot render a state with no players");
     }
     if(!state->getMap())
@@ -99,14 +98,14 @@ void Scene::updateState() {
     }
     string tileset2 = "res/src/tilestPokemon.png";
 //    vector<shared_ptr<PokeRender>> layerPoke;
-    for( auto player : *(this->state->getPlayers()))
+    for( auto player :this->state->getPlayers())
     {
         shared_ptr<PokeRender> pokeRender;
         pokeRender.reset(new PokeRender());
-        if(player->getPokemon()){
-            state::Pokemon pokemon = *(player->getPokemon());
+        if(player.second->getPokemon()){
+            state::Pokemon pokemon = *(player.second->getPokemon());
             if(!(pokeRender->load(this->pokeTileSet,sf::Vector2u(tileWidth,tileHeight),pokemon))) throw runtime_error("bad pokemon rendering");
-            pokeVec.push_back(pokeRender);
+            pokeVec.insert(make_pair(player.second->getID(),pokeRender));
         }
 
     }
@@ -127,7 +126,8 @@ void Scene::stateChanged(const state::Event& e) {
         state::TabEvent event = *(TabEvent*)(e.clone());
         switch(event.tabEventId) {
             case MOVE:
-                event.playerId
+                pokeVec.at(event.playerId)->setPosition(state->getPlayers().at(event.playerId)->getPokemon()->getPosition().x);
+                break;
 
         }
     }

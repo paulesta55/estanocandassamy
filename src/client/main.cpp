@@ -91,10 +91,10 @@ int main(int argc,char* argv[])
             shared_ptr<Salameche> sal = nullptr;
             sal.reset(new Salameche(id,Orientation ::SOUTH,200,Position(10,10)));
             string playerName = "bob";
-            state1->getPlayers().get()->push_back(new Player(false,playerName,id,sal));
+            state1->getPlayers().insert(make_pair(id,new Player(false,playerName,id,sal)));
             playerName = "tom";
             id++;
-            state1->getPlayers()->push_back(new Player(true,playerName,id));
+            state1->getPlayers().insert(make_pair(id,new Player(true,playerName,id)));
 
 
             //create 2nd state
@@ -103,7 +103,7 @@ int main(int argc,char* argv[])
             id++;
             shared_ptr<Carapuce> car = make_shared<Carapuce>(id,Orientation ::NORTH,200,Position(12,12));
             playerName = "Alice";
-            state2->getPlayers()->push_back(new Player(false,playerName,id,car));
+            state2->getPlayers().insert(make_pair(id,new Player(false,playerName,id,car)));
 
 
             //create 3rd state
@@ -114,7 +114,7 @@ int main(int argc,char* argv[])
             shared_ptr<Bulbizarre> bulbi = make_shared<Bulbizarre>(id3,Orientation ::EST,200,Position(8,8));
             string playerName2 = "Bernard";
 
-            state3->getPlayers()->push_back(new Player(false,playerName2,id3,bulbi));
+            state3->getPlayers().insert(make_pair(id3,new Player(false,playerName2,id3,bulbi)));
 //            Scene* scene1 = new Scene(make_shared<State>(*state1),"res/src/tilemap2.png");
 
 //            scene1->draw();
@@ -130,7 +130,8 @@ int main(int argc,char* argv[])
             string name3 = "toto";
             state3->registerObserver(scene3);
             uint id4 = 10;
-            state3->getPlayers()->push_back(new Player(false,name3,id4,make_shared<state::Salameche>(id4,SOUTH,200,Position(8,7))));
+            state3->getPlayers().insert(make_pair(id4,new Player(false,name3,id4,make_shared<state::Salameche>(id4,SOUTH
+                    ,200,Position(8,7)))));
             TabEvent event(TabEventId::MOVE,10);
             state3->notifyObservers(event);
 
