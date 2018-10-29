@@ -130,9 +130,12 @@ int main(int argc,char* argv[])
             string name3 = "toto";
             state3->registerObserver(scene3);
             uint id4 = 10;
-            state3->getPlayers().insert(make_pair(id4,new Player(false,name3,id4,make_shared<state::Salameche>(id4,SOUTH
+            map<unsigned  int,Player*>& mapref = state3->getPlayers();
+            mapref.insert(make_pair(id4,new Player(false,name3,id4,make_shared<state::Salameche>(id4,SOUTH
                     ,200,Position(8,7)))));
-            TabEvent event(TabEventId::MOVE,10);
+
+
+            TabEvent event(TabEventId::MOVE,4);
             state3->notifyObservers(event);
 
             scene3->draw();

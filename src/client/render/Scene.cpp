@@ -19,7 +19,7 @@ Scene::Scene(shared_ptr<state::State> state1,string tileSet) {
     string tileset2 = "res/src/tilestPokemon.png";
     this->pokeTileSet.reset(new sf::Texture());
     this->pokeTileSet->loadFromFile("res/src/tilestPokemon.png");
-    this->state = std::move(state1);
+    this->state.reset(state1.get());
     this->updateState();
 
 
@@ -64,7 +64,7 @@ void Scene::draw() {
 
 
         // good size : 200 x 200
-        sf::View view2(sf::Vector2f(this->xCenter, this->yCenter), sf::Vector2f(200.f, 200.f));
+        sf::View view2(sf::Vector2f(this->xCenter, this->yCenter), sf::Vector2f(700.f, 700.f));
 //        window.draw(text);
 
         window.setView(view2);
@@ -103,8 +103,8 @@ void Scene::updateState() {
         shared_ptr<PokeRender> pokeRender;
         pokeRender.reset(new PokeRender());
         if(player.second->getPokemon()){
-            state::Pokemon pokemon = *(player.second->getPokemon());
-            if(!(pokeRender->load(this->pokeTileSet,sf::Vector2u(tileWidth,tileHeight),pokemon))) throw runtime_error("bad pokemon rendering");
+            std::shared_ptr<state::Pokemon> pokemon = player.second->getPokemon();
+            if(!(pokeRender->load(this->pokeTileSet,sf::Vector2u(tileWidth,tileHeight),*pokemon))) throw runtime_error("bad pokemon rendering");
             pokeVec.insert(make_pair(player.second->getID(),pokeRender));
         }
 
