@@ -4,6 +4,8 @@
 
 #include "Observable.h"
 #include <algorithm>
+#include <iostream>
+
 using namespace std;
 void state::Observable::registerObserver(Observer *o) {
     this->observers.push_back(o);
@@ -26,6 +28,7 @@ void state::Observable::unregisterObservers() {
 void const state::Observable::notifyObservers(const state::Event &e) {
     for (auto o : observers)
     {
+        cout << "obs notified" << endl;
         o->stateChanged(e);
     }
 }

@@ -13,8 +13,9 @@ using namespace std;
 
 bool MapTest ::testMap(string mapPath, string tilesetPath) {
     try{
-        unique_ptr<state::Map> map;
+        shared_ptr<state::Map> map;
         map.reset(new Map(std::move(mapPath)));
+        cout << map->getWidth() << endl;
         return true;
     }
     catch(CustomException& e)

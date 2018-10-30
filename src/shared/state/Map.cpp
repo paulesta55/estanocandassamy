@@ -41,8 +41,7 @@ std::shared_ptr<vector<Layer>> Map::getLayers() {
 
 Map::Map(std::string mapPath) {
     //open the map.json file
-
-        if(mapPath.find(".json") == string::npos)
+     if(mapPath.find(".json") == string::npos)
         {
             CustomException exception("not json file exception");
             throw exception;
@@ -50,7 +49,7 @@ Map::Map(std::string mapPath) {
 
         try {
             ifstream ifsMap(mapPath,std::ifstream::in);
-
+            cout << "can open file" << endl;
             Json::Reader reader;
             Json::Value obj;
             // parse the the map.json file
@@ -58,10 +57,10 @@ Map::Map(std::string mapPath) {
             {
 
                 this->width= obj["width"].asUInt();
-//        cout << "width: " << this->width << endl;
+        cout << "width: " << this->width << endl;
 
                 this->height = obj["height"].asUInt();
-//        cout << "height: " << this->height << endl;
+        cout << "height: " << this->height << endl;
 
                 this->tileWidth = obj["tilewidth"].asUInt();
 //        cout << "tilewidth: " << this->tileWidth << endl;
@@ -173,6 +172,7 @@ Map::Map(std::string mapPath) {
         }
         catch(CustomException& exception2)
         {
+            cerr << exception2.what() << endl;
             throw exception2;
         }
         catch(exception& e)

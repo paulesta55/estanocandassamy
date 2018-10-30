@@ -15,13 +15,17 @@ using namespace state;
 Scene::Scene(shared_ptr<state::State> state1,string tileSet) {
 
 //    vector<shared_ptr<LayerRender>> layerVec;
+cout<<"enter scene" <<endl;
     this->tileset=tileSet;
     string tileset2 = "res/src/tilestPokemon.png";
     this->pokeTileSet.reset(new sf::Texture());
     this->pokeTileSet->loadFromFile("res/src/tilestPokemon.png");
-    state.reset(state1.get());
+    cout << "tileset loaded" <<endl;
+    state = state1;
+//    state->registerObserver(this);
+    cout << "observer register" <<endl;
     this->updateState();
-    state->registerObserver(this);
+    cout << "update state "<<endl;
 
 
 }
@@ -31,6 +35,7 @@ void Scene::draw() {
     //good dimensions : 620 x 620
     sf::RenderWindow window(sf::VideoMode(620,620),"test window");
     while(window.isOpen()){
+        cout << "window opened" <<endl;
         // handle events
         sf::Event event;
         while (window.pollEvent(event))
@@ -64,7 +69,7 @@ void Scene::draw() {
 
 
         // good size : 200 x 200
-        sf::View view2(sf::Vector2f(this->xCenter, this->yCenter), sf::Vector2f(700.f, 700.f));
+        sf::View view2(sf::Vector2f(this->xCenter, this->yCenter), sf::Vector2f(200.f, 200.f));
 //        window.draw(text);
 
         window.setView(view2);
@@ -73,7 +78,7 @@ void Scene::draw() {
 }
 
 void Scene::updateState() {
-
+    pokeVec.clear();
     this->layerVec.clear();
     if(state->getPlayers().size() <=0){
         throw new runtime_error("cannot render a state with no players");
@@ -82,11 +87,15 @@ void Scene::updateState() {
     {
         throw new runtime_error("cannot render a state with no map");
     }
+    cout << "layer vec cleared" <<endl;
     uint tileWidth = this->state->getMap()->getTileWidth();
     uint tileHeight = this->state->getMap()->getTileHeight();
 
+    cout << "tilewidth and tileheight ok" <<endl;
     this->xCenter = state->center.x*tileWidth;
     this->yCenter = state->center.y*tileHeight;
+
+    cout <<"center ok" <<endl;
     for(auto layer: *(this->state->getMap()->getLayers()))
     {
         shared_ptr<LayerRender> layerRend;
@@ -96,6 +105,7 @@ void Scene::updateState() {
                              layer.getData(),layer.getWidth(),layer.getHeight()))) throw  runtime_error("bad layer rendering");
         layerVec.push_back(layerRend);
     }
+    cout <<"layers ok"<<endl;
     string tileset2 = "res/src/tilestPokemon.png";
 //    vector<shared_ptr<PokeRender>> layerPoke;
     for( auto player :this->state->getPlayers())
@@ -110,7 +120,7 @@ void Scene::updateState() {
 
     }
 //    this->pokeVec.at(0)->setPosition(state::Position(this->pokeVec.at(0)->getPosition().x+1,this->pokeVec.at(0)->getPosition().y+1));
-
+//    pokeVec.at(0)->setPosition(Position(this->state->getPlayers().at(0)->getPokemon()->getPosition().x-1,this->state->getPlayers().at(0)->getPokemon()->getPosition().y-1));
 }
 
 void movePokeRender(unsigned int pokeId)
@@ -120,18 +130,19 @@ void movePokeRender(unsigned int pokeId)
 
 
 void Scene::stateChanged(const state::Event& e) {
-
+    cout << "state changes"<<endl;
     if(e.getEventType() == TAB_EVENT )
     {
         state::TabEvent event = *(TabEvent*)(e.clone());
         switch(event.tabEventId) {
             case MOVE:
-                pokeVec.at(event.playerId)->setPosition(state->getPlayers().at(event.playerId)->getPokemon()->getPosition().x);
+                pokeVec.at(event.playerId)->setPosition(Position(this->state->getPlayers().at(event.playerId)->
+                getPokemon()->getPosition().x,this->state->getPlayers().at(event.playerId)->getPokemon()->getPosition().x));
                 break;
 
         }
     }
-    this->updateState();
+//    this->updateState();
 }
 
 

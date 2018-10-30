@@ -1,5 +1,5 @@
 #include <iostream>
-#include <string.h>
+#include "string.h"
 
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include <SFML/Graphics.hpp>
@@ -9,6 +9,8 @@
 #include "engine.h"
 #include <cassert>
 #include <memory>
+#include <utility>
+#include "engine.h"
 void testSFML() {
     sf::Texture texture;
 }
@@ -25,14 +27,18 @@ using namespace engine;
 
 int main(int argc,char* argv[])
 {
+//    Map m("res/src/etage1.json");
 
     if(argc == 2){
         if(strcmp(argv[1],"hello")== 0) {
             cout << "Bonjour le monde !" << endl;
         }
         if(!strcmp(argv[1],"state")){
+            Map m("res/src/etage1.json");
+            cout << m.getWidth() <<endl;
             int success = 0;
             int fails = 0;
+
             // working case
             if(MapTest::testMap("res/src/etage1.json")){
                 success++;
@@ -85,67 +91,19 @@ int main(int argc,char* argv[])
         }
         if(!strcmp(argv[1],"render"))
         {
-            //create first state
-            unique_ptr<State> state1;
-            state1.reset(new State(Position(10,10), make_shared<Map>("res/src/etage3.json")));
+            Engine engine;
+            unique_ptr<Scene> scene3;
+            scene3.reset(new Scene(make_shared<state::State>(engine.getState()),"res/src/tilemap2.png"));
+            engine.getState().registerObserver(scene3.get());
+            MoveCommand command(SOUTH,0);
+            cout << "command built" <<endl;
+            engine.addCommand(&command,0);
 
-            string name = "sala1";
-            uint id = 1;
-            shared_ptr<Salameche> sal = nullptr;
-            sal.reset(new Salameche(id,Orientation ::SOUTH,200,Position(10,10)));
-            string playerName = "bob";
-            state1->getPlayers().insert(make_pair(id,new Player(false,playerName,id,sal)));
-            playerName = "tom";
-            id++;
-            state1->getPlayers().insert(make_pair(id,new Player(true,playerName,id)));
+            cout << "command added" <<endl;
+            engine.runCommands();
+            cout << "command run" << endl;
+//            scene3->draw();
 
-
-            //create 2nd state
-            shared_ptr<State> state2;
-            state2.reset(new State(Position(12,12),make_shared<Map>("res/src/etage2.json")));
-            id++;
-            shared_ptr<Carapuce> car = make_shared<Carapuce>(id,Orientation ::NORTH,200,Position(12,12));
-            playerName = "Alice";
-            state2->getPlayers().insert(make_pair(id,new Player(false,playerName,id,car)));
-
-
-            //create 3rd state
-//            shared_ptr<State> state3;
-//            state3.reset(new State(Position(8,8),make_shared<Map>("res/src/etage1.json")));
-//    id++;
-            uint id3 = id+1;
-            shared_ptr<Bulbizarre> bulbi = make_shared<Bulbizarre>(id3,Orientation ::EST,200,Position(8,8));
-            string playerName2 = "Bernard";
-
-//            state3->getPlayers()
-//            Scene* scene1 = new Scene(make_shared<State>(*state1),"res/src/tilemap2.png");
-
-//            scene1->draw();
-//            scene1->updateState(state2);
-//            scene1->draw();
-//            delete scene1;
-//
-//            Scene* scene2 = new Scene(state2,"res/src/tilemap2.png");
-//            scene2->draw();
-//            delete scene2;
-
-            string name3 = "toto";
-//            state3->registerObserver(scene3);
-            uint id4 = 10;
-            unique_ptr<Engine> engine1;
-
-            engine1.reset(new Engine());
-            engine1->getState().getPlayers().insert(make_pair(id4,new Player(false,name3,id4,make_shared<state::Salameche>(id4,SOUTH
-                    ,200,Position(8,7)))));
-
-            Scene* scene3 = new Scene(make_shared<state::State>(engine1.getState()),"res/src/tilemap2.png");
-
-            engine1.addCommand(new MoveCommand(SOUTH,4),10);
-            TabEvent event(TabEventId::MOVE,4);
-            engine1.getState().notifyObservers(event);
-
-            scene3->draw();
-            delete scene3;
         }
         if(!strcmp(argv[1],"engine"))
         {
