@@ -12,9 +12,10 @@ using namespace state;
 Engine::Engine()
 {
     static unsigned int id = 0;
-    Bulbizarre bulbi(id);
+
     string player = "Alice";
-    currentState.getPlayers().insert(make_pair(id,new Player(false,player,id,bulbi)));
+    currentState.getPlayers().insert(make_pair(id,new Player(false,player,id,make_shared<Bulbizarre>(id))));
+
 }
 void engine::Engine::addCommand(Command* command, unsigned int priority) {
     shared_ptr<Command> command_shared;

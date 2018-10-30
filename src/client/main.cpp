@@ -8,6 +8,7 @@
 #include "MapTest.h"
 #include "engine.h"
 #include <cassert>
+#include <memory>
 void testSFML() {
     sf::Texture texture;
 }
@@ -131,17 +132,15 @@ int main(int argc,char* argv[])
             string name3 = "toto";
 //            state3->registerObserver(scene3);
             uint id4 = 10;
-            Engine engine1;
+            unique_ptr<Engine> engine1;
 
-            engine1.addCommand(new MoveCommand(SOUTH,4),0);
-
-            engine1.getState().
-
-            engine1.getState().getPlayers().insert(make_pair(id4,new Player(false,name3,id4,make_shared<state::Salameche>(id4,SOUTH
+            engine1.reset(new Engine());
+            engine1->getState().getPlayers().insert(make_pair(id4,new Player(false,name3,id4,make_shared<state::Salameche>(id4,SOUTH
                     ,200,Position(8,7)))));
 
             Scene* scene3 = new Scene(make_shared<state::State>(engine1.getState()),"res/src/tilemap2.png");
 
+            engine1.addCommand(new MoveCommand(SOUTH,4),10);
             TabEvent event(TabEventId::MOVE,4);
             engine1.getState().notifyObservers(event);
 
