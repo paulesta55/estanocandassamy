@@ -3,9 +3,19 @@
 //
 #include "engine.h"
 #include "Engine.h"
+#include "string.h"
+#include "state.h"
 using namespace std;
 using namespace engine;
+using namespace state;
 
+Engine::Engine()
+{
+    static unsigned int id = 0;
+    Bulbizarre bulbi(id);
+    string player = "Alice";
+    currentState.getPlayers().insert(make_pair(id,new Player(false,player,id,bulbi)));
+}
 void engine::Engine::addCommand(Command* command, unsigned int priority) {
     shared_ptr<Command> command_shared;
     command_shared.reset(command);

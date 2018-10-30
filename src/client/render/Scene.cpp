@@ -19,9 +19,9 @@ Scene::Scene(shared_ptr<state::State> state1,string tileSet) {
     string tileset2 = "res/src/tilestPokemon.png";
     this->pokeTileSet.reset(new sf::Texture());
     this->pokeTileSet->loadFromFile("res/src/tilestPokemon.png");
-    this->state.reset(state1.get());
+    state.reset(state1.get());
     this->updateState();
-
+    state->registerObserver(this);
 
 
 }

@@ -19,6 +19,8 @@ void testSFML() {
 using namespace std;
 using namespace state;
 using namespace render;
+using namespace engine;
+
 
 int main(int argc,char* argv[])
 {
@@ -107,14 +109,14 @@ int main(int argc,char* argv[])
 
 
             //create 3rd state
-            shared_ptr<State> state3;
-            state3.reset(new State(Position(8,8),make_shared<Map>("res/src/etage1.json")));
+//            shared_ptr<State> state3;
+//            state3.reset(new State(Position(8,8),make_shared<Map>("res/src/etage1.json")));
 //    id++;
             uint id3 = id+1;
             shared_ptr<Bulbizarre> bulbi = make_shared<Bulbizarre>(id3,Orientation ::EST,200,Position(8,8));
             string playerName2 = "Bernard";
 
-            state3->getPlayers().insert(make_pair(id3,new Player(false,playerName2,id3,bulbi)));
+//            state3->getPlayers()
 //            Scene* scene1 = new Scene(make_shared<State>(*state1),"res/src/tilemap2.png");
 
 //            scene1->draw();
@@ -126,17 +128,22 @@ int main(int argc,char* argv[])
 //            scene2->draw();
 //            delete scene2;
 
-            Scene* scene3 = new Scene(state3,"res/src/tilemap2.png");
             string name3 = "toto";
-            state3->registerObserver(scene3);
+//            state3->registerObserver(scene3);
             uint id4 = 10;
-            map<unsigned  int,Player*>& mapref = state3->getPlayers();
-            mapref.insert(make_pair(id4,new Player(false,name3,id4,make_shared<state::Salameche>(id4,SOUTH
+            Engine engine1;
+
+            engine1.addCommand(new MoveCommand(SOUTH,4),0);
+
+            engine1.getState().
+
+            engine1.getState().getPlayers().insert(make_pair(id4,new Player(false,name3,id4,make_shared<state::Salameche>(id4,SOUTH
                     ,200,Position(8,7)))));
 
+            Scene* scene3 = new Scene(make_shared<state::State>(engine1.getState()),"res/src/tilemap2.png");
 
             TabEvent event(TabEventId::MOVE,4);
-            state3->notifyObservers(event);
+            engine1.getState().notifyObservers(event);
 
             scene3->draw();
             delete scene3;
