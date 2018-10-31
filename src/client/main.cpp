@@ -158,6 +158,11 @@ int main(int argc,char* argv[])
 //            cout << "command run" << endl;
 
             scene3->draw(window);
+
+            engine.addCommand(new MoveCommand(WEST,0),0);
+            engine.runCommands();
+            scene3->draw(window);
+
         }
 
     }
