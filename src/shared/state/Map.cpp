@@ -14,6 +14,8 @@ using namespace state;
 using namespace std;
 
 
+
+
 uint Map::getTileHeight() {
     return this->tileHeight;
 }
@@ -37,7 +39,6 @@ shared_ptr<TileSet> Map::getTileSet() {
 std::shared_ptr<vector<Layer>> Map::getLayers() {
     return this->layers;
 }
-
 
 Map::Map(std::string mapPath) {
     //open the map.json file
