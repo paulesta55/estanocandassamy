@@ -43,7 +43,7 @@ void engine::Engine::addCommand(Command* command, unsigned int priority) {
 void engine::Engine::runCommands() {
 
     auto it = commands.begin();
-    cout << "begin to run commands" <<endl;
+//    cout << "begin to run commands" <<endl;
     while(it!=commands.cend())
     {
 //        cout <<"command "<<it->first<<endl;
