@@ -2,7 +2,7 @@
 final year  ENSEA/IS project
 # Get Started
 ```sh 
-$ git clone ...
+$ git clone <projectUrl>
 ```
 
 **WARNING** : DO NOT ERASE OR MODIFY THE MAKEFILE
