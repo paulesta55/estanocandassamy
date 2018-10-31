@@ -34,11 +34,12 @@ cout<<"enter scene" <<endl;
 
 }
 
-void Scene::draw() {
+void Scene::draw(sf::RenderWindow& window) {
 
     //good dimensions : 620 x 620
-    sf::RenderWindow window(sf::VideoMode(620,620),"test window");
-    while(window.isOpen()){
+
+    int count = 200;
+    while(count>0){
         cout << "window opened" <<endl;
         // handle events
         sf::Event event;
@@ -52,12 +53,7 @@ void Scene::draw() {
                     this->clock.restart();
                     break;
                 case sf::Event::KeyReleased:
-                    MoveCommand command(SOUTH,0);
-                    cout << "command built" <<endl;
-                    engine->addCommand(&command,0);
-                    cout << "command added" <<endl;
-                    engine->runCommands();
-                    cout << "command run" << endl;
+
                     cout << this->clock.getElapsedTime().asMilliseconds() << endl;
                     break;
 
@@ -82,6 +78,7 @@ void Scene::draw() {
         sf::View view2(sf::Vector2f(this->xCenter, this->yCenter), sf::Vector2f(700.f, 700.f));
 //        window.draw(text);
 
+        count--;
         window.setView(view2);
         window.display();
     }
