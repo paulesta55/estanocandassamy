@@ -19,29 +19,31 @@ void MoveCommand::execute(state::State &state) {
 
     cout << "begin movecommand" <<endl;
     State& state_ref = state;
-    unique_ptr<Player> player_ptr;
+    shared_ptr<Player> player_ptr = nullptr;
 //    unique_ptr<Pokemon> poke_ptr;
     for( auto player : state_ref.getPlayers())
     {
         if(player.second->getID()== idPlayer)
         {
-            player_ptr.reset(player.second);
+            player_ptr = player.second;
+            cout << "player found" <<endl;
         }
     }
 
-    if(!player_ptr.get())
+
+    if(!player_ptr)
     {
         cout <<"no player"<<endl;
         throw new runtime_error("move command with bad player");
     }
-    if(!player_ptr->getPokemon().get())
+    if(!(player_ptr->getPokemon().get()))
     {
         cout << "no pokemon" <<endl;
        throw new runtime_error("move command with bad pokemon");
     }
 
     cout << "player and poke found" <<endl;
-    player_ptr->getPokemon();
+//    player_ptr->getPokemon();
 
     cout << "poke ptr built" <<endl;
     if(orientation == player_ptr->getPokemon()->orientation)
@@ -70,6 +72,7 @@ void MoveCommand::execute(state::State &state) {
         TabEvent tabEvent(TabEventId::MOVE,idPlayer);
         cout << "tab event built "<<endl;
         state_ref.notifyObservers(tabEvent);
+
     }
     else
     {

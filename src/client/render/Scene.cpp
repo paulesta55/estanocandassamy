@@ -86,7 +86,7 @@ void Scene::draw(sf::RenderWindow& window) {
 
 void Scene::updateState() {
     pokeVec.clear();
-    this->layerVec.clear();
+    layerVec.clear();
     if(engine->getState().getPlayers().size() <=0){
         throw new runtime_error("cannot render a state with no players");
     }

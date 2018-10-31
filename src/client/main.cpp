@@ -92,7 +92,7 @@ int main(int argc,char* argv[])
         if(!strcmp(argv[1],"render"))
         {
             Engine engine;
-            unique_ptr<Scene> scene3;
+            shared_ptr<Scene> scene3;
             scene3.reset(new Scene(make_shared<engine::Engine>(engine),"res/src/tilemap2.png"));
             engine.getState().registerObserver(scene3.get());
             sf::RenderWindow window(sf::VideoMode(620,620),"test window");
@@ -107,13 +107,13 @@ int main(int argc,char* argv[])
 //            cout << "command built" <<endl;
             scene3->draw(window);
 
-//            MoveCommand command2(SOUTH,0);
-//            engine.addCommand(&command2,0);
-//            cout << "command added" <<endl;
-//            engine.runCommands();
-//            cout << "command run" << endl;
-//
-//            scene3->draw(window);
+            MoveCommand command2(SOUTH,0);
+            engine.addCommand(&command2,0);
+            cout << "command added" <<endl;
+            engine.runCommands();
+            cout << "command run" << endl;
+
+            scene3->draw(window);
 
             //            scene3.reset();
 

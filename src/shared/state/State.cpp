@@ -7,7 +7,7 @@
 using namespace state;
 using namespace std;
 
-std::map<unsigned int,Player*>& State::getPlayers() {return players;}
+std::map<unsigned int,shared_ptr<Player>>& State::getPlayers() {return players;}
 
 std::shared_ptr<Map> State::getMap() {return this->map;}
 

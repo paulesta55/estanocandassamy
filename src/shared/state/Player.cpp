@@ -48,4 +48,8 @@ std::string Player::getName() { return this->name;}
 Player::Player(bool IA, std::string& name, uint& ID, shared_ptr<Pokemon> pokemon): IA(IA),name(name), ID(ID), pokemon(
         std::move(pokemon)) {}
 
+Player::~Player() {
+
+}
+
 

@@ -51,3 +51,7 @@ uint Pokemon::getFullLife() {
 void Pokemon::setOrientation(Orientation orientation) {
     this->orientation = orientation;
 }
+
+Pokemon::~Pokemon() {
+
+}
