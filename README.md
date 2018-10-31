@@ -1,7 +1,7 @@
 # estanocandassamy
 final year  ENSEA/IS project
 # Get Started
-```bash 
+```sh 
 $ git clone ...
 ```
 
