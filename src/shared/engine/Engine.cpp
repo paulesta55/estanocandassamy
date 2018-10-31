@@ -34,7 +34,7 @@ void engine::Engine::addCommand(Command* command, unsigned int priority) {
     }
     shared_ptr<Command> command_shared;
     command_shared.reset(command);
-    cout << "new adding command"<< endl;
+//    cout << "new adding command"<< endl;
     commands.insert(make_pair(priority,command_shared));
 
 //    cout << "new command added" <<endl;
@@ -46,10 +46,10 @@ void engine::Engine::runCommands() {
     cout << "begin to run commands" <<endl;
     while(it!=commands.cend())
     {
-        cout <<"command "<<it->first<<endl;
+//        cout <<"command "<<it->first<<endl;
         it->second->execute(currentState);
         bool endbool = it == commands.cend();
-        cout << "end of commands ? " << endbool << endl;
+//        cout << "end of commands ? " << endbool << endl;
 
         commands.erase(it);
         //        commands.erase(it);
@@ -57,7 +57,7 @@ void engine::Engine::runCommands() {
     }
 
 //    commands.clear();
-    cout << "end of commands" <<endl;
+//    cout << "end of commands" <<endl;
 }
 
 state::State &engine::Engine::getState() {

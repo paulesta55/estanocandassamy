@@ -20,17 +20,17 @@ Scene::Scene(shared_ptr<engine::Engine> engine,string tileSet,unsigned int  poke
 
 
 //    vector<shared_ptr<LayerRender>> layerVec;
-cout<<"enter scene" <<endl;
+//cout<<"enter scene" <<endl;
     this->tileset=tileSet;
     string tileset2 = "res/src/tilestPokemon.png";
     this->pokeTileSet.reset(new sf::Texture());
     this->pokeTileSet->loadFromFile("res/src/tilestPokemon.png");
-    cout << "tileset loaded" <<endl;
+//    cout << "tileset loaded" <<endl;
     this->engine = engine;
 //    state->registerObserver(this);
-    cout << "observer register" <<endl;
+//    cout << "observer register" <<endl;
     this->updateState();
-    cout << "update state "<<endl;
+//    cout << "update state "<<endl;
 
 
 }
@@ -97,15 +97,15 @@ void Scene::updateState() {
     {
         throw new runtime_error("cannot render a state with no map");
     }
-    cout << "layer vec cleared" <<endl;
+//    cout << "layer vec cleared" <<endl;
     uint tileWidth = engine ->getState().getMap()->getTileWidth();
     uint tileHeight = engine->getState().getMap()->getTileHeight();
 
-    cout << "tilewidth and tileheight ok" <<endl;
+//    cout << "tilewidth and tileheight ok" <<endl;
     this->xCenter = engine->getState().getPlayers().at(pokeTarId)->getPokemon()->getPosition().x*tileWidth;
     this->yCenter = engine->getState().getPlayers().at(pokeTarId)->getPokemon()->getPosition().y*tileHeight;
 
-    cout <<"center ok" <<endl;
+//    cout <<"center ok" <<endl;
     for(auto layer: *(engine->getState().getMap()->getLayers()))
     {
         shared_ptr<LayerRender> layerRend;
@@ -115,7 +115,7 @@ void Scene::updateState() {
                              layer.getData(),layer.getWidth(),layer.getHeight()))) throw  runtime_error("bad layer rendering");
         layerVec.push_back(layerRend);
     }
-    cout <<"layers ok"<<endl;
+//    cout <<"layers ok"<<endl;
     string tileset2 = "res/src/tilestPokemon.png";
 //    vector<shared_ptr<PokeRender>> layerPoke;
     for( auto player :engine->getState().getPlayers())

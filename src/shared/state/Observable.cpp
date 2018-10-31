@@ -30,9 +30,9 @@ void const state::Observable::notifyObservers(const state::Event &e) {
     for (auto o : observers)
     {
 
-        cout << "obs notified" << c << endl;
+//        cout << "obs notified" << c << endl;
         o->stateChanged(e);
-        cout << "command " << c << "completed" <<endl;
+//        cout << "command " << c << "completed" <<endl;
     }
-    cout << "end of observers" <<endl;
+//    cout << "end of observers" <<endl;
 }

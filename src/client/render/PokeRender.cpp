@@ -71,14 +71,14 @@ unsigned int PokeRender::getPokeId() {
 
 void PokeRender::setPosition() {
 
-    cout << position.x <<endl;
+//    cout << position.x <<endl;
     // find its position in the tileset texture
     int tu = tileNumber % (m_tileset->getSize().x / tileSize.x);
     int tv = tileNumber / (m_tileset->getSize().x / tileSize.x);
 
     // get a pointer to the current tile's quad
     sf::Vertex* quad = &m_vertices[0];
-    cout << "vertex fetched" <<endl;
+//    cout << "vertex fetched" <<endl;
     // define its 4 corners
     quad[0].position = sf::Vector2f(position.x* tileSize.x, position.y * tileSize.y);
     quad[1].position = sf::Vector2f((position.x + 1) * tileSize.x, position.y * tileSize.y);
@@ -91,7 +91,7 @@ void PokeRender::setPosition() {
     quad[2].texCoords = sf::Vector2f((tu + 1) * (tileSize.x+1), (tv + 1) * (tileSize.y+1));
     quad[3].texCoords = sf::Vector2f(tu * (tileSize.x+1)+1, (tv + 1) * (tileSize.y+1));
 
-    cout << "new pos set" <<endl;
+//    cout << "new pos set" <<endl;
 }
 
 

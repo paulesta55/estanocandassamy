@@ -17,7 +17,7 @@ MoveCommand::MoveCommand(state::Orientation o, unsigned int id) {
 
 void MoveCommand::execute(state::State &state) {
 
-    cout << "begin movecommand" <<endl;
+//    cout << "begin movecommand" <<endl;
     State& state_ref = state;
     shared_ptr<Player> player_ptr = nullptr;
 //    unique_ptr<Pokemon> poke_ptr;
@@ -26,7 +26,7 @@ void MoveCommand::execute(state::State &state) {
         if(player.second->getID()== idPlayer)
         {
             player_ptr = player.second;
-            cout << "player found" <<endl;
+//            cout << "player found" <<endl;
         }
     }
 
@@ -42,10 +42,10 @@ void MoveCommand::execute(state::State &state) {
        throw new runtime_error("move command with bad pokemon");
     }
 
-    cout << "player and poke found" <<endl;
+//    cout << "player and poke found" <<endl;
 //    player_ptr->getPokemon();
 
-    cout << "poke ptr built" <<endl;
+//    cout << "poke ptr built" <<endl;
     if(orientation == player_ptr->getPokemon()->orientation)
     {
         Position p = player_ptr->getPokemon()->getPosition();
@@ -53,7 +53,6 @@ void MoveCommand::execute(state::State &state) {
         switch(orientation) {
             case Orientation ::SOUTH:
                 p.y++;
-                cout << "south +1"<< endl;
                 break;
 
             case Orientation ::NORTH:
@@ -67,11 +66,16 @@ void MoveCommand::execute(state::State &state) {
                 break;
 
         }
-        player_ptr->getPokemon()->setPosition(p);
-        cout << "set new position"<<endl;
-        TabEvent tabEvent(TabEventId::MOVE,idPlayer);
-        cout << "tab event built "<<endl;
-        state_ref.notifyObservers(tabEvent);
+
+        if(checkMove(p,state_ref))
+        {
+            player_ptr->getPokemon()->setPosition(p);
+//        cout << "set new position"<<endl;
+            TabEvent tabEvent(TabEventId::MOVE,idPlayer);
+//        cout << "tab event built "<<endl;
+            state_ref.notifyObservers(tabEvent);
+        }
+
 
     }
     else
@@ -81,6 +85,16 @@ void MoveCommand::execute(state::State &state) {
         state_ref.notifyObservers(tabEvent);
     }
 
-    cout << "end of move command" << endl;
+//    cout << "end of move command" << endl;
 }
 
+bool MoveCommand::checkMove(Position& p,State& state)
+{
+    unsigned int nextTile = state.getMap()->getLayers()->at(0).getData()->at(p.x+p.y*state.getMap()->getWidth());
+    if(nextTile!=35)
+    {
+        return false;
+    }
+    cout << "next tile: " << nextTile << endl;
+    return true;
+}
