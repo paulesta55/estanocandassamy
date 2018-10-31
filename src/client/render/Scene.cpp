@@ -85,6 +85,8 @@ void Scene::draw(sf::RenderWindow& window) {
 }
 
 void Scene::updateState() {
+
+
     pokeVec.clear();
     layerVec.clear();
     if(engine->getState().getPlayers().size() <=0){
@@ -99,8 +101,8 @@ void Scene::updateState() {
     uint tileHeight = engine->getState().getMap()->getTileHeight();
 
     cout << "tilewidth and tileheight ok" <<endl;
-    this->xCenter = engine->getState().center.x*tileWidth;
-    this->yCenter = engine->getState().center.y*tileHeight;
+    this->xCenter = engine->getState().getPlayers().at(0)->getPokemon()->getPosition().x*tileWidth;
+    this->yCenter = engine->getState().getPlayers().at(0)->getPokemon()->getPosition().y*tileHeight;
 
     cout <<"center ok" <<endl;
     for(auto layer: *(engine->getState().getMap()->getLayers()))
