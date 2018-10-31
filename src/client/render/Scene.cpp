@@ -16,7 +16,8 @@ using namespace std;
 using namespace render;
 using namespace state;
 using namespace engine;
-Scene::Scene(shared_ptr<engine::Engine> engine,string tileSet) {
+Scene::Scene(shared_ptr<engine::Engine> engine,string tileSet,unsigned int  pokeTarId) : pokeTarId(pokeTarId){
+
 
 //    vector<shared_ptr<LayerRender>> layerVec;
 cout<<"enter scene" <<endl;
@@ -38,9 +39,9 @@ void Scene::draw(sf::RenderWindow& window) {
 
     //good dimensions : 620 x 620
 
-    int count = 200;
-    while(count>0){
-        cout << "window opened" <<endl;
+    int count = 400;
+    while(count>0 && window.isOpen()){
+//        cout << "window opened" <<endl;
         // handle events
         sf::Event event;
         while (window.pollEvent(event))
@@ -101,8 +102,8 @@ void Scene::updateState() {
     uint tileHeight = engine->getState().getMap()->getTileHeight();
 
     cout << "tilewidth and tileheight ok" <<endl;
-    this->xCenter = engine->getState().getPlayers().at(0)->getPokemon()->getPosition().x*tileWidth;
-    this->yCenter = engine->getState().getPlayers().at(0)->getPokemon()->getPosition().y*tileHeight;
+    this->xCenter = engine->getState().getPlayers().at(pokeTarId)->getPokemon()->getPosition().x*tileWidth;
+    this->yCenter = engine->getState().getPlayers().at(pokeTarId)->getPokemon()->getPosition().y*tileHeight;
 
     cout <<"center ok" <<endl;
     for(auto layer: *(engine->getState().getMap()->getLayers()))

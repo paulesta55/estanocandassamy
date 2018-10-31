@@ -93,22 +93,29 @@ int main(int argc,char* argv[])
         {
             Engine engine;
             shared_ptr<Scene> scene3;
-            scene3.reset(new Scene(make_shared<engine::Engine>(engine),"res/src/tilemap2.png"));
+            scene3.reset(new Scene(make_shared<engine::Engine>(engine),"res/src/tilemap2.png",1));
             engine.getState().registerObserver(scene3.get());
             sf::RenderWindow window(sf::VideoMode(620,620),"test window");
             scene3->draw(window);
 
-            auto command=new MoveCommand(SOUTH, 0);
             cout << "command built" <<endl;
-            engine.addCommand(command,0);
+            engine.addCommand(new MoveCommand(SOUTH, 0),0);
             cout << "command added" <<endl;
             engine.runCommands();
             cout << "command run" << endl;
 //            cout << "command built" <<endl;
             scene3->draw(window);
 
-            auto command2 = new MoveCommand(SOUTH,0);
-            engine.addCommand(command2,0);
+//            delete command;
+//            auto command2 = new MoveCommand(SOUTH,1);
+            engine.addCommand(new MoveCommand(SOUTH,1),0);
+            cout << "command added" <<endl;
+            engine.runCommands();
+            cout << "command run" << endl;
+
+            scene3->draw(window);
+
+            engine.addCommand(new MoveCommand(SOUTH,1),0);
             cout << "command added" <<endl;
             engine.runCommands();
             cout << "command run" << endl;
@@ -117,11 +124,40 @@ int main(int argc,char* argv[])
 
             //            scene3.reset();
 
-
         }
         if(!strcmp(argv[1],"engine"))
         {
             cout << "engine" <<endl;
+            Engine engine;
+            shared_ptr<Scene> scene3;
+            scene3.reset(new Scene(make_shared<engine::Engine>(engine),"res/src/tilemap2.png",1));
+            engine.getState().registerObserver(scene3.get());
+            sf::RenderWindow window(sf::VideoMode(620,620),"test window");
+            scene3->draw(window);
+
+//            cout << "command built" <<endl;
+            engine.addCommand(new MoveCommand(SOUTH, 0),0);
+//            cout << "command added" <<endl;
+            engine.runCommands();
+//            cout << "command run" << endl;
+//            cout << "command built" <<endl;
+            scene3->draw(window);
+
+//            delete command;
+//            auto command2 = new MoveCommand(SOUTH,1);
+            engine.addCommand(new MoveCommand(SOUTH,1),0);
+//            cout << "command added" <<endl;
+            engine.runCommands();
+//            cout << "command run" << endl;
+
+            scene3->draw(window);
+
+            engine.addCommand(new MoveCommand(SOUTH,1),0);
+//            cout << "command added" <<endl;
+            engine.runCommands();
+//            cout << "command run" << endl;
+
+            scene3->draw(window);
         }
 
     }
