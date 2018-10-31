@@ -5,7 +5,7 @@ final year  ENSEA/IS project
 $ git clone ...
 ```
 
-WARNING : DO NOT ERASE OR MODIFY THE MAKEFILE
+**WARNING** : DO NOT ERASE OR MODIFY THE MAKEFILE
 
 ```sh
 $ cd ./estanocandassamy
