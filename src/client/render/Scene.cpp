@@ -75,7 +75,7 @@ void Scene::draw(sf::RenderWindow& window) {
 
 
         // good size : 200 x 200
-        sf::View view2(sf::Vector2f(this->xCenter, this->yCenter), sf::Vector2f(700.f, 700.f));
+        sf::View view2(sf::Vector2f(this->xCenter, this->yCenter), sf::Vector2f(200.f, 200.f));
 //        window.draw(text);
 
         count--;

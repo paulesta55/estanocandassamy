@@ -28,12 +28,16 @@ Engine::Engine()
 
 }
 void engine::Engine::addCommand(Command* command, unsigned int priority) {
+    if(!command)
+    {
+        throw new runtime_error("empty command error");
+    }
     shared_ptr<Command> command_shared;
     command_shared.reset(command);
     cout << "new adding command"<< endl;
     commands.insert(make_pair(priority,command_shared));
 
-    cout << "new command added" <<endl;
+//    cout << "new command added" <<endl;
 }
 
 void engine::Engine::runCommands() {
@@ -47,7 +51,7 @@ void engine::Engine::runCommands() {
         bool endbool = it == commands.cend();
         cout << "end of commands ? " << endbool << endl;
 
-        commands.erase(it->first);
+        commands.erase(it);
         //        commands.erase(it);
         it++;
     }

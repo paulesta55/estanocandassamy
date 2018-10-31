@@ -98,17 +98,17 @@ int main(int argc,char* argv[])
             sf::RenderWindow window(sf::VideoMode(620,620),"test window");
             scene3->draw(window);
 
-            MoveCommand command(SOUTH,0);
+            auto command=new MoveCommand(SOUTH, 0);
             cout << "command built" <<endl;
-            engine.addCommand(&command,0);
+            engine.addCommand(command,0);
             cout << "command added" <<endl;
             engine.runCommands();
             cout << "command run" << endl;
 //            cout << "command built" <<endl;
             scene3->draw(window);
 
-            MoveCommand command2(SOUTH,0);
-            engine.addCommand(&command2,0);
+            auto command2 = new MoveCommand(SOUTH,0);
+            engine.addCommand(command2,0);
             cout << "command added" <<endl;
             engine.runCommands();
             cout << "command run" << endl;
