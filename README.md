@@ -1,7 +1,7 @@
 # estanocandassamy
 final year  ENSEA/IS project
 # Get Started
-```$ git clone ...```
+```sh $ git clone ...```
 
 WARNING : DO NOT ERASE OR MODIFY THE MAKEFILE
 
