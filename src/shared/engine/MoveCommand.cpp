@@ -20,7 +20,7 @@ void MoveCommand::execute(state::State &state) {
     cout << "begin movecommand" <<endl;
     State& state_ref = state;
     unique_ptr<Player> player_ptr;
-    unique_ptr<Pokemon> poke_ptr;
+//    unique_ptr<Pokemon> poke_ptr;
     for( auto player : state_ref.getPlayers())
     {
         if(player.second->getID()== idPlayer)
@@ -41,16 +41,15 @@ void MoveCommand::execute(state::State &state) {
     }
 
     cout << "player and poke found" <<endl;
-    poke_ptr.reset(player_ptr->getPokemon().get());
+    player_ptr->getPokemon();
 
     cout << "poke ptr built" <<endl;
-    if(orientation == poke_ptr->orientation)
+    if(orientation == player_ptr->getPokemon()->orientation)
     {
-        Position p = poke_ptr->getPosition();
+        Position p = player_ptr->getPokemon()->getPosition();
 
         switch(orientation) {
             case Orientation ::SOUTH:
-
                 p.y++;
                 cout << "south +1"<< endl;
                 break;
@@ -66,7 +65,7 @@ void MoveCommand::execute(state::State &state) {
                 break;
 
         }
-        poke_ptr->setPosition(p);
+        player_ptr->getPokemon()->setPosition(p);
         cout << "set new position"<<endl;
         TabEvent tabEvent(TabEventId::MOVE,idPlayer);
         cout << "tab event built "<<endl;
@@ -74,11 +73,11 @@ void MoveCommand::execute(state::State &state) {
     }
     else
     {
-        poke_ptr->setOrientation(orientation);
+        player_ptr->getPokemon()->setOrientation(orientation);
         TabEvent tabEvent(TabEventId::MOVE,idPlayer);
         state_ref.notifyObservers(tabEvent);
     }
 
-
+    cout << "end of move command" << endl;
 }
 

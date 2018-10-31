@@ -40,8 +40,10 @@ void engine::Engine::runCommands() {
     cout << "begin to run commands" <<endl;
     while(it!=commands.cend())
     {
-        cout <<"command "+it->first<<endl;
+        cout <<"command "<<it->first<<endl;
         it->second->execute(currentState);
+        bool endbool = it == commands.cend();
+        cout << "end of commands ? " << endbool << endl;
         it++;
     }
     cout << "end of commands" <<endl;

@@ -59,7 +59,7 @@ bool PokeRender::load(std::shared_ptr<sf::Texture> tileset, sf::Vector2u tileSiz
     this->tileNumber = tileNumber;
     m_vertices.setPrimitiveType(sf::Quads);
     m_vertices.resize(4);
-    this->setPosition(position);
+    this->setPosition();
 
 
     return true;
@@ -69,9 +69,9 @@ unsigned int PokeRender::getPokeId() {
     return pokeId;
 }
 
-void PokeRender::setPosition(state::Position p) {
+void PokeRender::setPosition() {
 
-    cout << p.x <<endl;
+    cout << position.x <<endl;
     // find its position in the tileset texture
     int tu = tileNumber % (m_tileset->getSize().x / tileSize.x);
     int tv = tileNumber / (m_tileset->getSize().x / tileSize.x);
@@ -80,10 +80,10 @@ void PokeRender::setPosition(state::Position p) {
     sf::Vertex* quad = &m_vertices[0];
     cout << "vertex fetched" <<endl;
     // define its 4 corners
-    quad[0].position = sf::Vector2f(p.x* tileSize.x, p.y * tileSize.y);
-    quad[1].position = sf::Vector2f((p.x + 1) * tileSize.x, p.y * tileSize.y);
-    quad[2].position = sf::Vector2f((p.x + 1) * tileSize.x, (p.y + 1) * tileSize.y);
-    quad[3].position = sf::Vector2f(p.x * tileSize.x, (p.y + 1) * tileSize.y);
+    quad[0].position = sf::Vector2f(position.x* tileSize.x, position.y * tileSize.y);
+    quad[1].position = sf::Vector2f((position.x + 1) * tileSize.x, position.y * tileSize.y);
+    quad[2].position = sf::Vector2f((position.x + 1) * tileSize.x, (position.y + 1) * tileSize.y);
+    quad[3].position = sf::Vector2f(position.x * tileSize.x, (position.y + 1) * tileSize.y);
 
     // define its 4 texture coordinates
     quad[0].texCoords = sf::Vector2f(tu * (tileSize.x+1)+1, tv * (tileSize.y+1)+1);

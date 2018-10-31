@@ -26,9 +26,13 @@ void state::Observable::unregisterObservers() {
 }
 
 void const state::Observable::notifyObservers(const state::Event &e) {
+    int c = 0;
     for (auto o : observers)
     {
-        cout << "obs notified" << endl;
+
+        cout << "obs notified" << c << endl;
         o->stateChanged(e);
+        cout << "command " << c << "completed" <<endl;
     }
+    cout << "end of observers" <<endl;
 }

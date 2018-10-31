@@ -9,10 +9,14 @@
 #include <iostream>
 #include <string>
 #include "state.h"
+
+#include "engine.h"
+
 using namespace std;
 using namespace render;
 using namespace state;
-Scene::Scene(shared_ptr<state::State> state1,string tileSet) {
+using namespace engine;
+Scene::Scene(shared_ptr<engine::Engine> engine,string tileSet) {
 
 //    vector<shared_ptr<LayerRender>> layerVec;
 cout<<"enter scene" <<endl;
@@ -21,7 +25,7 @@ cout<<"enter scene" <<endl;
     this->pokeTileSet.reset(new sf::Texture());
     this->pokeTileSet->loadFromFile("res/src/tilestPokemon.png");
     cout << "tileset loaded" <<endl;
-    state = state1;
+    this->engine = engine;
 //    state->registerObserver(this);
     cout << "observer register" <<endl;
     this->updateState();
@@ -48,6 +52,12 @@ void Scene::draw() {
                     this->clock.restart();
                     break;
                 case sf::Event::KeyReleased:
+                    MoveCommand command(SOUTH,0);
+                    cout << "command built" <<endl;
+                    engine->addCommand(&command,0);
+                    cout << "command added" <<endl;
+                    engine->runCommands();
+                    cout << "command run" << endl;
                     cout << this->clock.getElapsedTime().asMilliseconds() << endl;
                     break;
 
@@ -69,7 +79,7 @@ void Scene::draw() {
 
 
         // good size : 200 x 200
-        sf::View view2(sf::Vector2f(this->xCenter, this->yCenter), sf::Vector2f(200.f, 200.f));
+        sf::View view2(sf::Vector2f(this->xCenter, this->yCenter), sf::Vector2f(700.f, 700.f));
 //        window.draw(text);
 
         window.setView(view2);
@@ -80,23 +90,23 @@ void Scene::draw() {
 void Scene::updateState() {
     pokeVec.clear();
     this->layerVec.clear();
-    if(state->getPlayers().size() <=0){
+    if(engine->getState().getPlayers().size() <=0){
         throw new runtime_error("cannot render a state with no players");
     }
-    if(!state->getMap())
+    if(!engine->getState().getMap())
     {
         throw new runtime_error("cannot render a state with no map");
     }
     cout << "layer vec cleared" <<endl;
-    uint tileWidth = this->state->getMap()->getTileWidth();
-    uint tileHeight = this->state->getMap()->getTileHeight();
+    uint tileWidth = engine ->getState().getMap()->getTileWidth();
+    uint tileHeight = engine->getState().getMap()->getTileHeight();
 
     cout << "tilewidth and tileheight ok" <<endl;
-    this->xCenter = state->center.x*tileWidth;
-    this->yCenter = state->center.y*tileHeight;
+    this->xCenter = engine->getState().center.x*tileWidth;
+    this->yCenter = engine->getState().center.y*tileHeight;
 
     cout <<"center ok" <<endl;
-    for(auto layer: *(this->state->getMap()->getLayers()))
+    for(auto layer: *(engine->getState().getMap()->getLayers()))
     {
         shared_ptr<LayerRender> layerRend;
         layerRend.reset(new LayerRender());
@@ -108,7 +118,7 @@ void Scene::updateState() {
     cout <<"layers ok"<<endl;
     string tileset2 = "res/src/tilestPokemon.png";
 //    vector<shared_ptr<PokeRender>> layerPoke;
-    for( auto player :this->state->getPlayers())
+    for( auto player :engine->getState().getPlayers())
     {
         shared_ptr<PokeRender> pokeRender;
         pokeRender.reset(new PokeRender());
@@ -131,18 +141,20 @@ void movePokeRender(unsigned int pokeId)
 
 void Scene::stateChanged(const state::Event& e) {
     cout << "state changes"<<endl;
-    if(e.getEventType() == TAB_EVENT )
-    {
-        state::TabEvent event = *(TabEvent*)(e.clone());
-        switch(event.tabEventId) {
-            case MOVE:
-                pokeVec.at(event.playerId)->setPosition(Position(this->state->getPlayers().at(event.playerId)->
-                getPokemon()->getPosition().x,this->state->getPlayers().at(event.playerId)->getPokemon()->getPosition().x));
-                break;
-
-        }
-    }
-//    this->updateState();
+//    if(e.getEventType() == TAB_EVENT )
+//    {
+//        state::TabEvent event = *(TabEvent*)(e.clone());
+//        cout<<"event cloned"<<endl;
+//        switch(event.tabEventId) {
+//            case MOVE:
+//                pokeVec.at(event.playerId)->setPosition();
+//                cout << "pokerender moved" <<endl;
+//                break;
+//
+//        }
+//    }
+    cout << "out of state changed switch"<<endl;
+    this->updateState();
 }
 
 

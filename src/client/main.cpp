@@ -93,16 +93,11 @@ int main(int argc,char* argv[])
         {
             Engine engine;
             unique_ptr<Scene> scene3;
-            scene3.reset(new Scene(make_shared<state::State>(engine.getState()),"res/src/tilemap2.png"));
+            scene3.reset(new Scene(make_shared<engine::Engine>(engine),"res/src/tilemap2.png"));
             engine.getState().registerObserver(scene3.get());
-            MoveCommand command(SOUTH,0);
-            cout << "command built" <<endl;
-            engine.addCommand(&command,0);
 
-            cout << "command added" <<endl;
-            engine.runCommands();
-            cout << "command run" << endl;
-//            scene3->draw();
+//            scene3.reset();
+            scene3->draw();
 
         }
         if(!strcmp(argv[1],"engine"))
