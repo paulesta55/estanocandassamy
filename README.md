@@ -5,6 +5,8 @@ final year  ENSEA/IS project
 
 WARNING : DO NOT ERASE OR MODIFY THE MAKEFILE
 
-```$cd ./estanocandassamy```
+```$ cd ./estanocandassamy```
 
-```$make```
+```$ make```
+
+```$ ./bin/client engine```
