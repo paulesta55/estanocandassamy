@@ -5,5 +5,6 @@ final year  ENSEA/IS project
 
 WARNING : DO NOT ERASE OR MODIFY THE MAKEFILE
 
-```$cd ./estanocandassamy```<\br>
+```$cd ./estanocandassamy```
+
 ```$make```
