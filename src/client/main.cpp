@@ -167,6 +167,8 @@ int main(int argc,char* argv[])
             engine.runCommands();
             scene3->draw(window);
 
+            Engine engin2;
+
         }
 
     }

@@ -22,5 +22,7 @@ void engine::LevelCommand::execute(state::State &state) {
     shared_ptr<Map> newMap;
     newMap.reset(new Map(mapPath));
     state_ref.setMap(newMap);
+    StateEvent e(StateEventId::LEVEL_CHANGE);
+    state_ref.notifyObservers(e);
 }
 
