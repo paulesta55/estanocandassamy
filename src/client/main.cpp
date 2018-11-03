@@ -136,7 +136,9 @@ int main(int argc,char* argv[])
             scene3->draw(window);
 
 //            cout << "command built" <<endl;
-            engine.addCommand(new MoveCommand(SOUTH, 0),0);
+            engine.addCommand(new LevelCommand(2),0);
+            engine.addCommand(new MoveCommand(SOUTH, 0),1);
+            engine.addCommand(new AttackCommand(0),2);
 //            cout << "command added" <<endl;
             engine.runCommands();
 //            cout << "command run" << endl;
@@ -153,13 +155,15 @@ int main(int argc,char* argv[])
             scene3->draw(window);
 
             engine.addCommand(new MoveCommand(SOUTH,1),0);
+            engine.addCommand(new AttackCommand(0),1);
 //            cout << "command added" <<endl;
             engine.runCommands();
 //            cout << "command run" << endl;
 
             scene3->draw(window);
 
-            engine.addCommand(new MoveCommand(WEST,0),0);
+            engine.addCommand(new MoveCommand(WEST,0),1);
+
             engine.runCommands();
             scene3->draw(window);
 

@@ -95,6 +95,14 @@ bool MoveCommand::checkMove(Position& p,State& state)
     {
         return false;
     }
+    for(auto player : state.getPlayers())
+    {
+        if(player.second->getID()!=this->idPlayer && player.second->getPokemon()->getPosition().x == p.x && player.second->getPokemon()->getPosition().y == p.y )
+        {
+            return false;
+        }
+
+    }
     cout << "next tile: " << nextTile << endl;
     return true;
 }

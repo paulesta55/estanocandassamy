@@ -39,7 +39,7 @@ void Scene::draw(sf::RenderWindow& window) {
 
     //good dimensions : 620 x 620
 
-    int count = 400;
+    int count = 300;
     while(count>0 && window.isOpen()){
 //        cout << "window opened" <<endl;
         // handle events

@@ -14,10 +14,12 @@ std::shared_ptr<Map> State::getMap() {return this->map;}
 State::State(Position center,shared_ptr<Map> map) : map(map), center(center){
     epoch = 0;
 
-
 }
 
-void State::setMap(std::shared_ptr<state::Map> map) {this->map = map;}
+void State::setMap(std::shared_ptr<state::Map> map) {this->map.swap(map);
+
+cout << this->getMap()->getLayers()->at(0).getName() << endl;
+}
 
 void State::setEpoch(uint &epoch) {this->epoch = epoch;}
 

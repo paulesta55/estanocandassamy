@@ -17,7 +17,7 @@ Engine::Engine()
 
     string player = "Alice";
 //    currentState.setMap(make_shared<Map>("res/src/etage1.json"));
-    this->currentState.getPlayers().insert(make_pair(id,new Player(false,player,id,make_shared<Bulbizarre>(id,SOUTH
+    this->currentState.getPlayers().insert(make_pair(id,new Player(false,player,id,make_shared<Bulbizarre>(id,EST
             ,200,Position(8,7)))));
     unsigned int id2 = 1;
     string player2 = "Bob";
