@@ -1,3 +1,5 @@
+#include <utility>
+
 //
 // Created by paul on 28/10/18.
 //
@@ -10,7 +12,7 @@ using namespace std;
 using namespace engine;
 using namespace state;
 
-Engine::Engine()
+Engine::Engine(State s):currentState(std::move(s))
 {
 
     unsigned int id = 0;

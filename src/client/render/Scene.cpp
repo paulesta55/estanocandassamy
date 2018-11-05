@@ -1,3 +1,5 @@
+#include <utility>
+
 
 //
 // Created by paul on 22/10/18.
@@ -16,17 +18,16 @@ using namespace std;
 using namespace render;
 using namespace state;
 using namespace engine;
-Scene::Scene(shared_ptr<engine::Engine> engine,string tileSet,unsigned int  pokeTarId) : pokeTarId(pokeTarId){
+Scene::Scene(shared_ptr<engine::Engine> engine,string tileSet,unsigned int  pokeTarId) : pokeTarId(pokeTarId), engine(engine){
 
 
 //    vector<shared_ptr<LayerRender>> layerVec;
 //cout<<"enter scene" <<endl;
-    this->tileset=tileSet;
+    this->tileset= std::move(tileSet);
     string tileset2 = "res/src/tilestPokemon.png";
     this->pokeTileSet.reset(new sf::Texture());
     this->pokeTileSet->loadFromFile("res/src/tilestPokemon.png");
 //    cout << "tileset loaded" <<endl;
-    this->engine = engine;
 //    state->registerObserver(this);
 //    cout << "observer register" <<endl;
     this->updateState();
@@ -64,7 +65,7 @@ void Scene::draw(sf::RenderWindow& window) {
 
         }
         window.clear();
-        for(auto layerRend : layerVec)
+        for(const auto &layerRend : layerVec)
         {
             window.draw(*layerRend);
         }
@@ -109,7 +110,6 @@ void Scene::draw(sf::RenderWindow& window) {
 }
 
 void Scene::updateState() {
-
 
     pokeVec.clear();
     layerVec.clear();

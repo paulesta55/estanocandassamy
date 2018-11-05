@@ -15,14 +15,14 @@ using namespace std;
 engine::LevelCommand::LevelCommand(unsigned int idLevel):idLevel(idLevel) {}
 
 void engine::LevelCommand::execute(state::State &state) {
-    State& state_ref = state;
+
     string  mapPath = "res/src/etage";
     mapPath+=to_string(idLevel);
     mapPath+=".json";
     shared_ptr<Map> newMap;
     newMap.reset(new Map(mapPath));
-    state_ref.setMap(newMap);
+    state.setMap(newMap);
     StateEvent e(StateEventId::LEVEL_CHANGE);
-    state_ref.notifyObservers(e);
+    state.notifyObservers(e);
 }
 
