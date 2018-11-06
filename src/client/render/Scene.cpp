@@ -241,7 +241,7 @@ void Scene::updatePlayers() {
     {
         shared_ptr<sf::Sprite> pokeRender;
 
-        if(player.second->getPokemon()){
+        if(player.second->getPokemon()->getAlive()){
             pokeRender.reset(new sf::Sprite());
             pokeRender->setTexture(*pokeTileSet);
             std::shared_ptr<state::Pokemon> pokemon = player.second->getPokemon();
@@ -274,5 +274,3 @@ void Scene::updatePlayers() {
 
     }
 }
-
-

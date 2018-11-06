@@ -30,14 +30,7 @@ void Player::setID(uint& ID) {
     this->ID = ID;
 }
 
-bool Player::isAlive() {
-    return this->alive;
-}
 
-void Player::setAlive(bool alive) {
-    this->alive = alive;
-
-}
 
 shared_ptr<Pokemon> Player::getPokemon() {
    return this->pokemon;

@@ -14,7 +14,7 @@ engine::HealCommand::HealCommand(unsigned int id) {
 void engine::HealCommand::execute(state::State &state) {
     for(auto player : state.getPlayers())
     {
-        if(player.second->getID() == idPlayer)
+        if(player.second->getID() == idPlayer && player.second->getPokemon()->getAlive())
         {
             if(player.second->getPokemon().get()){
                 unsigned int fullLife = player.second->getPokemon()->getFullLife();

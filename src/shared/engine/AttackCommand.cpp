@@ -53,8 +53,16 @@ void AttackCommand::execute(state::State &state) {
                     newLife = lifeAttacked - 50;
                 }
                 state_ref.getPlayers().at(id_attacked)->getPokemon()->setCurrentLife(newLife);
-                StateEvent e(StateEventId::ATTACK);
-                state_ref.notifyObservers(e);
+                if(newLife==0) {
+                    state_ref.getPlayers()[id_attacked]->getPokemon()->setAlive(false);
+                    TabEvent event(TabEventId::DEATH,idPlayer);
+                    state_ref.notifyObservers(event);
+                }
+                else {
+                    StateEvent e(StateEventId::ATTACK);
+                    state_ref.notifyObservers(e);
+                }
+
             }
             break;
 
@@ -70,8 +78,15 @@ void AttackCommand::execute(state::State &state) {
                     newLife = lifeAttacked - 50;
                 }
                 state_ref.getPlayers().at(id_attacked)->getPokemon()->setCurrentLife(newLife);
-                StateEvent e(StateEventId::ATTACK);
-                state_ref.notifyObservers(e);
+                if(newLife==0) {
+                    state_ref.getPlayers()[id_attacked]->getPokemon()->setAlive(false);
+                    TabEvent event(TabEventId::DEATH,idPlayer);
+                    state_ref.notifyObservers(event);
+                }
+                else {
+                    StateEvent e(StateEventId::ATTACK);
+                    state_ref.notifyObservers(e);
+                }
 
             }
             break;
@@ -87,8 +102,15 @@ void AttackCommand::execute(state::State &state) {
                     newLife = lifeAttacked - 50;
                 }
                 state_ref.getPlayers().at(id_attacked)->getPokemon()->setCurrentLife(newLife);
-                StateEvent e(StateEventId::ATTACK);
-                state_ref.notifyObservers(e);
+                if(newLife==0) {
+                    state_ref.getPlayers()[id_attacked]->getPokemon()->setAlive(false);
+                    TabEvent event(TabEventId::DEATH,idPlayer);
+                    state_ref.notifyObservers(event);
+                }
+                else {
+                    StateEvent e(StateEventId::ATTACK);
+                    state_ref.notifyObservers(e);
+                }
 
             }
             break;
@@ -104,9 +126,15 @@ void AttackCommand::execute(state::State &state) {
                     newLife = lifeAttacked - 50;
                 }
                 state_ref.getPlayers().at(id_attacked)->getPokemon()->setCurrentLife(newLife);
-                StateEvent e(StateEventId::ATTACK);
-                state_ref.notifyObservers(e);
-
+                if(newLife==0) {
+                    state_ref.getPlayers()[id_attacked]->getPokemon()->setAlive(false);
+                    TabEvent event(TabEventId::DEATH,idPlayer);
+                    state_ref.notifyObservers(event);
+                }
+                else {
+                    StateEvent e(StateEventId::ATTACK);
+                    state_ref.notifyObservers(e);
+                }
             }
             break;
 

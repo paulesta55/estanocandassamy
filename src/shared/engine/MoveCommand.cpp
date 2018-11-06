@@ -97,7 +97,7 @@ bool MoveCommand::checkMove(Position& p,State& state)
     }
     for(auto player : state.getPlayers())
     {
-        if(player.second->getID()!=this->idPlayer && player.second->getPokemon()->getPosition().x == p.x && player.second->getPokemon()->getPosition().y == p.y )
+        if(player.second->getID()!=this->idPlayer && player.second->getPokemon()->getPosition().x == p.x && player.second->getPokemon()->getPosition().y == p.y && player.second->getPokemon()->getAlive())
         {
             return false;
         }
