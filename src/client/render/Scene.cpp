@@ -147,8 +147,6 @@ void Scene::draw(sf::RenderWindow& window) {
 }
 
 void Scene::updateMap() {
-
-    pokeVec.clear();
     layerVec.clear();
 
     if(!engine->getState().getMap())
@@ -209,15 +207,36 @@ void Scene::stateChanged(const state::Event& e) {
 //        }
 //    }
 //    cout << "out of state changed switch"<<endl;
-    this->updateMap();
-    this->updatePlayers();
+switch(e.getEventType())
+{
+    case TAB_EVENT:
+        cout << "tab event" << endl;
+        updatePlayers();
+        break;
+    case STATE_EVENT:
+        StateEvent event = *(StateEvent*)(e.clone());
+        switch(event.stateEvent)
+        {
+            case ATTACK:
+                break;
+            case StateEventId::LEVEL_CHANGE :
+                updateMap();
+                break;
+
+        }
+        break;
+
+}
 
 }
 
 void Scene::updatePlayers() {
+    this->pokeVec.clear();
     if(engine->getState().getPlayers().size() <=0){
         throw new runtime_error("cannot render a state with no players");
     }
+    this->xCenter = engine->getState().getPlayers().at(pokeTarId)->getPokemon()->getPosition().x*tileSize.x;
+    this->yCenter = engine->getState().getPlayers().at(pokeTarId)->getPokemon()->getPosition().y*tileSize.y;
     for( auto player :engine->getState().getPlayers())
     {
         shared_ptr<sf::Sprite> pokeRender;

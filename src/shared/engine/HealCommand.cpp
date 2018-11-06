@@ -27,7 +27,7 @@ void engine::HealCommand::execute(state::State &state) {
                 else {
                     player.second->getPokemon()->setCurrentLife(fullLife);
                 }
-                StateEvent e(StateEventId::ALL_CHANGED);
+                StateEvent e(StateEventId::ATTACK);
                 state.notifyObservers(e);
             }
             else

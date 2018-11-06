@@ -53,9 +53,8 @@ void AttackCommand::execute(state::State &state) {
                     newLife = lifeAttacked - 50;
                 }
                 state_ref.getPlayers().at(id_attacked)->getPokemon()->setCurrentLife(newLife);
-                StateEvent e(StateEventId::ALL_CHANGED);
+                StateEvent e(StateEventId::ATTACK);
                 state_ref.notifyObservers(e);
-
             }
             break;
 
@@ -71,7 +70,8 @@ void AttackCommand::execute(state::State &state) {
                     newLife = lifeAttacked - 50;
                 }
                 state_ref.getPlayers().at(id_attacked)->getPokemon()->setCurrentLife(newLife);
-
+                StateEvent e(StateEventId::ATTACK);
+                state_ref.notifyObservers(e);
 
             }
             break;
@@ -87,7 +87,7 @@ void AttackCommand::execute(state::State &state) {
                     newLife = lifeAttacked - 50;
                 }
                 state_ref.getPlayers().at(id_attacked)->getPokemon()->setCurrentLife(newLife);
-                StateEvent e(StateEventId::ALL_CHANGED);
+                StateEvent e(StateEventId::ATTACK);
                 state_ref.notifyObservers(e);
 
             }
@@ -104,7 +104,7 @@ void AttackCommand::execute(state::State &state) {
                     newLife = lifeAttacked - 50;
                 }
                 state_ref.getPlayers().at(id_attacked)->getPokemon()->setCurrentLife(newLife);
-                StateEvent e(StateEventId::ALL_CHANGED);
+                StateEvent e(StateEventId::ATTACK);
                 state_ref.notifyObservers(e);
 
             }
