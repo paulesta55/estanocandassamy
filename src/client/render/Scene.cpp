@@ -55,10 +55,30 @@ void Scene::draw(sf::RenderWindow& window) {
                     this->clock.restart();
                     break;
                 case sf::Event::KeyReleased:
+                    sf::Keyboard::Key k = event.key.code;
+                    switch(k){
+                        case sf::Keyboard::Key::Right  :
+                            engine->addCommand(new MoveCommand(EST,1),0);
+                            break;
+                        case sf::Keyboard::Key::Left :
+                            engine->addCommand(new MoveCommand(WEST,1),0);
+                            break;
+                        case sf::Keyboard::Key::Up:
+                            engine->addCommand(new MoveCommand(NORTH,1),0);
+                            break;
+                        case sf::Keyboard::Key::Down:
+                            engine->addCommand(new MoveCommand(SOUTH,1),0);
+                            break;
+                        case sf::Keyboard::Key::A :
+                            engine->addCommand(new AttackCommand(1),0);
+                            break;
+                        case sf::Keyboard::Key ::L:
+                            engine->addCommand(new LevelCommand(1),0);
+                            break;
+                    }
 
-                    engine->addCommand(new MoveCommand(EST,1),0);
                     engine->runCommands();
-                    cout << this->clock.getElapsedTime().asMilliseconds() << endl;
+//                    cout << this->clock.getElapsedTime().asMilliseconds() << endl;
                     break;
 
             }
@@ -98,13 +118,23 @@ void Scene::draw(sf::RenderWindow& window) {
 //        cout << infoPlayers << endl;
         text.setPosition(xCenter-90,yCenter-90);
         text.setFont(f);
-        text.setColor(sf::Color::Black);
+        text.setColor(sf::Color::White);
         text.setCharacterSize(30);
         text.setScale(sf::Vector2f(0.27,0.27));
         text.setStyle(sf::Text::Regular);
 
 
+        sf::Text t2;
+        t2.setString("Use: L to change the level\n A to attack\nArrow keys to move");
+        t2.setPosition(xCenter,yCenter+40);
+        t2.setFont(f);
+        t2.setColor(sf::Color::Red);
+        t2.setCharacterSize(25);
+        t2.setScale(sf::Vector2f(0.27,0.27));
+        t2.setStyle(sf::Text::Bold);
+
         window.draw(text);
+        window.draw(t2);
 //        count--;
         window.setView(view2);
         window.display();
@@ -172,7 +202,7 @@ void movePokeRender(unsigned int pokeId)
 
 
 void Scene::stateChanged(const state::Event& e) {
-    cout << "state changes"<<endl;
+//    cout << "state changes"<<endl;
 //    if(e.getEventType() == TAB_EVENT )
 //    {
 //        state::TabEvent event = *(TabEvent*)(e.clone());
