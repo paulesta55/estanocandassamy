@@ -40,8 +40,8 @@ void Scene::draw(sf::RenderWindow& window) {
 
     //good dimensions : 620 x 620
 
-    int count = 300;
-    while(count>0 && window.isOpen()){
+//    int count = 300;
+    while(window.isOpen()){
 //        cout << "window opened" <<endl;
         // handle events
         sf::Event event;
@@ -56,6 +56,8 @@ void Scene::draw(sf::RenderWindow& window) {
                     break;
                 case sf::Event::KeyReleased:
 
+                    engine->addCommand(new MoveCommand(EST,1),0);
+                    engine->runCommands();
                     cout << this->clock.getElapsedTime().asMilliseconds() << endl;
                     break;
 
@@ -103,7 +105,7 @@ void Scene::draw(sf::RenderWindow& window) {
 
 
         window.draw(text);
-        count--;
+//        count--;
         window.setView(view2);
         window.display();
     }

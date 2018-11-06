@@ -24,8 +24,8 @@ Engine::Engine(State s):currentState(std::move(s))
     unsigned int id2 = 1;
     string player2 = "Bob";
     this->currentState.getPlayers().insert(make_pair(id2,new Player(true,player2,id2,make_shared<Salameche>(id2,EST
-            ,200,Position(9,7)))));
-    this->currentState.center = Position(8,7);
+            ,200,Position(7,7)))));
+    this->currentState.center = Position(7,7);
 
 
 }
