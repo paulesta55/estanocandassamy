@@ -27,10 +27,15 @@ Scene::Scene(shared_ptr<engine::Engine> engine,string tileSet,unsigned int  poke
     string tileset2 = "res/src/tilestPokemon.png";
     this->pokeTileSet.reset(new sf::Texture());
     this->pokeTileSet->loadFromFile("res/src/tilestPokemon.png");
+    uint tileWidth = this->engine ->getState().getMap()->getTileWidth();
+    uint tileHeight = this->engine->getState().getMap()->getTileHeight();
+    tileSize = sf::Vector2u(tileWidth,tileHeight);
 //    cout << "tileset loaded" <<endl;
 //    state->registerObserver(this);
 //    cout << "observer register" <<endl;
-    this->updateState();
+
+    updateMap();
+    updatePlayers();
 //    cout << "update state "<<endl;
 
 
@@ -52,9 +57,6 @@ void Scene::draw(sf::RenderWindow& window) {
                     window.close();
                     break;
                 case sf::Event::KeyPressed:
-                    this->clock.restart();
-                    break;
-                case sf::Event::KeyReleased:
                     sf::Keyboard::Key k = event.key.code;
                     switch(k){
                         case sf::Keyboard::Key::Right  :
@@ -144,13 +146,11 @@ void Scene::draw(sf::RenderWindow& window) {
     }
 }
 
-void Scene::updateState() {
+void Scene::updateMap() {
 
     pokeVec.clear();
     layerVec.clear();
-    if(engine->getState().getPlayers().size() <=0){
-        throw new runtime_error("cannot render a state with no players");
-    }
+
     if(!engine->getState().getMap())
     {
         throw new runtime_error("cannot render a state with no map");
@@ -181,17 +181,7 @@ void Scene::updateState() {
 
 //    t.setScale(0.1,0.1);
 
-    for( auto player :engine->getState().getPlayers())
-    {
-        shared_ptr<PokeRender> pokeRender;
-        pokeRender.reset(new PokeRender());
-        if(player.second->getPokemon()){
-            std::shared_ptr<state::Pokemon> pokemon = player.second->getPokemon();
-            if(!(pokeRender->load(this->pokeTileSet,sf::Vector2u(tileWidth,tileHeight),*pokemon))) throw runtime_error("bad pokemon rendering");
-            pokeVec.insert(make_pair(player.second->getID(),pokeRender));
-        }
 
-    }
 
 
 //    this->pokeVec.at(0)->setPosition(state::Position(this->pokeVec.at(0)->getPosition().x+1,this->pokeVec.at(0)->getPosition().y+1));
@@ -219,7 +209,51 @@ void Scene::stateChanged(const state::Event& e) {
 //        }
 //    }
 //    cout << "out of state changed switch"<<endl;
-    this->updateState();
+    this->updateMap();
+    this->updatePlayers();
+
+}
+
+void Scene::updatePlayers() {
+    if(engine->getState().getPlayers().size() <=0){
+        throw new runtime_error("cannot render a state with no players");
+    }
+    for( auto player :engine->getState().getPlayers())
+    {
+        shared_ptr<sf::Sprite> pokeRender;
+
+        if(player.second->getPokemon()){
+            pokeRender.reset(new sf::Sprite());
+            pokeRender->setTexture(*pokeTileSet);
+            std::shared_ptr<state::Pokemon> pokemon = player.second->getPokemon();
+            unsigned int tileNumber = 0;
+            switch (pokemon->getType()) {
+                case PokeType ::BULBIZARRE://bulbizarre
+                    tileNumber = 12;
+                    break;
+                case PokeType ::SALAMECHE://salameche
+                    tileNumber = 33;
+                    break;
+                case CARAPUCE://carapuce
+                    tileNumber = 54;
+                    break;
+                default:
+                    throw new runtime_error("pokemon rendering error");
+                    break;
+
+            }
+            Position position = pokemon->getPosition();
+            tileNumber += pokemon->orientation;
+
+            int tu = tileNumber % (pokeTileSet->getSize().x / tileSize.x);
+            int tv = tileNumber / (pokeTileSet->getSize().x / tileSize.x);
+            pokeRender->setTextureRect(sf::IntRect(tu * (tileSize.x+1)+1,tv * (tileSize.y+1)+1,tileSize.x,tileSize.y));
+            pokeRender->setPosition(position.x* tileSize.x,position.y*tileSize.y);
+//            if(!(pokeRender->load(this->pokeTileSet,sf::Vector2u(tileWidth,tileHeight),*pokemon))) throw runtime_error("bad pokemon rendering");
+            pokeVec.insert(make_pair(player.second->getID(),pokeRender));
+        }
+
+    }
 }
 
 
