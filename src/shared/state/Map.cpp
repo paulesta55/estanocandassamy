@@ -50,7 +50,7 @@ Map::Map(std::string mapPath) {
 
         try {
             ifstream ifsMap(mapPath,std::ifstream::in);
-            cout << "can open file" << endl;
+//            cout << "can open file" << endl;
             Json::Reader reader;
             Json::Value obj;
             // parse the the map.json file
@@ -58,10 +58,10 @@ Map::Map(std::string mapPath) {
             {
 
                 this->width= obj["width"].asUInt();
-        cout << "width: " << this->width << endl;
+//        cout << "width: " << this->width << endl;
 
                 this->height = obj["height"].asUInt();
-        cout << "height: " << this->height << endl;
+//        cout << "height: " << this->height << endl;
 
                 this->tileWidth = obj["tilewidth"].asUInt();
 //        cout << "tilewidth: " << this->tileWidth << endl;
@@ -178,7 +178,7 @@ Map::Map(std::string mapPath) {
         }
         catch(exception& e)
         {
-//            cerr << e.what() << endl;
+            cerr << e.what() << endl;
             CustomException exception1("cannot open file exception");
             throw exception1;
         }

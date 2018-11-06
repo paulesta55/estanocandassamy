@@ -93,7 +93,7 @@ void AttackCommand::execute(state::State &state) {
             }
             break;
         case WEST:
-            p.x++;
+            p.x--;
             id_attacked = this->findPokemon(p,state_ref);
             if(id_attacked != this->idPlayer)
             {
