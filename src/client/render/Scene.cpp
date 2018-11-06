@@ -21,8 +21,6 @@ using namespace engine;
 Scene::Scene(shared_ptr<engine::Engine> engine,string tileSet,unsigned int  pokeTarId) : pokeTarId(pokeTarId), engine(engine){
 
 
-//    vector<shared_ptr<LayerRender>> layerVec;
-//cout<<"enter scene" <<endl;
     this->tileset= std::move(tileSet);
     string tileset2 = "res/src/tilestPokemon.png";
     this->pokeTileSet.reset(new sf::Texture());
@@ -30,13 +28,9 @@ Scene::Scene(shared_ptr<engine::Engine> engine,string tileSet,unsigned int  poke
     uint tileWidth = this->engine ->getState().getMap()->getTileWidth();
     uint tileHeight = this->engine->getState().getMap()->getTileHeight();
     tileSize = sf::Vector2u(tileWidth,tileHeight);
-//    cout << "tileset loaded" <<endl;
-//    state->registerObserver(this);
-//    cout << "observer register" <<endl;
 
     updateMap();
     updatePlayers();
-//    cout << "update state "<<endl;
 
 
 }
@@ -80,7 +74,6 @@ void Scene::draw(sf::RenderWindow& window) {
                     }
 
                     engine->runCommands();
-//                    cout << this->clock.getElapsedTime().asMilliseconds() << endl;
                     break;
 
             }
@@ -105,8 +98,6 @@ void Scene::draw(sf::RenderWindow& window) {
         }
 
 
-        // good size : 200 x 200
-//       window.draw(text);
         sf::View view2(sf::Vector2f(this->xCenter, this->yCenter), sf::Vector2f(200.f, 200.f));
         infoPlayers = "";
         for(auto player : engine->getState().getPlayers())
@@ -117,7 +108,6 @@ void Scene::draw(sf::RenderWindow& window) {
 
         sf::Text text;
         text.setString(infoPlayers);
-//        cout << infoPlayers << endl;
         text.setPosition(xCenter-90,yCenter-90);
         text.setFont(f);
         text.setColor(sf::Color::White);
@@ -150,15 +140,12 @@ void Scene::updateMap() {
     {
         throw new runtime_error("cannot render a state with no map");
     }
-//    cout << "layer vec cleared" <<endl;
     uint tileWidth = engine ->getState().getMap()->getTileWidth();
     uint tileHeight = engine->getState().getMap()->getTileHeight();
 
-//    cout << "tilewidth and tileheight ok" <<endl;
     this->xCenter = engine->getState().getPlayers().at(pokeTarId)->getPokemon()->getPosition().x*tileWidth;
     this->yCenter = engine->getState().getPlayers().at(pokeTarId)->getPokemon()->getPosition().y*tileHeight;
 
-//    cout <<"center ok" <<endl;
     for(auto layer: *(engine->getState().getMap()->getLayers()))
     {
         shared_ptr<LayerRender> layerRend;
@@ -168,19 +155,7 @@ void Scene::updateMap() {
                              layer.getData(),layer.getWidth(),layer.getHeight()))) throw  runtime_error("bad layer rendering");
         layerVec.push_back(layerRend);
     }
-//    cout <<"layers ok"<<endl;
     string tileset2 = "res/src/tilestPokemon.png";
-//    vector<shared_ptr<PokeRender>> layerPoke;
-
-
-
-//    t.setScale(0.1,0.1);
-
-
-
-
-//    this->pokeVec.at(0)->setPosition(state::Position(this->pokeVec.at(0)->getPosition().x+1,this->pokeVec.at(0)->getPosition().y+1));
-//    pokeVec.at(0)->setPosition(Position(this->state->getPlayers().at(0)->getPokemon()->getPosition().x-1,this->state->getPlayers().at(0)->getPokemon()->getPosition().y-1));
 }
 
 void movePokeRender(unsigned int pokeId)
@@ -190,20 +165,6 @@ void movePokeRender(unsigned int pokeId)
 
 
 void Scene::stateChanged(const state::Event& e) {
-//    cout << "state changes"<<endl;
-//    if(e.getEventType() == TAB_EVENT )
-//    {
-//        state::TabEvent event = *(TabEvent*)(e.clone());
-//        cout<<"event cloned"<<endl;
-//        switch(event.tabEventId) {
-//            case MOVE:
-//                pokeVec.at(event.playerId)->setPosition();
-//                cout << "pokerender moved" <<endl;
-//                break;
-//
-//        }
-//    }
-//    cout << "out of state changed switch"<<endl;
 switch(e.getEventType())
 {
     case TAB_EVENT:
@@ -265,7 +226,6 @@ void Scene::updatePlayers() {
             int tv = tileNumber / (pokeTileSet->getSize().x / tileSize.x);
             pokeRender->setTextureRect(sf::IntRect(tu * (tileSize.x+1)+1,tv * (tileSize.y+1)+1,tileSize.x,tileSize.y));
             pokeRender->setPosition(position.x* tileSize.x,position.y*tileSize.y);
-//            if(!(pokeRender->load(this->pokeTileSet,sf::Vector2u(tileWidth,tileHeight),*pokemon))) throw runtime_error("bad pokemon rendering");
             pokeVec.insert(make_pair(player.second->getID(),pokeRender));
         }
 
