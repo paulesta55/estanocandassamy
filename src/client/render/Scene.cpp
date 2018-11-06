@@ -74,9 +74,6 @@ void Scene::draw(sf::RenderWindow& window) {
                         case sf::Keyboard::Key::A :
                             engine->addCommand(new AttackCommand(1),0);
                             break;
-                        case sf::Keyboard::Key ::L:
-                            engine->addCommand(new LevelCommand(1),0);
-                            break;
                         case sf::Keyboard::Key::H:
                             engine->addCommand(new HealCommand(0),0);
                             break;
@@ -130,7 +127,7 @@ void Scene::draw(sf::RenderWindow& window) {
 
 
         sf::Text t2;
-        t2.setString("Use: L to change the level\n A to attack\nArrow keys to move");
+        t2.setString("Use: 'L' to change the level\n'A' to attack\n'Arrow Keys' to move\n'H' to heal");
         t2.setPosition(xCenter,yCenter+40);
         t2.setFont(f);
         t2.setColor(sf::Color::Red);

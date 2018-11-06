@@ -66,14 +66,48 @@ void MoveCommand::execute(state::State &state) {
                 break;
 
         }
-
-        if(checkMove(p,state_ref))
+        unsigned int nextTile = state.getMap()->getLayers()->at(0).getData()->at(p.x+p.y*state.getMap()->getWidth());
+        if(checkMove(p,state_ref,nextTile))
         {
-            player_ptr->getPokemon()->setPosition(p);
+
 //        cout << "set new position"<<endl;
-            TabEvent tabEvent(TabEventId::MOVE,idPlayer);
+
+            if(nextTile == 158)
+            {
+                bool changelevel = true;
+                for(auto player:state_ref.getPlayers())
+                {
+                    if(player.second->getID()!=this->idPlayer &&  player.second->getPokemon()->getAlive())
+                    {
+                        changelevel = false;
+                        break;
+                    }
+
+                }
+                if(changelevel)
+                {
+                    player_ptr->getPokemon()->setPosition(p);
+                    unsigned int new_epoch =state_ref.getEpoch()+1;
+                    state_ref.setEpoch(new_epoch);
+                    string  mapPath = "res/src/etage";
+                    mapPath+=to_string(state_ref.getEpoch());
+                    mapPath+=".json";
+                    shared_ptr<Map> newMap;
+                    newMap.reset(new Map(mapPath));
+                    state_ref.setMap(newMap);
+                    StateEvent stateEvent(StateEventId::LEVEL_CHANGE);
+                    state_ref.notifyObservers(stateEvent);
+                }
+
+            }
+            else
+            {
+                player_ptr->getPokemon()->setPosition(p);
+                TabEvent tabEvent(TabEventId::MOVE,idPlayer);
+                state_ref.notifyObservers(tabEvent);
+
+            }
 //        cout << "tab event built "<<endl;
-            state_ref.notifyObservers(tabEvent);
         }
 
 
@@ -88,10 +122,10 @@ void MoveCommand::execute(state::State &state) {
 //    cout << "end of move command" << endl;
 }
 
-bool MoveCommand::checkMove(Position& p,State& state)
+bool MoveCommand::checkMove(Position& p,State& state, unsigned int nextTile)
 {
-    unsigned int nextTile = state.getMap()->getLayers()->at(0).getData()->at(p.x+p.y*state.getMap()->getWidth());
-    if(nextTile!=35)
+
+    if(nextTile!=35 && nextTile!=158)
     {
         return false;
     }
