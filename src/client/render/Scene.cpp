@@ -75,6 +75,9 @@ void Scene::draw(sf::RenderWindow& window) {
                         case sf::Keyboard::Key ::L:
                             engine->addCommand(new LevelCommand(1),0);
                             break;
+                        case sf::Keyboard::Key::H:
+                            engine->addCommand(new HealCommand(0),0);
+                            break;
                     }
 
                     engine->runCommands();
