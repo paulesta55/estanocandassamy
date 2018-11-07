@@ -132,7 +132,7 @@ int main(int argc,char* argv[])
             shared_ptr<Scene> scene3;
             scene3.reset(new Scene(engine,"res/src/tilemap2.png",0));
             engine->getState().registerObserver(scene3.get());
-            sf::RenderWindow window(sf::VideoMode(620,620),"test window");
+            sf::RenderWindow window(sf::VideoMode(1080,720),"test window");
             scene3->draw(window);
 //
 //            cout << "command built" <<endl;
