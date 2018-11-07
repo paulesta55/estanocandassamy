@@ -90,11 +90,30 @@ void MoveCommand::execute(state::State &state) {
                     unsigned int new_epoch =state_ref.getEpoch()+1;
                     state_ref.setEpoch(new_epoch);
                     string  mapPath = "res/src/etage";
-                    mapPath+=to_string(state_ref.getEpoch());
+                    mapPath+=to_string(state_ref.getEpoch()+1);
                     mapPath+=".json";
                     shared_ptr<Map> newMap;
                     newMap.reset(new Map(mapPath));
                     state_ref.setMap(newMap);
+                    string newName = "IA "+std::to_string(new_epoch);
+                    unsigned int new_id = new_epoch+1;
+                    Position new_position;
+                    switch(new_epoch)
+                    {
+                        case 1:
+                            new_id = 2;
+                            new_position = Position(4,4);
+                            state_ref.getPlayers().insert(make_pair(new_id,make_shared<Player>(true,newName,new_id,make_shared<Carapuce>(new_id,EST,200,Position(4,4)))));
+                            break;
+                        case 2:
+                            new_id = 3;
+                            new_position = Position(21,3);
+                            state_ref.getPlayers().insert(make_pair(new_id,make_shared<Player>(true,newName,new_id,make_shared<Carapuce>(new_id,EST,200,Position(3,21)))));
+                            state_ref.getPlayers()[idPlayer]->getPokemon()->setPosition(new_position);
+                            break;
+
+                    }
+
                     StateEvent stateEvent(StateEventId::LEVEL_CHANGE);
                     state_ref.notifyObservers(stateEvent);
                 }

@@ -15,16 +15,15 @@ using namespace state;
 Engine::Engine(State s):currentState(std::move(s))
 {
 
-    unsigned int id = 0;
+    unsigned int id = 1;
 
     string player = "Alice";
-//    currentState.setMap(make_shared<Map>("res/src/etage1.json"));
     this->currentState.getPlayers().insert(make_pair(id,new Player(false,player,id,make_shared<Bulbizarre>(id,WEST
-            ,200,Position(6,7)))));
-    unsigned int id2 = 1;
+            ,200,Position(3,9)))));
+    unsigned int id2 = 0;
     string player2 = "Bob";
     this->currentState.getPlayers().insert(make_pair(id2,new Player(true,player2,id2,make_shared<Salameche>(id2,EST
-            ,200,Position(7,7)))));
+            ,150,Position(20,20)))));
     this->currentState.center = Position(7,7);
 
 

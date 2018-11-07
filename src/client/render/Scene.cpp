@@ -54,22 +54,22 @@ void Scene::draw(sf::RenderWindow& window) {
                     sf::Keyboard::Key k = event.key.code;
                     switch(k){
                         case sf::Keyboard::Key::Right  :
-                            engine->addCommand(new MoveCommand(EST,1),0);
+                            engine->addCommand(new MoveCommand(EST,pokeTarId),0);
                             break;
                         case sf::Keyboard::Key::Left :
-                            engine->addCommand(new MoveCommand(WEST,1),0);
+                            engine->addCommand(new MoveCommand(WEST,pokeTarId),0);
                             break;
                         case sf::Keyboard::Key::Up:
-                            engine->addCommand(new MoveCommand(NORTH,1),0);
+                            engine->addCommand(new MoveCommand(NORTH,pokeTarId),0);
                             break;
                         case sf::Keyboard::Key::Down:
-                            engine->addCommand(new MoveCommand(SOUTH,1),0);
+                            engine->addCommand(new MoveCommand(SOUTH,pokeTarId),0);
                             break;
                         case sf::Keyboard::Key::A :
-                            engine->addCommand(new AttackCommand(1),0);
+                            engine->addCommand(new AttackCommand(pokeTarId),0);
                             break;
                         case sf::Keyboard::Key::H:
-                            engine->addCommand(new HealCommand(0),0);
+                            engine->addCommand(new HealCommand(this->pokeTarId),0);
                             break;
                     }
 
@@ -100,10 +100,12 @@ void Scene::draw(sf::RenderWindow& window) {
 
         sf::View view2(sf::Vector2f(this->xCenter, this->yCenter), sf::Vector2f(200.f, 200.f));
         infoPlayers = "";
+        int c = 0;
         for(auto player : engine->getState().getPlayers())
         {
-            infoPlayers += "pokemon "+to_string(player.second->getPokemon()->getID())+" current life : "+
+            infoPlayers += "pokemon "+to_string(c)+" current life : "+
                            to_string(player.second->getPokemon()->getCurrentLife()) + "/"+ to_string(player.second->getPokemon()->getFullLife())+"\n";
+            c++;
         }
 
         sf::Text text;
@@ -179,8 +181,12 @@ switch(e.getEventType())
                 break;
             case StateEventId::LEVEL_CHANGE :
                 updateMap();
+                updatePlayers();
                 break;
-
+            case ALL_CHANGED:
+                updateMap();
+                updatePlayers();
+                break;
         }
         break;
 
