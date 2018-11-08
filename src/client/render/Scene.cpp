@@ -44,6 +44,7 @@ void Scene::draw(sf::RenderWindow& window) {
 //        cout << "window opened" <<endl;
         // handle events
         sf::Event event;
+        if(engine->getState().isGameFinished()) window.close();
         while (window.pollEvent(event))
         {
             switch(event.type) {

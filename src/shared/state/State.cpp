@@ -29,3 +29,6 @@ void State::setEpoch(uint &epoch) {this->epoch = epoch;}
 
 uint State::getEpoch() {return epoch;}
 
+bool State::isGameFinished(){return gameFinished;}
+
+void State::setGameFinished(bool b) {gameFinished = b;}
