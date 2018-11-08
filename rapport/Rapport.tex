@@ -207,7 +207,7 @@ Il est à noter que l'état contient d'ores et déjà toutes les informations n�
 Par ailleurs, les points de vie de chacun des pokemon sont, pour le moment, affichés et mis à jour en temps réel à l'intérieur de la méthode \emph{draw()} de la classe \emph{Scene}.
 
 Chaque objet \emph{LayerRender} parcourt l'ensemble des tuiles d'un étage de la carte, détecte la position de la tuile sur la ressource graphique (i.e : l'image du tileset) et calcule sa position sur la fenêtre. Pour optimiser les performances seule l'image du tileset est chargée dans une \emph{Texture}, l'objet \emph{LayerRender} conserve seulement la position de chaque tuile de la carte sur cette texture.
-L'objet \emph{PokeRender}fait des opérations identiques pour cette fois ci un seul objet : le pokemon désiré.
+Les pokemons sont chacun rendus à l'intérieur d'un \emph{Sprite}.
 
     \begin{landscape}
     \begin{figure}[p]
