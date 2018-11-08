@@ -156,7 +156,7 @@ morekeywords={string,number,array,object}% list your attributes here
     
     La partie environnement est calqué sur le modèle proposé par les fichiers exportés par le logiciel \emph{Tiled Map Editor} au format JSON. Les objets les plus consommateurs en mémoire tels les \emph{data} dans la classe \emph{Layer} sont par ailleurs stockés dans le tas pour éviter les copies entre les différentes classes.
     
-     L'état global contient un pointeur vers l'état de l'environnement et et une liste de pointeur de contenant l'état des différents joueurs de la partie.
+     L'état global contient un pointeur vers l'état de l'environnement et et une liste de pointeur de contenant l'état des différents joueurs de la partie. Un booléen permettant de détecter la fin du jeu a également été ajouté. 
      
      On utilise le pattern \emph{Observer} pour notifier les éléments dépendant de l'état lorsque celui-ci change. La classe \emph{State} hérite de la classe \emph{Observable} qui contient une liste d'objets héritant de la classe abstraite \emph{Observer}. Lorsque la classe \emph{State} subit un changement, l'utilisateur utilise la méthode \emph{notifyObservers()} pour notifier ses observers avec l'évènement correspondant au changement appliqué.
      Il existe 2 types d'\emph{Event}:
@@ -187,7 +187,7 @@ Nous avons découper notre affichage graphique sur deux niveaux, la carte avec l
         
 La carte étant très grande, nous avons entièrement chargé dans la mémoire pour l'affichage et on a crée une vue (un zoom) centrée sur le pokemon du joueur qui évolue sur la carte, car le but du jeu reste avant tout d'évoluer dans un labyrinthe.
      
-Lorsque qu'un changement d'état se produit, la vue est modifiée en fonction du changement appliqué à l'état. Si le changement modifie uniquement la position des pokemon, seule le rendu des pokemon est mis à jour, si ce changement s'applique à l'environnement l'ensemble du rendu de la carte est mis à jour. Lorsque l'ensemble de l'état est modifié le rendu de l'état est entièrement mis à jour.
+Lorsque qu'un changement d'état se produit, la vue est modifiée en fonction du changement appliqué à l'état. Si le changement modifie uniquement la position des pokemon, seule le rendu des pokemon est mis à jour, si ce changement s'applique à l'environnement l'ensemble du rendu de la carte est mis à jour. Lorsque l'ensemble de l'état est modifié le rendu de l'état est entièrement mis à jour. Dans le cas où le jeu est fini la fenêtre est automatiquement fermée.
 
 Nous avons rajouter sur la scène finale, les statistiques des pokemon (point de vie actuelle et id des pokemon) en haut à gauche. 
         
@@ -261,7 +261,13 @@ On a  implémenté, pour le moment, 3 types de commande:
 \item \emph{HealCommand} qui est déclenché lorsqu'un joueur veut soigner son pokemon 
 \end{itemize}
 
-Par ailleurs, le changement de niveau étant provoqué par un déplacement sur la case escalier après qu'un joueur (non IA) ait éliminé tous ses ennemis; cet évènement est entièrement géré par la commande \emph{MoveCommand}.
+Les trois commandes \emph{MoveCommand}, \emph{AttackCommand} et \emph{HeakCommand} sont déclencés sur un évènement de lecture de clavier, plus précisement sur un évenement d'appui sur une touche de clavier pour plus de fluidité lors des déplacements dans le parcours du labyrinthe.
+
+La commande \emph{MoveCommand} met à jour le rendu du pokemon sur la map via le render, il redessine la tuile du pokemon suivant son orientation à la bonne case.
+
+Les commandes \emph{AttackCommand} et \emph{HeakCommand} agissent sur l'état des pokemon et sur le rendu de la scène en gardant à jour les points de vie actuels affichés en haut à gauche de la scène.
+
+Par ailleurs, le changement de niveau étant provoqué par un déplacement sur la case escalier après qu'un joueur (non IA) ait éliminé tous ses ennemis; cet évènement est entièrement géré et intégré à la commande \emph{MoveCommand}.
     \begin{landscape}
     \begin{figure}[p]
     \includegraphics[width=0.9\paperheight]{engine.png}
