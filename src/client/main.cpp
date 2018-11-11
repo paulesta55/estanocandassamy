@@ -134,40 +134,11 @@ int main(int argc,char* argv[])
             engine->getState().registerObserver(scene3.get());
             sf::RenderWindow window(sf::VideoMode(620,620),"test window");
             scene3->draw(window);
-//
-//            cout << "command built" <<endl;
-//            engine->addCommand(new LevelCommand(1),0);
-//            engine->addCommand(new MoveCommand(SOUTH, 0),1);
-//            engine->addCommand(new AttackCommand(0),2);
-//            cout << "command added" <<endl;
-//            engine->runCommands();
-//            cout << "command run" << endl;
-//            cout << "command built" <<endl;
-//            scene3->draw(window);
-//
-//            delete command;
-//            auto command2 = new MoveCommand(SOUTH,1);
-//            engine->addCommand(new MoveCommand(EST,1),0);
-//            cout << "command added" <<endl;
-//            engine->runCommands();
-//            cout << "command run" << endl;
-//
-//            scene3->draw(window);
-//
-//            engine->addCommand(new MoveCommand(SOUTH,1),0);
-//            engine->addCommand(new AttackCommand(0),1);
-//            cout << "command added" <<endl;
-//            engine->runCommands();
-//            cout << "command run" << endl;
-//
-//            scene3->draw(window);
-//
-//            engine->addCommand(new MoveCommand(WEST,0),1);
-//
-//            engine->runCommands();
-//            scene3->draw(window);
-//
-//            Engine engin2;
+
+        }
+        if(!strcmp(argv[1],"random_ai"))
+        {
+            cout << "random ai" <<endl;
 
         }
 
