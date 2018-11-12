@@ -11,13 +11,14 @@
 #include <iostream>
 #include <string>
 #include "state.h"
-
+#include "ai.h"
 #include "engine.h"
 
 using namespace std;
 using namespace render;
 using namespace state;
 using namespace engine;
+using namespace ai;
 Scene::Scene(shared_ptr<engine::Engine> engine,string tileSet,unsigned int  pokeTarId) : pokeTarId(pokeTarId), engine(engine){
 
 
@@ -39,6 +40,8 @@ void Scene::draw(sf::RenderWindow& window) {
 
     //good dimensions : 620 x 620
 
+    unique_ptr<AI> ai;
+    ai.reset(new RandomAI);
 //    int count = 300;
     while(window.isOpen()){
 //        cout << "window opened" <<endl;
@@ -73,7 +76,11 @@ void Scene::draw(sf::RenderWindow& window) {
                             engine->addCommand(new HealCommand(this->pokeTarId),0);
                             break;
                     }
-
+                    for(auto player : engine->getState().getPlayers())
+                    {
+                        if(player.second->getIA() && player.second->getPokemon()->getAlive())
+                            ai->run(*engine,player.first);
+                    }
                     engine->runCommands();
                     break;
 

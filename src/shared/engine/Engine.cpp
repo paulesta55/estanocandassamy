@@ -9,6 +9,7 @@
 #include "state.h"
 #include <iostream>
 #include <map>
+
 using namespace std;
 using namespace engine;
 using namespace state;
@@ -19,13 +20,13 @@ Engine::Engine(State s):currentState(std::move(s))
     const unsigned int id = 1;
     unsigned int idPlayer1 = 1;
     string player = "Alice";
-    const pair<const unsigned int, shared_ptr<Player>> pair1 = make_pair(id,make_shared<Player>(false,player,idPlayer1,make_shared<Bulbizarre>(idPlayer1,WEST
+    const pair<const unsigned int, shared_ptr<Player>> pair1 = make_pair(id,make_shared<Player>(true,player,idPlayer1,make_shared<Bulbizarre>(idPlayer1,WEST
             ,200,Position(3,9))));
     this->currentState.getPlayers().insert(pair1);
     const unsigned int id2 = 0;
     unsigned int idPlayer2 = 0;
     string player2 = "Bob";
-    const pair<const unsigned int, shared_ptr<Player>> pair2 =make_pair(id2,make_shared<Player>(true,player2,idPlayer2,make_shared<Salameche>(idPlayer2,EST
+    const pair<const unsigned int, shared_ptr<Player>> pair2 =make_pair(id2,make_shared<Player>(false,player2,idPlayer2,make_shared<Salameche>(idPlayer2,EST
             ,150,Position(20,20))));
     this->currentState.getPlayers().insert(pair2);
     this->currentState.center = Position(7,7);

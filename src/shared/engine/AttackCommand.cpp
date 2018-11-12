@@ -15,14 +15,7 @@ void AttackCommand::execute(state::State &state) {
     State& state_ref = state;
     shared_ptr<Player> player_ptr = nullptr;
 //    unique_ptr<Pokemon> poke_ptr;
-    for( auto player : state_ref.getPlayers())
-    {
-        if(player.second->getID()== idPlayer)
-        {
-            player_ptr = player.second;
-//            cout << "player found" <<endl;
-        }
-    }
+    player_ptr=state_ref.getPlayers()[this->idPlayer];
 
 
     if(!player_ptr)
