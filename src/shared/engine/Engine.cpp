@@ -16,16 +16,17 @@ using namespace state;
 Engine::Engine(State s):currentState(std::move(s))
 {
 
-    unsigned int id = 1;
-
+    const unsigned int id = 1;
+    unsigned int idPlayer1 = 1;
     string player = "Alice";
-    auto pair1 = make_pair(id,make_shared<Player>(false,player,id,make_shared<Bulbizarre>(id,WEST
+    const pair<const unsigned int, shared_ptr<Player>> pair1 = make_pair(id,make_shared<Player>(false,player,idPlayer1,make_shared<Bulbizarre>(idPlayer1,WEST
             ,200,Position(3,9))));
     this->currentState.getPlayers().insert(pair1);
-    unsigned int id2 = 0;
+    const unsigned int id2 = 0;
+    unsigned int idPlayer2 = 0;
     string player2 = "Bob";
-    auto pair2 =make_pair(id2,make_shared<Player>(Player(true,player2,id2,make_shared<Salameche>(id2,EST
-            ,150,Position(20,20)))));
+    const pair<const unsigned int, shared_ptr<Player>> pair2 =make_pair(id2,make_shared<Player>(true,player2,idPlayer2,make_shared<Salameche>(idPlayer2,EST
+            ,150,Position(20,20))));
     this->currentState.getPlayers().insert(pair2);
     this->currentState.center = Position(7,7);
 
