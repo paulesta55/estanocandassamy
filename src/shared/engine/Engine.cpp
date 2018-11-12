@@ -8,6 +8,7 @@
 #include "string.h"
 #include "state.h"
 #include <iostream>
+#include <map>
 using namespace std;
 using namespace engine;
 using namespace state;
