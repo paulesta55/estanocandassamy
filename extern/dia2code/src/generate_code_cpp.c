@@ -755,7 +755,7 @@ void print_include_stdlib(struct stdlib_includes* si,char* name) {
            print ("#include <thread>\n");
            si->thread = 1;
        }
-       if (!si->memory 
+       if (!si->queue
        && (strstr(name,"std::queue")
        ||  strstr(name,"std::priority_queue"))) {
            print ("#include <queue>\n");

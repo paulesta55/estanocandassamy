@@ -10,10 +10,10 @@ using namespace ai;
 using namespace state;
 
 
-bool ai::HCompare::operator()(Node n1, Node n2) {
-    if(n1.heuristic < n2.heuristic)
+bool ai::HCompare::operator()(Node* n1, Node* n2) {
+    if(n1->heuristic < n2->heuristic)
         return true;
-    if(n1.heuristic == n2.heuristic)
+    if(n1->heuristic == n2->heuristic)
         return false;
     return new runtime_error("failed to sort in priority queue");
 }
