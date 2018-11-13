@@ -268,6 +268,7 @@ La commande \emph{MoveCommand} met à jour le rendu du pokemon sur la map via le
 Les commandes \emph{AttackCommand} et \emph{HeakCommand} agissent sur l'état des pokemon et sur le rendu de la scène en gardant à jour les points de vie actuels affichés en haut à gauche de la scène.
 
 Par ailleurs, le changement de niveau étant provoqué par un déplacement sur la case escalier après qu'un joueur (non IA) ait éliminé tous ses ennemis; cet évènement est entièrement géré et intégré à la commande \emph{MoveCommand}.
+
     \begin{landscape}
     \begin{figure}[p]
     \includegraphics[width=0.9\paperheight]{engine.png}
@@ -279,17 +280,26 @@ Par ailleurs, le changement de niveau étant provoqué par un déplacement sur l
     \section{Intelligence Artificielle}
 
     \subsection{Stratégies}
-
+    \subsubsection{Intelligence aléatoire}
+    
+    Le stratégie de l'AI aléatoire est de se déplacer de manière aléatoire sur la map, lors qu'il rencontre un ennemi, il peut alors combattre et lorsque ses pv tombent bas, il se soigne.
+    
     \clearpage
     \subsection{Conception logiciel}
+    
+    Le diagramme des classes d'AI est affiché ci-dessous
+    
+    \emph{Classes AI}. Les classes filles de la classe AI implémente 3 stratégie d'IA suivi par le pokemon adverse :\begin{enumerate}
+        \item RandomAI : Intelligence Artificielle aléatoire
+    \end{enumerate}
 
 
-    %\begin{landscape}
-    %\begin{figure}[p]
-    %\includegraphics[width=0.9\paperheight]{ai.pdf}
-    %\caption{\label{uml:ai}Diagramme des classes d'intelligence artificielle.}
-    %\end{figure}
-    %\end{landscape}
+    \begin{landscape}
+    \begin{figure}[p]
+    \includegraphics[width=0.9\paperheight]{ai.png}
+    \caption{\label{uml:ai}Diagramme des classes d'intelligence artificielle.}
+    \end{figure}
+    \end{landscape}
 
 
     \section{Modularisation}
