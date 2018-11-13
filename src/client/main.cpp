@@ -137,6 +137,7 @@ int main(int argc,char* argv[])
         }
         if(!strcmp(argv[1],"heuristic_ai"))
         {
+            shared_ptr<int> a = nullptr;
             cout << "random ai" <<endl;
             shared_ptr<Engine> engine = make_shared<Engine>(State(Position(),make_shared<Map>("res/src/etage1.json")));
             shared_ptr<Scene> scene3;
