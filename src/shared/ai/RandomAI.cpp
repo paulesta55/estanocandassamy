@@ -17,8 +17,10 @@ using namespace engine;
 
 void ai::RandomAI::run(Engine &e, unsigned int player) {
     Position IAPos = e.getState().getPlayers()[player]->getPokemon()->getPosition();
-    vector<Player *> players;
-
+    if (e.getState().getPlayers()[player]->getPokemon()->getCurrentLife() != e.getState().getPlayers()[player]
+            ->getPokemon()->getFullLife()) {
+        e.addCommand(new HealCommand(player), 1);
+    }
     for (auto p2 : e.getState().getPlayers()) {
         if (IAPos.x == (p2.second->getPokemon()->getPosition().x + 1) && !(p2.second->getIA())) {
             switch (e.getState().getPlayers()[player]->getPokemon()->getOrientation()) {
@@ -66,29 +68,24 @@ void ai::RandomAI::run(Engine &e, unsigned int player) {
 
 
     }
-    if(e.getState().getPlayers()[player]->getPokemon()->getCurrentLife() != e.getState().getPlayers()[player]
-            ->getPokemon()->getFullLife())
-    {
-        e.addCommand(new HealCommand(player),1);
-    } else{
-        int choice = rand() % 4;
-        Orientation o;
-        switch (choice) {
-            case 0:
-                o = SOUTH;
-                break;
-            case 1:
-                o = NORTH;
-                break;
-            case 2:
-                o = EST;
-                break;
-            case 3:
-                o = WEST;
-                break;
-        }
-        e.addCommand(new MoveCommand(o, player), 1);
+
+    int choice = rand() % 4;
+    Orientation o;
+    switch (choice) {
+        case 0:
+            o = SOUTH;
+            break;
+        case 1:
+            o = NORTH;
+            break;
+        case 2:
+            o = EST;
+            break;
+        case 3:
+            o = WEST;
+            break;
     }
+    e.addCommand(new MoveCommand(o, player), 1);
 
 }
 

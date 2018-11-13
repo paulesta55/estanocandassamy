@@ -48,6 +48,14 @@ void Scene::draw(sf::RenderWindow& window) {
         // handle events
         sf::Event event;
         if(engine->getState().isGameFinished()) window.close();
+        for(auto player: engine->getState().getPlayers())
+        {
+            if(!(player.second->getIA()) && !(player.second->getPokemon()->getAlive()))
+            {
+                cout << "GAME OVER" << endl;
+                window.close();
+            }
+        }
         while (window.pollEvent(event))
         {
             switch(event.type) {
