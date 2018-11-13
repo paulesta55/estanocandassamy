@@ -59,6 +59,8 @@ void Scene::draw(sf::RenderWindow& window) {
         while (window.pollEvent(event))
         {
             switch(event.type) {
+                default:
+                    break;
                 case sf::Event::Closed :
                     window.close();
                     break;
@@ -82,6 +84,8 @@ void Scene::draw(sf::RenderWindow& window) {
                             break;
                         case sf::Keyboard::Key::H:
                             engine->addCommand(new HealCommand(this->pokeTarId),0);
+                            break;
+                        default:
                             break;
                     }
                     for(auto player : engine->getState().getPlayers())
