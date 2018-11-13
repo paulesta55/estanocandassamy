@@ -98,31 +98,20 @@ int main(int argc,char* argv[])
             sf::RenderWindow window(sf::VideoMode(620,620),"test window");
             scene3->draw(window);
 
-//            cout << "command built" <<endl;
             engine.addCommand(new MoveCommand(SOUTH, 0),0);
-//            cout << "command added" <<endl;
             engine.runCommands();
-//            cout << "command run" << endl;
-//            cout << "command built" <<endl;
             scene3->draw(window);
 
-//            delete command;
-//            auto command2 = new MoveCommand(SOUTH,1);
             engine.addCommand(new MoveCommand(SOUTH,1),0);
-//            cout << "command added" <<endl;
             engine.runCommands();
-//            cout << "command run" << endl;
 
             scene3->draw(window);
 
             engine.addCommand(new MoveCommand(SOUTH,1),0);
-//            cout << "command added" <<endl;
             engine.runCommands();
-//            cout << "command run" << endl;
 
             scene3->draw(window);
 
-            //            scene3.reset();
 
         }
         if(!strcmp(argv[1],"engine"))
@@ -139,7 +128,12 @@ int main(int argc,char* argv[])
         if(!strcmp(argv[1],"random_ai"))
         {
             cout << "random ai" <<endl;
-
+            shared_ptr<Engine> engine = make_shared<Engine>(State(Position(),make_shared<Map>("res/src/etage1.json")));
+            shared_ptr<Scene> scene3;
+            scene3.reset(new Scene(engine,"res/src/tilemap2.png",0));
+            engine->getState().registerObserver(scene3.get());
+            sf::RenderWindow window(sf::VideoMode(620,620),"test window");
+            scene3->draw(window);
         }
 
     }

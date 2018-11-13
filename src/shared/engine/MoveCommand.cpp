@@ -17,7 +17,7 @@ MoveCommand::MoveCommand(state::Orientation o, unsigned int id) {
 
 void MoveCommand::execute(state::State &state) {
 
-//    cout << "begin movecommand" <<endl;
+    cout << "begin movecommand" <<endl;
     State& state_ref = state;
     shared_ptr<Player> player_ptr = nullptr;
 //    unique_ptr<Pokemon> poke_ptr;
@@ -168,6 +168,6 @@ bool MoveCommand::checkMove(Position& p,State& state, unsigned int nextTile)
         }
 
     }
-    cout << "next tile: " << nextTile << endl;
+//    cout << "next tile: " << nextTile << endl;
     return true;
 }

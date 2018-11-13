@@ -41,8 +41,12 @@ void engine::Engine::addCommand(Command* command, unsigned int priority) {
     shared_ptr<Command> command_shared;
     command_shared.reset(command);
 //    cout << "new adding command"<< endl;
+if(commands.find(priority) == commands.cend())
     commands.insert(make_pair(priority,command_shared));
-
+else{
+    priority = static_cast<unsigned int>(commands.size());
+    commands.insert(make_pair(priority,command_shared));
+}
 //    cout << "new command added" <<endl;
 }
 

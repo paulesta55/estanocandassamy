@@ -86,8 +86,11 @@ void Scene::draw(sf::RenderWindow& window) {
                     }
                     for(auto player : engine->getState().getPlayers())
                     {
-                        if(player.second->getIA() && player.second->getPokemon()->getAlive())
+                        if(player.second->getIA() && player.second->getPokemon()->getAlive()){
+                            cout << "run ai" << endl;
                             ai->run(*engine,player.first);
+                            break;
+                        }
                     }
                     engine->runCommands();
                     break;
