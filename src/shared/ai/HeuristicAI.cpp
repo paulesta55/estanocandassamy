@@ -7,6 +7,7 @@
 #include "engine.h"
 #include "state.h"
 #include "AstarComputer.h"
+#include <cmath>
 using namespace engine;
 using namespace ai;
 using namespace state;
@@ -72,8 +73,14 @@ void ai::HeuristicAI::run(engine::Engine &e, unsigned int player) {
 
 
     }
+    Position objectif = e.getState().getPlayers()[0]->getPokemon()->getPosition();
+    Position current = e.getState().getPlayers()[player]->getPokemon()->getPosition();
+    auto h = static_cast<unsigned int>(std::sqrt(((int)(objectif.x) - (int)(current.x)) * ((int) (objectif.x) - (int)
+            (current.x)) + ((int)(objectif.y) - (int)(current.y)) * ((int)(objectif.y)-(int)(current.y))));
 
-//    AstarComputer astarComputer(e.getState().getMap().get())
+    Node objectifNode(nullptr,e.getState().getPlayers()[0]->getPokemon()->getPosition(),0,0);
+    Node source(nullptr,current,0,h);
+    AstarComputer astarComputer(e.getState().getMap(),objectifNode,source);
 //TODO : use AstarComputer
 //TODO : add a static int computeHeuristic method to AstarComputer
 //Node objectif(nullptr,e.getState().getPlayers()[0]->getPokemon()->getPosition(),0,)//TODO: change the hardcoded ID

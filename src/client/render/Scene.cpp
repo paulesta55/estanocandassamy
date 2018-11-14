@@ -10,6 +10,7 @@
 #include "render.h"
 #include <iostream>
 #include <string>
+#include <state/TabEvent.h>
 #include "state.h"
 #include "ai.h"
 #include "engine.h"
@@ -99,6 +100,7 @@ void Scene::draw(sf::RenderWindow& window) {
 
 
         sf::View view2(sf::Vector2f(this->xCenter, this->yCenter), sf::Vector2f(200.f, 200.f));
+
         infoPlayers = "";
         int c = 0;
         for(auto player : engine->getState().getPlayers())
@@ -166,14 +168,29 @@ void movePokeRender(unsigned int pokeId)
 
 
 void Scene::stateChanged(const state::Event& e) {
-switch(e.getEventType())
-{
-    case TAB_EVENT:
+    const Event& event1 = e;
+
+   if(e.getEventType()==TAB_EVENT) {
         cout << "tab event" << endl;
-        updatePlayers();
-        break;
-    case STATE_EVENT:
-        StateEvent event = *(StateEvent*)(e.clone());
+        state::TabEvent eventTab = *(TabEvent*)(event1.clone());
+        unsigned int pokeId = this->engine->getState().getPlayers().at(eventTab.playerId)->getPokemon()->getID();
+        switch(eventTab.tabEventId) {
+            case MOVE:
+                this->pokeVec[pokeId]->setPosition(engine->getState().getPlayers().at(eventTab.playerId)->getPokemon()->
+                getPosition().x*24,engine->getState().getPlayers().at(eventTab.playerId)->getPokemon()->getPosition().y*24);
+                this->xCenter = engine->getState().getPlayers().at(pokeTarId)->getPokemon()->getPosition().x*tileSize.x;
+                this->yCenter = engine->getState().getPlayers().at(pokeTarId)->getPokemon()->getPosition().y*tileSize.y;
+                break;
+            case DEATH:
+                pokeVec.erase(pokeId);
+                break;
+            case ORIENT:
+                updatePlayers();
+                break;
+        }
+   }
+   else
+   { StateEvent event = *(StateEvent*)(e.clone());
         switch(event.stateEvent)
         {
             case ATTACK:
@@ -187,11 +204,10 @@ switch(e.getEventType())
                 updatePlayers();
                 break;
         }
-        break;
+        }
 
 }
 
-}
 
 void Scene::updatePlayers() {
     this->pokeVec.clear();

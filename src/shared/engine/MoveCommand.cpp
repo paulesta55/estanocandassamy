@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <state/TabEventId.h>
 #include "MoveCommand.h"
 #include "engine.h"
 #include "state.h"
@@ -146,7 +147,7 @@ void MoveCommand::execute(state::State &state) {
     else
     {
         player_ptr->getPokemon()->setOrientation(orientation);
-        TabEvent tabEvent(TabEventId::MOVE,idPlayer);
+        TabEvent tabEvent(TabEventId::ORIENT,idPlayer);
         state_ref.notifyObservers(tabEvent);
     }
 
