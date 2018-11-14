@@ -168,13 +168,38 @@ int main(int argc,char* argv[])
         if(!strcmp(argv[1],"heuristic_ai"))
         {
 
-            cout << "random ai" <<endl;
             shared_ptr<Engine> engine = make_shared<Engine>(State(Position(),make_shared<Map>("res/src/etage1.json")));
             shared_ptr<Scene> scene3;
             scene3.reset(new Scene(engine,"res/src/tilemap2.png",0));
             engine->getState().registerObserver(scene3.get());
             sf::RenderWindow window(sf::VideoMode(620,620),"test window");
-            scene3->draw(window);
+
+            unique_ptr<AI> ai;
+            ai.reset(new RandomAI);
+
+            while(window.isOpen()) {
+
+
+                if (engine->getState().isGameFinished()) window.close();
+                for (auto player: engine->getState().getPlayers()) {
+                    if (!(player.second->getIA()) && !(player.second->getPokemon()->getAlive())) {
+                        cout << "GAME OVER" << endl;
+                        window.close();
+                    }
+                }
+                scene3->draw(window);
+                if (engine->getCommands().size() > 0) {
+                    for (auto player : engine->getState().getPlayers()) {
+                        if (player.second->getIA() && player.second->getPokemon()->getAlive()) {
+                            cout << "run ai" << endl;
+                            ai->run(*engine, player.first);
+                            break;
+                        }
+                    }
+                    engine->runCommands();
+                }
+            }
+
         }
 
     }
