@@ -47,7 +47,7 @@ int main(int argc,char* argv[])
                 cout << "working case test success" <<endl;
             }else{
                 fails++;
-                cerr << "working case test failes" << endl;
+                cerr << "working case test fails" << endl;
             }
 
             // test map.json extension
@@ -56,7 +56,7 @@ int main(int argc,char* argv[])
                 cout << "json extension test success" << endl;
             }else{
                 fails++;
-                cerr << "json extension test failes" << endl;
+                cerr << "json extension test fails" << endl;
             }
 
             // test map format
@@ -65,7 +65,7 @@ int main(int argc,char* argv[])
                 cout << "map format test success" <<endl;
             }else{
                 fails++;
-                cerr << "map format test failes" << endl;
+                cerr << "map format test fails" << endl;
             }
 
             // test layers format
@@ -74,7 +74,7 @@ int main(int argc,char* argv[])
                 cout << "layer data test success" <<endl;
             }else{
                 fails++;
-                cerr << "layer data test failes" << endl;
+                cerr << "layer data test fails" << endl;
             }
 
             // test layers dimension
@@ -83,7 +83,7 @@ int main(int argc,char* argv[])
                 cout << "layer dimensions test success" <<endl;
             }else{
                 fails++;
-                cerr << "layer dimensions test failes" << endl;
+                cerr << "layer dimensions test fails" << endl;
             }
 
 
@@ -93,26 +93,40 @@ int main(int argc,char* argv[])
         }
         if(!strcmp(argv[1],"render"))
         {
-            Engine engine;
+
+            shared_ptr<Engine> engine = make_shared<Engine>(State(Position(),make_shared<Map>("res/src/etage1.json")));
             shared_ptr<Scene> scene3;
-            scene3.reset(new Scene(make_shared<engine::Engine>(engine),"res/src/tilemap2.png",1));
-            engine.getState().registerObserver(scene3.get());
+            scene3.reset(new Scene(engine,"res/src/tilemap2.png",0));
+            engine->getState().registerObserver(scene3.get());
             sf::RenderWindow window(sf::VideoMode(620,620),"test window");
-            scene3->draw(window);
+            //good dimensions : 620 x 620
 
-            engine.addCommand(new MoveCommand(SOUTH, 0),0);
-            engine.runCommands();
-            scene3->draw(window);
+//            unique_ptr<AI> ai;
+//            ai.reset(new RandomAI);
+//    int count = 300;
+            while(window.isOpen()) {
+//        cout << "window opened" <<endl;
+                // handle events
 
-            engine.addCommand(new MoveCommand(SOUTH,1),0);
-            engine.runCommands();
+                if (engine->getState().isGameFinished()) window.close();
+                for (auto player: engine->getState().getPlayers()) {
+                    if (!(player.second->getIA()) && !(player.second->getPokemon()->getAlive())) {
+                        cout << "GAME OVER" << endl;
+                        window.close();
+                    }
+                }
+                scene3->draw(window);
+//                if (engine->getCommands().size() > 0) {
+//                    for (auto player : engine->getState().getPlayers()) {
+//                        if (player.second->getIA() && player.second->getPokemon()->getAlive()) {
+//                            cout << "run ai" << endl;
+//                            ai->run(*engine, player.first);
+//                            break;
+//                        }
+//                    }
+//                engine->runCommands();
+            }
 
-            scene3->draw(window);
-
-            engine.addCommand(new MoveCommand(SOUTH,1),0);
-            engine.runCommands();
-
-            scene3->draw(window);
 
 
         }
@@ -124,9 +138,37 @@ int main(int argc,char* argv[])
             scene3.reset(new Scene(engine,"res/src/tilemap2.png",0));
             engine->getState().registerObserver(scene3.get());
             sf::RenderWindow window(sf::VideoMode(620,620),"test window");
-            scene3->draw(window);
+            //good dimensions : 620 x 620
+
+//            unique_ptr<AI> ai;
+//            ai.reset(new RandomAI);
+//    int count = 300;
+            while(window.isOpen()) {
+//        cout << "window opened" <<endl;
+                // handle events
+
+                if (engine->getState().isGameFinished()) window.close();
+                for (auto player: engine->getState().getPlayers()) {
+                    if (!(player.second->getIA()) && !(player.second->getPokemon()->getAlive())) {
+                        cout << "GAME OVER" << endl;
+                        window.close();
+                    }
+                }
+                scene3->draw(window);
+//                if (engine->getCommands().size() > 0) {
+//                    for (auto player : engine->getState().getPlayers()) {
+//                        if (player.second->getIA() && player.second->getPokemon()->getAlive()) {
+//                            cout << "run ai" << endl;
+//                            ai->run(*engine, player.first);
+//                            break;
+//                        }
+//                    }
+                    engine->runCommands();
+                }
+
 
         }
+
         if(!strcmp(argv[1],"random_ai"))
         {
             cout << "random ai" <<endl;

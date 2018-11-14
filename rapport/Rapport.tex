@@ -144,15 +144,15 @@ morekeywords={string,number,array,object}% list your attributes here
     \end{itemize}
     
      La classe \emph{Player} contient l'ensemble des éléments permettant de caractériser l'état d'un joueur. Chaque joueur est lié à un pokemon par une relation de composition : un pokemon ne peut pas exister sans joueur. Dans le cas où le pokemon est contrôlé par l'IA, l'IA est considérée comme un joueur et contrôle donc son pokemon.
-    
-    Chaque pokemon possède une relation d'agrégation avec des statistiques qui lui sont attribués en début de partie.
-    
+     
     Pour notre implémentation du jeu, nous avons prévu d'utiliser que les trois pokémon suivant : \begin{itemize}
         \item Carapuce
         \item Salamèche
         \item Bulbizarre
     \end{itemize}
     Le constructeur respectif de chacun de ces trois pokemons héritent de la classe Pokemon. Nous avons mis en place un identifiant pour chaque pokemon, ce qui permet d'avoir plusieurs pokemon construit à partir de la même classe.
+    
+    Chaque pokemon possède une orientation (\emph{SOUTH, NORTH, WEST ou EST}), et un nombre de points de vie maximum qui dépend de son type (\emph{SALAMECHE, CARAPUCE, BULBIZARRE}) .
     
     La partie environnement est calqué sur le modèle proposé par les fichiers exportés par le logiciel \emph{Tiled Map Editor} au format JSON. Les objets les plus consommateurs en mémoire tels les \emph{data} dans la classe \emph{Layer} sont par ailleurs stockés dans le tas pour éviter les copies entre les différentes classes.
     
@@ -161,13 +161,12 @@ morekeywords={string,number,array,object}% list your attributes here
      On utilise le pattern \emph{Observer} pour notifier les éléments dépendant de l'état lorsque celui-ci change. La classe \emph{State} hérite de la classe \emph{Observable} qui contient une liste d'objets héritant de la classe abstraite \emph{Observer}. Lorsque la classe \emph{State} subit un changement, l'utilisateur utilise la méthode \emph{notifyObservers()} pour notifier ses observers avec l'évènement correspondant au changement appliqué.
      Il existe 2 types d'\emph{Event}:
 \begin{itemize}
-\item Les \emph{TAB\_EVENT} qui représente un changement d'état lié aux joeurs (mort, changement de position , changement d'orientation)
+\item Les \emph{TAB\_EVENT} qui représente un changement d'état lié à la position des pokemons sur la carte (absent si mort, changement de position , changement d'orientation)
 \item Les \emph{STATE\_EVENT} qui correspondent à des changement liés à l'environnement (changement de niveau) ou à des changements liéés aux statistiques de la partie
 \end{itemize}
      d{itemie}
-  Afin d'éviter des problèmes techniques suite à notre implémentation, nous avons mis en place des fonctions afin de capturer les exceptions rencontrées lors de l'exécution, principalement dans la classe qui charge les données de la carte. De plus nous avons utilisés des entiers signé afin que les valeurs et statistiques des pokemons ne prennent jamais de valeurs négatives.
-     
-     Nous avons pour l'instant implémenter que les fonction set et get qui permettent d'instancier nos objets liés aux états . 
+  Afin d'éviter des problèmes techniques dans notre implémentation, nous avons mis en place des fonctions afin de capturer les exceptions rencontrées lors de l'exécution, principalement dans la classe qui charge les données de la carte. De plus nous avons utilisé des entiers non signés afin que les attributs des pokemons ne prennent jamais de valeurs négatives.
+    
     \begin{landscape}
     \begin{figure}[p]
     \includegraphics[width=0.8\paperheight]{state.png}
@@ -183,19 +182,19 @@ morekeywords={string,number,array,object}% list your attributes here
     
 Notre stratégie de rendu d'un état se base sur l'utilisation de l'interface SFML qui s'appuie sur OpenGL afin de générer un rendu en 2D. Nous avons utiliser les fonctions de SFML afin de charger dans le processeur, la liste des éléments à afficher par le processeur graphique. 
     
-Nous avons découper notre affichage graphique sur deux niveaux, la carte avec les éléments décoratifs (mur, sol, escalier) et les éléments mobiles à savoir les pokemons (Carapuce, Salamèche, Bulbizarre) qui se superpose sur le claque précédent. On transmet l'état du jeu ainsi que les textures de toute la carte avec leurs coordonnées et la texture des pokemons avec leurs coordonnées et leur orientation à afficher.
+Nous avons découpé notre affichage graphique sur deux niveaux, la carte avec les éléments décoratifs (mur, sol, escalier) et les éléments mobiles à savoir les pokemons (Carapuce, Salamèche, Bulbizarre) qui se superposent sur la couche précédente. On transmet l'état du jeu ainsi que les textures de toute la carte avec leurs coordonnées et la texture des pokemons avec leurs coordonnées et leur orientation à afficher.
         
-La carte étant très grande, nous avons entièrement chargé dans la mémoire pour l'affichage et on a crée une vue (un zoom) centrée sur le pokemon du joueur qui évolue sur la carte, car le but du jeu reste avant tout d'évoluer dans un labyrinthe.
+La carte étant très grande, nous l'avons entièrement chargé dans la mémoire pour l'affichage et on a créé une vue (un zoom) centrée sur le pokemon du joueur qui évolue sur la carte, car le but du jeu reste avant tout d'évoluer dans un labyrinthe.
      
-Lorsque qu'un changement d'état se produit, la vue est modifiée en fonction du changement appliqué à l'état. Si le changement modifie uniquement la position des pokemon, seule le rendu des pokemon est mis à jour, si ce changement s'applique à l'environnement l'ensemble du rendu de la carte est mis à jour. Lorsque l'ensemble de l'état est modifié le rendu de l'état est entièrement mis à jour. Dans le cas où le jeu est fini la fenêtre est automatiquement fermée.
+Lorsque qu'un changement d'état se produit, la vue est modifiée en fonction du changement appliqué à l'état. Si le changement modifie uniquement la position des pokemons, seule le rendu des pokemons est mis à jour, si ce changement s'applique à l'environnement l'ensemble du rendu de la carte est mis à jour. Lorsque l'ensemble de l'état est modifié le rendu de l'état est entièrement mis à jour. Dans le cas où le jeu est fini la fenêtre est automatiquement fermée.
 
-Nous avons rajouter sur la scène finale, les statistiques des pokemon (point de vie actuelle et id des pokemon) en haut à gauche. 
+Nous avons rajouté sur la scène finale, certains attributs des pokemons (point de vie actuelle et id des pokemon) en haut à gauche. 
         
-Pour simplifier au mieux notre logiciel, nous n'avons pas inclut les animations de déplacements lorsque le pokemon évolue d'une case à l'autre ainsi que les animations d'attaques quand un pokemon lance une compétence sur un autre.
+Pour simplifier au mieux notre logiciel, nous n'avons pas inclus les animations de déplacements lorsque le pokemon évolue d'une case à l'autre ainsi que les animations d'attaques quand un pokemon lance une compétence sur un autre.
 
 
     \subsection{Conception logiciel}
-Pour afficher un état on crée une scène qui génère instancie un ensemble de pointeurs sur des objets graphiques de types \emph{LayerRender} pour la carte.
+Pour afficher un état on crée une scène qui génère un ensemble de pointeurs sur des objets graphiques de types \emph{LayerRender} pour la carte.
 Pour les Pokemon, on instancie un \emph{Sprite} par Pokemon. Ce \emph{Sprite} contient à la fois les coordonnées du Pokemon sur la fenêtre et sa position sur le Tileset utilisé. Puis, on utilise la méthode \emph{Scene::draw()} pour déclencher l'ouverture de la fenêtre et l'affichage de l'état.
 Il est à noter que l'état contient d'ores et déjà toutes les informations nécessaires à l'affichage de la carte. En effet, à la création de l'état celui-ci parse un fichier JSON (ici \emph{map.json})contenant toutes les informations nécessaires à l'affichage de la carte.
 
@@ -208,6 +207,7 @@ Par ailleurs, les points de vie de chacun des pokemon sont, pour le moment, affi
 
 Chaque objet \emph{LayerRender} parcourt l'ensemble des tuiles d'un étage de la carte, détecte la position de la tuile sur la ressource graphique (i.e : l'image du tileset) et calcule sa position sur la fenêtre. Pour optimiser les performances seule l'image du tileset est chargée dans une \emph{Texture}, l'objet \emph{LayerRender} conserve seulement la position de chaque tuile de la carte sur cette texture.
 Les pokemons sont chacun rendus à l'intérieur d'un \emph{Sprite}.
+Lorsqu'un mouvement de l'un des pokemons est détecté le la classe scène met à jour l'affichage de l'ensemble des pokemons.
 
     \begin{landscape}
     \begin{figure}[p]
@@ -235,11 +235,12 @@ Les pokemons sont chacun rendus à l'intérieur d'un \emph{Sprite}.
     
     Les changements autonomes interviennent à la fin de chaque changement d'état lié à une commande extérieure et s'exécutent dans l'ordre suivant : 
     \begin{enumerate}
-        \item Si le joueur est mort, on affiche "Fin de jeu"
+        \item Si le joueur est mort, on affiche "GAME OVER"
         \item Si l'IA est morte, on active la case escalier pour passer à l'étage suivante
         \item On met à jour les statistiques (point de vie) de l'IA et du joueur en fonction des règles d'attaque et de soin.
         \item On applique les règles de déplacement du joueur et de l'IA. 
         \item Si le joueur est sur la case d'escalier, on vérifie s'il est autoriser à passer au niveau suivant.
+\item Si le joueur a gagné on affiche "GAME WON"
     \end{enumerate}
     
     
@@ -261,9 +262,9 @@ On a  implémenté, pour le moment, 3 types de commande:
 \item \emph{HealCommand} qui est déclenché lorsqu'un joueur veut soigner son pokemon 
 \end{itemize}
 
-Les trois commandes \emph{MoveCommand}, \emph{AttackCommand} et \emph{HeakCommand} sont déclencés sur un évènement de lecture de clavier, plus précisement sur un évenement d'appui sur une touche de clavier pour plus de fluidité lors des déplacements dans le parcours du labyrinthe.
+Les trois commandes \emph{MoveCommand}, \emph{AttackCommand} et \emph{HeakCommand} sont déclenchés sur un évènement de lecture de clavier, plus précisement sur un évènement d'appui sur une touche de clavier pour plus de fluidité lors des déplacements dans le parcours du labyrinthe.
 
-La commande \emph{MoveCommand} met à jour le rendu du pokemon sur la map via le render, il redessine la tuile du pokemon suivant son orientation à la bonne case.
+La commande \emph{MoveCommand} met à jour la position ou l'orientation du pokemon sur la map.
 
 Les commandes \emph{AttackCommand} et \emph{HeakCommand} agissent sur l'état des pokemon et sur le rendu de la scène en gardant à jour les points de vie actuels affichés en haut à gauche de la scène.
 
