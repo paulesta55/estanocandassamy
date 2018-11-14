@@ -44,5 +44,6 @@ shared_ptr<Node> AstarComputer::compute() {
 AstarComputer::AstarComputer(state::Map &map, Node &objectif, Node &source) {
     this->objectif = make_shared<Node>(objectif);
     this->source = make_shared<Node>(source);
+//    this->map.reset(map);
 }
 
