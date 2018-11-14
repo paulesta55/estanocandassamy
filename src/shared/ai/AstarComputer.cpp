@@ -18,7 +18,10 @@ Node *AstarComputer::compute() {
         if(n->getPosition().x == objectif->getPosition().x && n->getPosition().y == objectif->getPosition().y)
             return n.get();
         else {
-            // traitement...
+            for(auto v : n.get()->getAvailableNeigbors(35,map.get())){
+//                if(openList)
+            }
+            
         }
     }
 
