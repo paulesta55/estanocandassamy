@@ -6,7 +6,7 @@
 #include "ai.h"
 #include "engine.h"
 #include "state.h"
-
+#include "AstarComputer.h"
 using namespace engine;
 using namespace ai;
 using namespace state;
@@ -73,6 +73,10 @@ void ai::HeuristicAI::run(engine::Engine &e, unsigned int player) {
 
     }
 
-    AstarComputer astarComputer(e.getState().getMap().get())
+//    AstarComputer astarComputer(e.getState().getMap().get())
+//TODO : use AstarComputer
+//TODO : add a static int computeHeuristic method to AstarComputer
+//Node objectif(nullptr,e.getState().getPlayers()[0]->getPokemon()->getPosition(),0,)//TODO: change the hardcoded ID
+//AstarComputer astarComputer(e.getState().getMap(),);
 }
 
