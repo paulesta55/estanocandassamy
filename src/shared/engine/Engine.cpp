@@ -46,6 +46,7 @@ if(commands.find(priority) == commands.cend())
 else{
     priority = static_cast<unsigned int>(commands.size());
     commands.insert(make_pair(priority,command_shared));
+
 }
 //    cout << "new command added" <<endl;
 }
@@ -76,5 +77,9 @@ state::State &engine::Engine::getState() {
 
 std::stack<std::shared_ptr<engine::Command>> engine::Engine::update() {
     return std::stack<std::shared_ptr<engine::Command>>();
+}
+
+const std::map<int, std::shared_ptr<Command>> &Engine::getCommands() {
+    return commands;
 }
 

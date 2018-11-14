@@ -10,7 +10,7 @@ using namespace ai;
 using namespace state;
 
 
-bool ai::HCompare::operator()(Node* n1, Node* n2) {
+bool ai::HCompare::operator()(shared_ptr<Node> n1, shared_ptr<Node> n2) {
     if(n1->heuristic < n2->heuristic)
         return true;
     if(n1->heuristic == n2->heuristic)

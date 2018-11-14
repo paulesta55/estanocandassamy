@@ -3,23 +3,36 @@
 //
 #include <memory>
 #include "AstarComputer.h"
-
+#include <algorithm>
+#include <cmath>
+#include <iterator>
 using namespace std;
 using namespace state;
 using namespace ai;
 
 
-Node *AstarComputer::compute() {
-    openList.push(source.get());
+shared_ptr<Node> AstarComputer::compute() {
+    openList.push_back(source);
     while(!openList.empty())
     {
-        unique_ptr<Node> n;
-        n.reset(openList.top());
+        shared_ptr<Node> n;
+        n.reset(openList.front().get());
+
+        openList.pop_front();
+
+
         if(n->getPosition().x == objectif->getPosition().x && n->getPosition().y == objectif->getPosition().y)
-            return n.get();
+            return n;
         else {
-            for(auto v : n.get()->getAvailableNeigbors(35,map.get())){
-//                if(openList)
+            for(auto v : n->getAvailableNeigbors(35,map.get())){
+                if(std::find(closedList.begin(),closedList.end(),v)==closedList.end() ||
+                std::find(openList.begin(),openList.end(),v)==openList.end()) {
+                    v->heuristic = static_cast<unsigned int>(v->cost + std::sqrt(((int)(objectif->getPosition().x) - (int)(v->getPosition().x)) * ((int)
+                                                (objectif->getPosition().x) - (int)(v->getPosition().x)) +((int)(objectif->getPosition().y)-
+                                                        (int)(v->getPosition().y))*((int)(objectif->getPosition().y)-(int)(v->getPosition().y))));
+                    openList.push_back(v);
+                    std::sort(openList.begin(),openList.end(),HCompare());
+                }
             }
             
         }

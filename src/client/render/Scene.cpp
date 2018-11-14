@@ -38,24 +38,7 @@ Scene::Scene(shared_ptr<engine::Engine> engine,string tileSet,unsigned int  poke
 
 void Scene::draw(sf::RenderWindow& window) {
 
-    //good dimensions : 620 x 620
-
-    unique_ptr<AI> ai;
-    ai.reset(new RandomAI);
-//    int count = 300;
-    while(window.isOpen()){
-//        cout << "window opened" <<endl;
-        // handle events
-        sf::Event event;
-        if(engine->getState().isGameFinished()) window.close();
-        for(auto player: engine->getState().getPlayers())
-        {
-            if(!(player.second->getIA()) && !(player.second->getPokemon()->getAlive()))
-            {
-                cout << "GAME OVER" << endl;
-                window.close();
-            }
-        }
+    sf::Event event;
         while (window.pollEvent(event))
         {
             switch(event.type) {
@@ -88,22 +71,16 @@ void Scene::draw(sf::RenderWindow& window) {
                         default:
                             break;
                     }
-                    for(auto player : engine->getState().getPlayers())
-                    {
-                        if(player.second->getIA() && player.second->getPokemon()->getAlive()){
-                            cout << "run ai" << endl;
-                            ai->run(*engine,player.first);
-                            break;
-                        }
-                    }
-                    engine->runCommands();
-                    break;
+
 
             }
             if(event.type == sf::Event::Closed)
                 window.close();
 
         }
+
+
+
         window.clear();
         for(const auto &layerRend : layerVec)
         {
@@ -156,7 +133,6 @@ void Scene::draw(sf::RenderWindow& window) {
         window.setView(view2);
         window.display();
     }
-}
 
 void Scene::updateMap() {
     layerVec.clear();

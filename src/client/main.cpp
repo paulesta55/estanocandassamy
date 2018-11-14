@@ -11,6 +11,7 @@
 #include <memory>
 #include <utility>
 #include "engine.h"
+#include "ai.h"
 void testSFML() {
     sf::Texture texture;
 }
@@ -23,6 +24,7 @@ using namespace std;
 using namespace state;
 using namespace render;
 using namespace engine;
+using namespace ai;
 
 
 int main(int argc,char* argv[])
@@ -133,7 +135,35 @@ int main(int argc,char* argv[])
             scene3.reset(new Scene(engine,"res/src/tilemap2.png",0));
             engine->getState().registerObserver(scene3.get());
             sf::RenderWindow window(sf::VideoMode(620,620),"test window");
-            scene3->draw(window);
+            //good dimensions : 620 x 620
+
+            unique_ptr<AI> ai;
+            ai.reset(new RandomAI);
+//    int count = 300;
+            while(window.isOpen()) {
+//        cout << "window opened" <<endl;
+                // handle events
+
+                if (engine->getState().isGameFinished()) window.close();
+                for (auto player: engine->getState().getPlayers()) {
+                    if (!(player.second->getIA()) && !(player.second->getPokemon()->getAlive())) {
+                        cout << "GAME OVER" << endl;
+                        window.close();
+                    }
+                }
+                scene3->draw(window);
+                if (engine->getCommands().size() > 0) {
+                    for (auto player : engine->getState().getPlayers()) {
+                        if (player.second->getIA() && player.second->getPokemon()->getAlive()) {
+                            cout << "run ai" << endl;
+                            ai->run(*engine, player.first);
+                            break;
+                        }
+                    }
+                    engine->runCommands();
+                }
+            }
+
         }
         if(!strcmp(argv[1],"heuristic_ai"))
         {

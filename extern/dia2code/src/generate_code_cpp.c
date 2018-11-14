@@ -689,6 +689,7 @@ struct stdlib_includes {
    int unordered_set;
    int stack;
    int queue;
+   int deque;
    int array;   
    int thread;
    int mutex;
@@ -760,6 +761,10 @@ void print_include_stdlib(struct stdlib_includes* si,char* name) {
        ||  strstr(name,"std::priority_queue"))) {
            print ("#include <queue>\n");
            si->queue = 1;
+       }
+       if(!si->deque && strstr(name,"std::deque")) {
+           print("#include <deque>\n");
+           si->deque = 1;
        }
        if (!si->unordered_map && strstr(name,"std::unordered_map")) {
            print ("#include <unordered_map>\n");
