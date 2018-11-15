@@ -205,10 +205,10 @@ int main(int argc,char* argv[])
             shared_ptr<Scene> scene3;
             scene3.reset(new Scene(engine,"res/src/tilemap2.png",0));
             engine->getState().registerObserver(scene3.get());
-            sf::RenderWindow window(sf::VideoMode(1080,720),"test window");
+            sf::RenderWindow window(sf::VideoMode(600,600),"test window");
 
             unique_ptr<AI> ai;
-            ai.reset(new RandomAI);
+            ai.reset(new HeuristicAI());
 
             while(window.isOpen()) {
 

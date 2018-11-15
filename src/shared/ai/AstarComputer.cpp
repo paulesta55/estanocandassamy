@@ -15,11 +15,10 @@ shared_ptr<Node> AstarComputer::compute() {
     openList.push_back(source);
     while(!openList.empty())
     {
-        shared_ptr<Node> n;
-        n.reset(openList.front().get());
-
+        weak_ptr<Node> nW;
+        nW = openList.front();
+        auto n = nW.lock();
         openList.pop_front();
-
 
         if(n->getPosition().x == objectif->getPosition().x && n->getPosition().y == objectif->getPosition().y)
             return n;
@@ -34,8 +33,11 @@ shared_ptr<Node> AstarComputer::compute() {
                     std::sort(openList.begin(),openList.end(),HCompare());
                 }
             }
+
             
         }
+        closedList.push_back(n);
+
     }
 
     return nullptr;
@@ -44,6 +46,6 @@ shared_ptr<Node> AstarComputer::compute() {
 AstarComputer::AstarComputer(shared_ptr<state::Map> map, Node &objectif, Node &source) {
     this->objectif = make_shared<Node>(objectif);
     this->source = make_shared<Node>(source);
-//    this->map.reset(map);
+    this->map = map;
 }
 
