@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <cmath>
 #include <iterator>
+#include <iostream>
 using namespace std;
 using namespace state;
 using namespace ai;
@@ -13,11 +14,15 @@ using namespace ai;
 
 shared_ptr<Node> AstarComputer::compute() {
     openList.push_back(source);
+    int k = 0;
+
     while(!openList.empty())
     {
         weak_ptr<Node> nW;
         nW = openList.front();
         auto n = nW.lock();
+
+        cout << k << " iterations" << endl;
         openList.pop_front();
 
         if(n->getPosition().x == objectif->getPosition().x && n->getPosition().y == objectif->getPosition().y)
@@ -33,9 +38,9 @@ shared_ptr<Node> AstarComputer::compute() {
                     std::sort(openList.begin(),openList.end(),HCompare());
                 }
             }
-
             
         }
+        k = k+1;
         closedList.push_back(n);
 
     }

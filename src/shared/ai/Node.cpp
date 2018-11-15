@@ -5,7 +5,7 @@
 #include "Node.h"
 #include "state/Map.h"
 #include <memory>
-
+#include <iostream>
 using namespace std;
 
 const state::Position &ai::Node::getPosition() {

@@ -208,7 +208,7 @@ int main(int argc,char* argv[])
             sf::RenderWindow window(sf::VideoMode(600,600),"test window");
 
             unique_ptr<AI> ai;
-            ai.reset(new HeuristicAI());
+            ai.reset(new HeuristicAI);
 
             while(window.isOpen()) {
 

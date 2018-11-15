@@ -81,7 +81,7 @@ void ai::HeuristicAI::run(engine::Engine &e, unsigned int player) {
     Node objectifNode(nullptr,e.getState().getPlayers()[0]->getPokemon()->getPosition(),0,0);
     Node source(nullptr,current,0,h);
     AstarComputer astarComputer(e.getState().getMap(),objectifNode,source);
-    astarComputer.compute();
+    auto c = astarComputer.compute();
 //TODO : use AstarComputer
 //TODO : add a static int computeHeuristic method to AstarComputer
 //Node objectif(nullptr,e.getState().getPlayers()[0]->getPokemon()->getPosition(),0,)//TODO: change the hardcoded ID
