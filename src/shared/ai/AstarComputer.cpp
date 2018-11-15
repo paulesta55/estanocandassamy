@@ -18,19 +18,43 @@ shared_ptr<Node> AstarComputer::compute() {
 
     while(!openList.empty())
     {
-        weak_ptr<Node> nW;
-        nW = openList.front();
-        auto n = nW.lock();
 
+
+        shared_ptr<Node> n;
+        n = openList.front();
+        openList.erase(openList.begin());
+        openList.shrink_to_fit();
         cout << k << " iterations" << endl;
-        openList.pop_front();
 
+        cout << "position :"<<n->getPosition().x << ","<< n->getPosition().y << endl;
         if(n->getPosition().x == objectif->getPosition().x && n->getPosition().y == objectif->getPosition().y)
             return n;
         else {
-            for(auto v : n->getAvailableNeigbors(35,map.get())){
-                if(std::find(closedList.begin(),closedList.end(),v)==closedList.end() ||
-                std::find(openList.begin(),openList.end(),v)==openList.end()) {
+            for(const auto &v : n->getAvailableNeigbors(35,map.get())){
+                bool passInFor = true;
+                //looking for v in closedList with heuristique < current heuristique
+                for(auto ni:closedList)
+                {
+                    // if found don't insert in openList ...
+                    if(ni->getPosition().x == v->getPosition().x && ni->getPosition().y == v->getPosition().y && ni->heuristic < v->heuristic)
+                    {
+                        passInFor = false;
+                    }
+                }
+                // don't need to check if v is in openlist if v is already found in closedList with heuristique < current heuristique
+                if(passInFor)
+                {
+                    // same than for closedList
+                    for(auto ni: openList)
+                    {
+                        if(ni->getPosition().x == v->getPosition().x && ni->getPosition().y == v->getPosition().y && ni->heuristic < v->heuristic)
+                        {
+                            passInFor = false;
+                        }
+                    }
+                }
+                if(passInFor) {
+                    v->cost += n->cost+1;
                     v->heuristic = static_cast<unsigned int>(v->cost + std::sqrt(((int)(objectif->getPosition().x) - (int)(v->getPosition().x)) * ((int)
                                                 (objectif->getPosition().x) - (int)(v->getPosition().x)) +((int)(objectif->getPosition().y)-
                                                         (int)(v->getPosition().y))*((int)(objectif->getPosition().y)-(int)(v->getPosition().y))));
