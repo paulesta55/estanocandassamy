@@ -20,22 +20,19 @@ shared_ptr<Node> AstarComputer::compute() {
 
     while(!openList.empty())
     {
-
-
         shared_ptr<Node> n;
         n = openList.at(0);
-
 //        shared_ptr<Node> n= nW.lock();
         closedList.push_back(n);
-        openList.erase(openList.begin());
-        openList.shrink_to_fit();
+        openList.erase(openList.cbegin());
+//        openList.shrink_to_fit();
         cout << k << " iterations" << endl;
 
         cout << "position :"<<n->getPosition().x << ","<< n->getPosition().y << endl;
         if(n->getPosition().x == objectif->getPosition().x && n->getPosition().y == objectif->getPosition().y)
             return n;
         else {
-            for( auto v : n->getAvailableNeigbors(35,map.get())){
+            for( auto &v : n->getAvailableNeigbors(35,map.get())){
                 bool passInFor = true;
                 v->cost += n->cost+1;
                 v->heuristic = static_cast<unsigned int>(v->cost + std::sqrt(((int)(objectif->getPosition().x) - (int)(v->getPosition().x)) * ((int)
@@ -51,6 +48,7 @@ shared_ptr<Node> AstarComputer::compute() {
                         {
                             ni->previousNode = n;
                             ni->heuristic = v->heuristic;
+                            std::sort(openList.begin(),openList.end(),HCompare());
                         }
                         passInFor = false;
                     }
@@ -68,6 +66,7 @@ shared_ptr<Node> AstarComputer::compute() {
                             {
                                 ni->previousNode = n;
                                 ni->heuristic = v->heuristic;
+                                std::sort(openList.begin(),openList.end(),HCompare());
                             }
                             passInFor = false;
                         }

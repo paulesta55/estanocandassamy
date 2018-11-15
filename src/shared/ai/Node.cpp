@@ -30,3 +30,4 @@ std::vector<shared_ptr<ai::Node>> ai::Node::getAvailableNeigbors (uint authorize
 ai::Node::Node(ai::Node *nPrevious, state::Position p, unsigned int cost, unsigned int heuristic):
         heuristic(heuristic),cost(cost),position(p),previousNode(nPrevious) {}
 
+
