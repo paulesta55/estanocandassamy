@@ -117,7 +117,7 @@ void Scene::draw(sf::RenderWindow& window) {
     text.setString(infoPlayers);
     text.setPosition(xCenter-90,yCenter-90);
     text.setFont(f);
-    text.setColor(sf::Color::White);
+    text.setFillColor(sf::Color::White);
     text.setCharacterSize(30);
     text.setScale(sf::Vector2f(0.27,0.27));
     text.setStyle(sf::Text::Regular);
@@ -127,7 +127,7 @@ void Scene::draw(sf::RenderWindow& window) {
     t2.setString("Use: 'L' to change the level\n'A' to attack\n'Arrow Keys' to move\n'H' to heal");
     t2.setPosition(xCenter,yCenter+40);
     t2.setFont(f);
-    t2.setColor(sf::Color::Red);
+    t2.setFillColor(sf::Color::Red);
     t2.setCharacterSize(25);
     t2.setScale(sf::Vector2f(0.27,0.27));
     t2.setStyle(sf::Text::Bold);
