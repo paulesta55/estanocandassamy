@@ -476,7 +476,11 @@ gen_class (umlclassnode *node)
             umlclassnode *ref;
             if (assoc->name[0] != '\0')
             {
+<<<<<<< HEAD
                 add_setter_getter(node,assoc->key->name,assoc->name);
+=======
+//                add_setter_getter(node,assoc->key->name,assoc->name);
+>>>>>>> master
             }
             assoc = assoc->next;
         }
@@ -493,7 +497,11 @@ gen_class (umlclassnode *node)
                     umla = umla->next;
                     continue;
                 }
+<<<<<<< HEAD
                 add_setter_getter(node,umla->key.type,umla->key.name);
+=======
+//                add_setter_getter(node,umla->key.type,umla->key.name);
+>>>>>>> master
                 
                 umla = umla->next;
             }
@@ -689,6 +697,10 @@ struct stdlib_includes {
    int unordered_set;
    int stack;
    int queue;
+<<<<<<< HEAD
+=======
+   int deque;
+>>>>>>> master
    int array;   
    int thread;
    int mutex;
@@ -755,12 +767,23 @@ void print_include_stdlib(struct stdlib_includes* si,char* name) {
            print ("#include <thread>\n");
            si->thread = 1;
        }
+<<<<<<< HEAD
        if (!si->memory 
+=======
+       if (!si->queue
+>>>>>>> master
        && (strstr(name,"std::queue")
        ||  strstr(name,"std::priority_queue"))) {
            print ("#include <queue>\n");
            si->queue = 1;
        }
+<<<<<<< HEAD
+=======
+       if(!si->deque && strstr(name,"std::deque")) {
+           print("#include <deque>\n");
+           si->deque = 1;
+       }
+>>>>>>> master
        if (!si->unordered_map && strstr(name,"std::unordered_map")) {
            print ("#include <unordered_map>\n");
            si->unordered_map = 1;

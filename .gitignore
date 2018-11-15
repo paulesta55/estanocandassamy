@@ -2,3 +2,8 @@
 build
 bin
 nbproject
+.idea/
+cmake-build-debug/
+src/client/*.h
+src/shared/*.h
+
