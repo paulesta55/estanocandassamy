@@ -1,5 +1,7 @@
 #include <utility>
 
+#include <utility>
+
 
 //
 // Created by paul on 22/10/18.
@@ -20,7 +22,8 @@ using namespace render;
 using namespace state;
 using namespace engine;
 using namespace ai;
-Scene::Scene(shared_ptr<engine::Engine> engine,string tileSet,unsigned int  pokeTarId) : pokeTarId(pokeTarId), engine(engine){
+Scene::Scene(shared_ptr<engine::Engine> engine,string tileSet,unsigned int  pokeTarId) : engine(
+        std::move(engine)),pokeTarId(pokeTarId) {
 
 
     this->tileset= std::move(tileSet);
@@ -40,101 +43,101 @@ Scene::Scene(shared_ptr<engine::Engine> engine,string tileSet,unsigned int  poke
 void Scene::draw(sf::RenderWindow& window) {
 
     sf::Event event;
-        while (window.pollEvent(event))
-        {
-            switch(event.type) {
-                default:
-                    break;
-                case sf::Event::Closed :
-                    window.close();
-                    break;
-                case sf::Event::KeyPressed:
-                    sf::Keyboard::Key k = event.key.code;
-                    switch(k){
-                        case sf::Keyboard::Key::Right  :
-                            engine->addCommand(new MoveCommand(EST,pokeTarId),0);
-                            break;
-                        case sf::Keyboard::Key::Left :
-                            engine->addCommand(new MoveCommand(WEST,pokeTarId),0);
-                            break;
-                        case sf::Keyboard::Key::Up:
-                            engine->addCommand(new MoveCommand(NORTH,pokeTarId),0);
-                            break;
-                        case sf::Keyboard::Key::Down:
-                            engine->addCommand(new MoveCommand(SOUTH,pokeTarId),0);
-                            break;
-                        case sf::Keyboard::Key::A :
-                            engine->addCommand(new AttackCommand(pokeTarId),0);
-                            break;
-                        case sf::Keyboard::Key::H:
-                            engine->addCommand(new HealCommand(this->pokeTarId),0);
-                            break;
-                        default:
-                            break;
-                    }
-
-
-            }
-            if(event.type == sf::Event::Closed)
+    while (window.pollEvent(event))
+    {
+        switch(event.type) {
+            default:
+                break;
+            case sf::Event::Closed :
                 window.close();
+                break;
+            case sf::Event::KeyPressed:
+                sf::Keyboard::Key k = event.key.code;
+                switch(k){
+                    case sf::Keyboard::Key::Right  :
+                        engine->addCommand(new MoveCommand(EST,pokeTarId),0);
+                        break;
+                    case sf::Keyboard::Key::Left :
+                        engine->addCommand(new MoveCommand(WEST,pokeTarId),0);
+                        break;
+                    case sf::Keyboard::Key::Up:
+                        engine->addCommand(new MoveCommand(NORTH,pokeTarId),0);
+                        break;
+                    case sf::Keyboard::Key::Down:
+                        engine->addCommand(new MoveCommand(SOUTH,pokeTarId),0);
+                        break;
+                    case sf::Keyboard::Key::A :
+                        engine->addCommand(new AttackCommand(pokeTarId),0);
+                        break;
+                    case sf::Keyboard::Key::H:
+                        engine->addCommand(new HealCommand(this->pokeTarId),0);
+                        break;
+                    default:
+                        break;
+                }
+
 
         }
+        if(event.type == sf::Event::Closed)
+            window.close();
 
-
-
-        window.clear();
-        for(const auto &layerRend : layerVec)
-        {
-            window.draw(*layerRend);
-        }
-        for(auto pokeRend: pokeVec)
-        {
-
-            window.draw(*(pokeRend.second));
-        }
-
-        sf::Font f;
-        if(!f.loadFromFile("res/src/arial.ttf")){
-            throw new runtime_error("cannot load font");
-        }
-
-
-        sf::View view2(sf::Vector2f(this->xCenter, this->yCenter), sf::Vector2f(200.f, 200.f));
-
-        infoPlayers = "";
-        int c = 0;
-        for(auto player : engine->getState().getPlayers())
-        {
-            infoPlayers += "pokemon "+to_string(c)+" current life : "+
-                           to_string(player.second->getPokemon()->getCurrentLife()) + "/"+ to_string(player.second->getPokemon()->getFullLife())+"\n";
-            c++;
-        }
-
-        sf::Text text;
-        text.setString(infoPlayers);
-        text.setPosition(xCenter-90,yCenter-90);
-        text.setFont(f);
-        text.setColor(sf::Color::White);
-        text.setCharacterSize(30);
-        text.setScale(sf::Vector2f(0.27,0.27));
-        text.setStyle(sf::Text::Regular);
-
-
-        sf::Text t2;
-        t2.setString("Use: 'L' to change the level\n'A' to attack\n'Arrow Keys' to move\n'H' to heal");
-        t2.setPosition(xCenter,yCenter+40);
-        t2.setFont(f);
-        t2.setColor(sf::Color::Red);
-        t2.setCharacterSize(25);
-        t2.setScale(sf::Vector2f(0.27,0.27));
-        t2.setStyle(sf::Text::Bold);
-
-        window.draw(text);
-        window.draw(t2);
-//        count--;
-        window.setView(view2);
-        window.display();
     }
+
+
+
+    window.clear();
+    for(const auto &layerRend : layerVec)
+    {
+        window.draw(*layerRend);
+    }
+    for(auto pokeRend: pokeVec)
+    {
+
+        window.draw(*(pokeRend.second));
+    }
+
+    sf::Font f;
+    if(!f.loadFromFile("res/src/arial.ttf")){
+        throw new runtime_error("cannot load font");
+    }
+
+
+    sf::View view2(sf::Vector2f(this->xCenter, this->yCenter), sf::Vector2f(200.f, 200.f));
+
+    infoPlayers = "";
+    int c = 0;
+    for(auto player : engine->getState().getPlayers())
+    {
+        infoPlayers += "pokemon "+to_string(c)+" current life : "+
+                       to_string(player.second->getPokemon()->getCurrentLife()) + "/"+ to_string(player.second->getPokemon()->getFullLife())+"\n";
+        c++;
+    }
+
+    sf::Text text;
+    text.setString(infoPlayers);
+    text.setPosition(xCenter-90,yCenter-90);
+    text.setFont(f);
+    text.setColor(sf::Color::White);
+    text.setCharacterSize(30);
+    text.setScale(sf::Vector2f(0.27,0.27));
+    text.setStyle(sf::Text::Regular);
+
+
+    sf::Text t2;
+    t2.setString("Use: 'L' to change the level\n'A' to attack\n'Arrow Keys' to move\n'H' to heal");
+    t2.setPosition(xCenter,yCenter+40);
+    t2.setFont(f);
+    t2.setColor(sf::Color::Red);
+    t2.setCharacterSize(25);
+    t2.setScale(sf::Vector2f(0.27,0.27));
+    t2.setStyle(sf::Text::Bold);
+
+    window.draw(text);
+    window.draw(t2);
+//        count--;
+    window.setView(view2);
+    window.display();
+}
 
 void Scene::updateMap() {
     layerVec.clear();
@@ -170,14 +173,14 @@ void movePokeRender(unsigned int pokeId)
 void Scene::stateChanged(const state::Event& e) {
     const Event& event1 = e;
 
-   if(e.getEventType()==TAB_EVENT) {
+    if(e.getEventType()==TAB_EVENT) {
         cout << "tab event" << endl;
         state::TabEvent eventTab = *(TabEvent*)(event1.clone());
         unsigned int pokeId = this->engine->getState().getPlayers().at(eventTab.playerId)->getPokemon()->getID();
         switch(eventTab.tabEventId) {
             case MOVE:
                 this->pokeVec[pokeId]->setPosition(engine->getState().getPlayers().at(eventTab.playerId)->getPokemon()->
-                getPosition().x*24,engine->getState().getPlayers().at(eventTab.playerId)->getPokemon()->getPosition().y*24);
+                        getPosition().x*24,engine->getState().getPlayers().at(eventTab.playerId)->getPokemon()->getPosition().y*24);
                 this->xCenter = engine->getState().getPlayers().at(pokeTarId)->getPokemon()->getPosition().x*tileSize.x;
                 this->yCenter = engine->getState().getPlayers().at(pokeTarId)->getPokemon()->getPosition().y*tileSize.y;
                 break;
@@ -188,9 +191,9 @@ void Scene::stateChanged(const state::Event& e) {
                 updatePlayers();
                 break;
         }
-   }
-   else
-   { StateEvent event = *(StateEvent*)(e.clone());
+    }
+    else
+    { StateEvent event = *(StateEvent*)(e.clone());
         switch(event.stateEvent)
         {
             case ATTACK:
@@ -203,8 +206,10 @@ void Scene::stateChanged(const state::Event& e) {
                 updateMap();
                 updatePlayers();
                 break;
+            default:
+                break;
         }
-        }
+    }
 
 }
 

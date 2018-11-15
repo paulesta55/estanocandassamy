@@ -20,12 +20,13 @@ std::vector<shared_ptr<ai::Node>> ai::Node::getAvailableNeigbors (uint authorize
     for (auto neighbor : positionNeigbors){
         if(m->getLayers()->at(0).getData()->at(static_cast<unsigned long>(neighbor)) == authorizedTiles){
             list_Node.push_back(make_shared<Node>(this, state::Position(neighbor%m->getWidth(),
-                                                               static_cast<unsigned int>((int)(neighbor / m->getWidth()))), this->cost + 1, 0));
+                                                                        static_cast<unsigned int>((int)(neighbor / m->getWidth()))), this->cost + 1, 0));
         }
     }
     return list_Node;
 }
 
 
-ai::Node::Node(ai::Node *nPrevious, state::Position p, unsigned int cost, unsigned int heuristic):previousNode(nPrevious),position(p),cost(cost),heuristic(heuristic) {}
+ai::Node::Node(ai::Node *nPrevious, state::Position p, unsigned int cost, unsigned int heuristic):
+        heuristic(heuristic),cost(cost),position(p),previousNode(nPrevious) {}
 

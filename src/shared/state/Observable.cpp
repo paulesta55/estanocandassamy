@@ -17,16 +17,14 @@ void state::Observable::unregisterObserver(state::Observer *o) {
 }
 
 
-state::Observable::~Observable() {
-
-}
+state::Observable::~Observable() = default;
 
 void state::Observable::unregisterObservers() {
     observers.clear();
 }
 
 void const state::Observable::notifyObservers(const state::Event &e) {
-    int c = 0;
+//    int c = 0;
     for (auto o : observers)
     {
 

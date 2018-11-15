@@ -1,5 +1,7 @@
 #include <utility>
 
+#include <utility>
+
 //
 // Created by paul on 25/09/18.
 //
@@ -10,7 +12,7 @@ using namespace std;
 using namespace  state;
 
 Layer::Layer(shared_ptr<std::vector<uint>> data, uint height, uint width, int x, int y, string name): data(
-        std::move(data)), height(height), width(width), x(x), y(y), name(name) {
+        std::move(data)), height(height), name(std::move(name)),width(width), x(x),y(y) {
 }
 
 int Layer::getY() {

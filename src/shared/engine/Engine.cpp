@@ -59,7 +59,6 @@ void engine::Engine::runCommands() {
     {
 //        cout <<"command "<<it->first<<endl;
         it->second->execute(currentState);
-        bool endbool = it == commands.cend();
 //        cout << "end of commands ? " << endbool << endl;
 
         commands.erase(it);

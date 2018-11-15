@@ -42,146 +42,135 @@ std::shared_ptr<vector<Layer>> Map::getLayers() {
 
 Map::Map(std::string mapPath) {
     //open the map.json file
-     if(mapPath.find(".json") == string::npos)
-        {
-            CustomException exception("not json file exception");
-            throw exception;
-        }
+    if(mapPath.find(".json") == string::npos)
+    {
 
-        try {
-            ifstream ifsMap(mapPath,std::ifstream::in);
+        throw CustomException((char*)("not json file exception"));
+    }
+
+    try {
+        ifstream ifsMap(mapPath,std::ifstream::in);
 //            cout << "can open file" << endl;
-            Json::Reader reader;
-            Json::Value obj;
-            // parse the the map.json file
-            if( reader.parse(ifsMap, obj))
-            {
+        Json::Reader reader;
+        Json::Value obj;
+        // parse the the map.json file
+        if( reader.parse(ifsMap, obj))
+        {
 
-                this->width= obj["width"].asUInt();
+            this->width= obj["width"].asUInt();
 //        cout << "width: " << this->width << endl;
 
-                this->height = obj["height"].asUInt();
+            this->height = obj["height"].asUInt();
 //        cout << "height: " << this->height << endl;
 
-                this->tileWidth = obj["tilewidth"].asUInt();
+            this->tileWidth = obj["tilewidth"].asUInt();
 //        cout << "tilewidth: " << this->tileWidth << endl;
 
-                const Json::Value& layers = obj["layers"];
+            const Json::Value& layers = obj["layers"];
 
 //        cout << "nb layers : " << layers.size() << endl;
 
-                this->tileHeight = obj["tileheight"].asUInt();
+            this->tileHeight = obj["tileheight"].asUInt();
 
-                if(this->width == 0 || this->height ==0 || this->tileWidth == 0 || this->tileHeight == 0) {
-                    CustomException e("Bad map exception");
-                    throw  e;
-                }
-                this->layers = make_shared<vector<Layer>>();
+            if(this->width == 0 || this->height ==0 || this->tileWidth == 0 || this->tileHeight == 0) {
+                throw                     CustomException((char*)"Bad map exception");
+                ;
+            }
+            this->layers = make_shared<vector<Layer>>();
 
-                try{
-                    //parse the layers
-                    for (uint i =0 ;i < layers.size();i++)
+            try{
+                //parse the layers
+                for (uint i =0 ;i < layers.size();i++)
+                {
+                    uint height = layers[layers.size()-i-1]["height"].asUInt();
+                    uint width = layers[layers.size()-i-1]["width"].asUInt();
+
+                    if(height == 0 || width == 0 )
                     {
-                        uint height = layers[layers.size()-i-1]["height"].asUInt();
-                        uint width = layers[layers.size()-i-1]["width"].asUInt();
-
-                        if(height == 0 || width == 0 )
-                        {
-                            CustomException exception1("bad layer dimensions exception : height or width undefined");
-                            throw exception1;
-                        }
-                        //parse layer data
-                        const Json::Value& dataValue = layers[i]["data"];
+                        throw CustomException((char*)"bad layer dimensions exception : height or width undefined");
+                    }
+                    //parse layer data
+                    const Json::Value& dataValue = layers[i]["data"];
 
 
-                        //create a ptr vector for data
-                        shared_ptr<vector<uint>> data;
-                        data.reset(new vector<uint>());
+                    //create a ptr vector for data
+                    shared_ptr<vector<uint>> data;
+                    data.reset(new vector<uint>());
 
-                        for (uint k = 0; k < dataValue.size(); k++)
+                    for (uint k = 0; k < dataValue.size(); k++)
 
-                        {   data->push_back(dataValue[k].asUInt());
-//                            if(dataValue[k].asUInt()!=0)
-//                            {
-//                                cerr<< dataValue[k].asUInt() << endl;
-//
-//                                cerr << data->at(k) << endl;
-//                            }
+                    {   data->push_back(dataValue[k].asUInt());
 
 
 
-                        }
+                    }
 
-                        string name = layers[i]["name"].asString();
+                    string name = layers[i]["name"].asString();
 
 //                        cout << "layer name : " << name << endl;
 
-                        int x = layers[i]["x"].asInt();
-                        int y = layers[i]["y"].asInt();
+                    int x = layers[i]["x"].asInt();
+                    int y = layers[i]["y"].asInt();
 
 
-                        if((data.get()->size())<=0){
-                            CustomException customException("Bad data layer exception");
-                            throw customException;
-                        }
-
-                        this->layers.get()->emplace_back(data,height,width,x,y,name);
-
+                    if((data.get()->size())<=0){
+                        throw CustomException((char*)"Bad data layer exception");
                     }
 
-                    const Json::Value& tilesets = obj["tilesets"];
+                    this->layers.get()->emplace_back(data,height,width,x,y,name);
 
-                    std::string tilesetSource = tilesets[0]["source"].asString();
-
-                    //delete the tsx extension cause we converted to json
-                    ulong ind = tilesetSource.find("tsx");
-                    if(ind != string::npos)
-                    {
-                        tilesetSource.replace(ind, 3, "json");
-                    }
-
-
-                    //create a new ptr for the tileset
-                    this->tileSet = make_shared<TileSet>(tilesets[0]["firstgid"].asInt(),tilesetSource);
                 }
-                catch(CustomException& exception2)
+
+                const Json::Value& tilesets = obj["tilesets"];
+
+                std::string tilesetSource = tilesets[0]["source"].asString();
+
+                //delete the tsx extension cause we converted to json
+                ulong ind = tilesetSource.find("tsx");
+                if(ind != string::npos)
                 {
-                    throw exception2;
-                }
-                catch(exception& e)
-                {
-                    cerr << e.what() << endl;
-                    CustomException customException("cannot parse layers exception");
-                    throw customException;
-
+                    tilesetSource.replace(ind, 3, "json");
                 }
 
+
+                //create a new ptr for the tileset
+                this->tileSet = make_shared<TileSet>(tilesets[0]["firstgid"].asInt(),tilesetSource);
             }
-            else{
-                CustomException exception("Bad Json exception");
-                throw exception;
+            catch(CustomException& exception2)
+            {
+                throw exception2;
+            }
+            catch(exception& e)
+            {
+                cerr << e.what() << endl;
+                throw CustomException((char*)"cannot parse layers exception");
             }
 
         }
-        catch(runtime_error& runtime_error1)
-        {
-            throw runtime_error1;
-        }
-        catch(ios_base::failure& failure)
-        {
-            throw failure;
-        }
-        catch(CustomException& exception2)
-        {
-            cerr << exception2.what() << endl;
-            throw exception2;
-        }
-        catch(exception& e)
-        {
-            cerr << e.what() << endl;
-            CustomException exception1("cannot open file exception");
-            throw exception1;
+        else{
+            throw CustomException((char*)"Bad Json exception");
         }
 
     }
+
+    catch(ios_base::failure& failure)
+    {
+        throw failure;
+    }
+    catch(CustomException& exception2)
+    {
+        cerr << exception2.what() << endl;
+        throw exception2;
+    }
+    catch(runtime_error& runtime_error1)
+    {
+        throw runtime_error1;
+    }
+    catch(exception& e)
+    {
+        cerr << e.what() << endl;
+        throw CustomException((char*)"cannot open file exception");
+    }
+
+}
 

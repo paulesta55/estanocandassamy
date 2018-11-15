@@ -116,15 +116,6 @@ int main(int argc,char* argv[])
                     }
                 }
                 scene3->draw(window);
-//                if (engine->getCommands().size() > 0) {
-//                    for (auto player : engine->getState().getPlayers()) {
-//                        if (player.second->getIA() && player.second->getPokemon()->getAlive()) {
-//                            cout << "run ai" << endl;
-//                            ai->run(*engine, player.first);
-//                            break;
-//                        }
-//                    }
-//                engine->runCommands();
             }
 
 
@@ -163,8 +154,8 @@ int main(int argc,char* argv[])
 //                            break;
 //                        }
 //                    }
-                    engine->runCommands();
-                }
+                engine->runCommands();
+            }
 
 
         }
