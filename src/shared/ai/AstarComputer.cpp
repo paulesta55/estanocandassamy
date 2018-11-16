@@ -32,8 +32,9 @@ shared_ptr<Node> AstarComputer::compute() {
         if(n->getPosition().x == objectif->getPosition().x && n->getPosition().y == objectif->getPosition().y)
             return n;
         else {
-            for( auto &v : n->getAvailableNeigbors(35,map.get())){
+            for( auto v : n->getAvailableNeigbors(35,map.get())){
                 bool passInFor = true;
+                v->previousNode = n;
                 v->cost += n->cost+1;
                 v->heuristic = static_cast<unsigned int>(v->cost + std::sqrt(((int)(objectif->getPosition().x) - (int)(v->getPosition().x)) * ((int)
                         (objectif->getPosition().x) - (int)(v->getPosition().x)) +((int)(objectif->getPosition().y)-
@@ -46,9 +47,10 @@ shared_ptr<Node> AstarComputer::compute() {
                     {
                         if(ni->heuristic>v->heuristic)
                         {
-                            ni->previousNode = n;
-                            ni->heuristic = v->heuristic;
+                            openList.push_back(v);
+                            closedList.erase(std::find(closedList.begin(),closedList.end(),ni));
                             std::sort(openList.begin(),openList.end(),HCompare());
+                            break;
                         }
                         passInFor = false;
                     }
@@ -66,7 +68,7 @@ shared_ptr<Node> AstarComputer::compute() {
                             {
                                 ni->previousNode = n;
                                 ni->heuristic = v->heuristic;
-                                std::sort(openList.begin(),openList.end(),HCompare());
+                                break;
                             }
                             passInFor = false;
                         }
@@ -76,6 +78,7 @@ shared_ptr<Node> AstarComputer::compute() {
                     openList.push_back(v);
                     std::sort(openList.begin(),openList.end(),HCompare());
                 }
+                std::sort(openList.begin(),openList.end(),HCompare());
             }
             
         }
