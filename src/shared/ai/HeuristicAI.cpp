@@ -19,7 +19,8 @@ void ai::HeuristicAI::run(engine::Engine &e, unsigned int player) {
 
     Position IAPos = e.getState().getPlayers()[player]->getPokemon()->getPosition();
     if (e.getState().getPlayers()[player]->getPokemon()->getCurrentLife() != e.getState().getPlayers()[player]
-            ->getPokemon()->getFullLife()) {
+            ->getPokemon()->getFullLife() && e.getState().getPlayers()[player]->getPokemon()->getCurrentLife() <
+                                                             e.getState().getPlayers()[0]->getPokemon()->getCurrentLife()) {
         e.addCommand(new HealCommand(player), 1);
 
         return;
