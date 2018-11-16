@@ -6,7 +6,6 @@
 #include "ai.h"
 #include "engine.h"
 #include "state.h"
-#include "AstarComputer.h"
 #include <cmath>
 #include "AStar.hpp"
 #include <iostream>
@@ -96,7 +95,7 @@ void ai::HeuristicAI::run(engine::Engine &e, unsigned int player) {
     int height = (int)(e.getState().getMap()->getHeight());
     generator.setWorldSize({(int)(e.getState().getMap()->getWidth()), (int)(e.getState().getMap()->getHeight())});
     generator.setHeuristic(AStar::Heuristic::manhattan);
-    generator.setDiagonalMovement(false);
+//    generator.setDiagonalMovement(false);
     int k = 0;
     for (int i =0 ; i<height; i++ )
     {
@@ -121,9 +120,29 @@ void ai::HeuristicAI::run(engine::Engine &e, unsigned int player) {
     auto path = generator.findPath(srce,obj);
     for(auto c : path)
     {
-        cout << c.x << " " << c.y <<endl;
+//        cout << c.x << " " << c.y <<endl;
     }
 
+    auto nextTile = path[1];
+
+    cout << nextTile.x << " " << nextTile.y <<endl;
+    if(current.x == nextTile.x)
+    {
+        if(current.y == nextTile.y-1) {
+            e.addCommand(new MoveCommand(SOUTH,player),1);
+
+        }
+        else {
+            e.addCommand(new MoveCommand(NORTH,player),1);
+        }
+    }
+    else {
+        if(current.x == nextTile.x-1) {
+            e.addCommand(new MoveCommand(EST,player),1);
+        }
+        else {
+            e.addCommand(new MoveCommand(WEST,player),1);        }
+    }
 
 }
 
