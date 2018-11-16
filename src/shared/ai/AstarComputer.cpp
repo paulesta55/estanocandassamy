@@ -9,6 +9,7 @@
 #include <cmath>
 #include <iterator>
 #include <iostream>
+#include <stdlib.h>
 using namespace std;
 using namespace state;
 using namespace ai;
@@ -20,12 +21,11 @@ shared_ptr<Node> AstarComputer::compute() {
 
     while(!openList.empty())
     {
-        shared_ptr<Node> n;
-        n = openList.at(0);
+        shared_ptr<Node> n= openList.at(0);
 //        shared_ptr<Node> n= nW.lock();
         closedList.push_back(n);
         openList.erase(openList.cbegin());
-//        openList.shrink_to_fit();
+        openList.shrink_to_fit();
         cout << k << " iterations" << endl;
 
         cout << "position :"<<n->getPosition().x << ","<< n->getPosition().y << endl;
@@ -34,11 +34,9 @@ shared_ptr<Node> AstarComputer::compute() {
         else {
             for( auto v : n->getAvailableNeigbors(35,map.get())){
                 bool passInFor = true;
-                v->previousNode = n;
-                v->cost += n->cost+1;
-                v->heuristic = static_cast<unsigned int>(v->cost + std::sqrt(((int)(objectif->getPosition().x) - (int)(v->getPosition().x)) * ((int)
-                        (objectif->getPosition().x) - (int)(v->getPosition().x)) +((int)(objectif->getPosition().y)-
-                                (int)(v->getPosition().y))*((int)(objectif->getPosition().y)-(int)(v->getPosition().y))));
+                v->heuristic = static_cast<unsigned int>(
+                        abs((int)(objectif->getPosition().x) - (int)(v->getPosition().x)) +
+                        abs((int)(objectif->getPosition().y)-(int)(v->getPosition().y)));
                 //looking for v in closedList with heuristique < current heuristique
                 for(auto ni:closedList)
                 {
@@ -49,7 +47,6 @@ shared_ptr<Node> AstarComputer::compute() {
                         {
                             openList.push_back(v);
                             closedList.erase(std::find(closedList.begin(),closedList.end(),ni));
-                            std::sort(openList.begin(),openList.end(),HCompare());
                             break;
                         }
                         passInFor = false;

@@ -8,10 +8,13 @@
 #include "state.h"
 #include "AstarComputer.h"
 #include <cmath>
+#include "AStar.hpp"
+#include <iostream>
 using namespace engine;
 using namespace ai;
 using namespace state;
 using namespace std;
+using namespace AStar;
 
 void ai::HeuristicAI::run(engine::Engine &e, unsigned int player) {
 
@@ -75,16 +78,52 @@ void ai::HeuristicAI::run(engine::Engine &e, unsigned int player) {
     }
     Position objectif = e.getState().getPlayers()[0]->getPokemon()->getPosition();
     Position current = e.getState().getPlayers()[player]->getPokemon()->getPosition();
-    auto h = static_cast<unsigned int>(std::sqrt(((int)(objectif.x) - (int)(current.x)) * ((int) (objectif.x) - (int)
-            (current.x)) + ((int)(objectif.y) - (int)(current.y)) * ((int)(objectif.y)-(int)(current.y))));
-
-    Node objectifNode(nullptr,e.getState().getPlayers()[0]->getPokemon()->getPosition(),0,0);
-    Node source(nullptr,current,0,h);
-    AstarComputer astarComputer(e.getState().getMap(),objectifNode,source);
-    auto c = astarComputer.compute();
+//    auto h = static_cast<unsigned int>(std::sqrt(((int)(objectif.x) - (int)(current.x)) * ((int) (objectif.x) - (int)
+//            (current.x)) + ((int)(objectif.y) - (int)(current.y)) * ((int)(objectif.y)-(int)(current.y))));
+//
+//    shared_ptr<Node> n=make_shared<Node>(nullptr,Position(),0,0);
+//    Node objectifNode(n,e.getState().getPlayers()[0]->getPokemon()->getPosition(),0,0);
+//    Node source(n,current,0,h);
+//    AstarComputer astarComputer(e.getState().getMap(),objectifNode,source);
+//    auto c = astarComputer.compute();
 //TODO : use AstarComputer
 //TODO : add a static int computeHeuristic method to AstarComputer
 //Node objectif(nullptr,e.getState().getPlayers()[0]->getPokemon()->getPosition(),0,)//TODO: change the hardcoded ID
 //AstarComputer astarComputer(e.getState().getMap(),);
+
+    AStar::Generator generator;
+    int width = (int)(e.getState().getMap()->getWidth());
+    int height = (int)(e.getState().getMap()->getHeight());
+    generator.setWorldSize({(int)(e.getState().getMap()->getWidth()), (int)(e.getState().getMap()->getHeight())});
+    generator.setHeuristic(AStar::Heuristic::manhattan);
+    generator.setDiagonalMovement(false);
+    int k = 0;
+    for (int i =0 ; i<height; i++ )
+    {
+        for (int j = 0 ; j<width; j++)
+        {
+            if(e.getState().getMap()->getLayers()->at(0).getData()->at(k)!=35)
+            {
+                Vec2i v;
+                v.x = j;
+                v.y = i;
+                generator.addCollision(v);
+            }
+            k++;
+        }
+    }
+    Vec2i srce,obj;
+    srce.x = current.x;
+    srce.y = current.y;
+
+    obj.x = objectif.x;
+    obj.y = objectif.y;
+    auto path = generator.findPath(srce,obj);
+    for(auto c : path)
+    {
+        cout << c.x << " " << c.y <<endl;
+    }
+
+
 }
 

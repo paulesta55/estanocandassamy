@@ -1,3 +1,5 @@
+#include <utility>
+
 //
 // Created by paul on 13/11/18.
 //
@@ -19,7 +21,9 @@ std::vector<shared_ptr<ai::Node>> ai::Node::getAvailableNeigbors (uint authorize
     std::vector <int> positionNeigbors = {(int)(positionInList-m->getWidth()),(int)(positionInList+m->getWidth()),(positionInList-1),(positionInList+1)};
     for (auto neighbor : positionNeigbors){
         if(m->getLayers()->at(0).getData()->at(static_cast<unsigned long>(neighbor)) == authorizedTiles){
-            list_Node.push_back(make_shared<Node>(this, state::Position(neighbor%m->getWidth(), static_cast<unsigned int>
+            shared_ptr<Node> n;
+            n.reset(this);
+            list_Node.push_back(make_shared<Node>(n, state::Position(neighbor%m->getWidth(), static_cast<unsigned int>
             ((int)(neighbor / m->getWidth()))), this->cost + 1, 0));
         }
     }
@@ -27,7 +31,7 @@ std::vector<shared_ptr<ai::Node>> ai::Node::getAvailableNeigbors (uint authorize
 }
 
 
-ai::Node::Node(ai::Node *nPrevious, state::Position p, unsigned int cost, unsigned int heuristic):
-        heuristic(heuristic),cost(cost),position(p),previousNode(nPrevious) {}
+ai::Node::Node(shared_ptr<ai::Node>nPrevious, state::Position p, unsigned int cost, unsigned int heuristic):
+        heuristic(heuristic),previousNode(std::move(nPrevious)),position(p) {}
 
 
