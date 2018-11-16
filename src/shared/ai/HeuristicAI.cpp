@@ -120,7 +120,7 @@ void ai::HeuristicAI::run(engine::Engine &e, unsigned int player) {
     auto path = generator.findPath(srce,obj);
     for(auto c : path)
     {
-//        cout << c.x << " " << c.y <<endl;
+        cout << c.x << " " << c.y <<endl;
     }
 
     auto nextTile = path[1];
