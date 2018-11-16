@@ -123,7 +123,7 @@ void ai::HeuristicAI::run(engine::Engine &e, unsigned int player) {
         cout << c.x << " " << c.y <<endl;
     }
 
-    auto nextTile = path[1];
+    auto nextTile = path[path.size()-2];
 
     cout << nextTile.x << " " << nextTile.y <<endl;
     if(current.x == nextTile.x)
