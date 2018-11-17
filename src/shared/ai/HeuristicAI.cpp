@@ -127,9 +127,9 @@ void ai::HeuristicAI::run(engine::Engine &e, unsigned int player) {
     auto nextTile = path[path.size()-2];
 
     cout << nextTile.x << " " << nextTile.y <<endl;
-    if(current.x == nextTile.x)
+    if(current.x ==(unsigned int) nextTile.x)
     {
-        if(current.y == nextTile.y-1) {
+        if(current.y == (unsigned int)(nextTile.y-1)) {
             e.addCommand(new MoveCommand(SOUTH,player),1);
 
         }
@@ -138,7 +138,7 @@ void ai::HeuristicAI::run(engine::Engine &e, unsigned int player) {
         }
     }
     else {
-        if(current.x == nextTile.x-1) {
+        if(current.x == (unsigned int)(nextTile.x-1)) {
             e.addCommand(new MoveCommand(EST,player),1);
         }
         else {

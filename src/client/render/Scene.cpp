@@ -55,22 +55,22 @@ void Scene::draw(sf::RenderWindow& window) {
                 sf::Keyboard::Key k = event.key.code;
                 switch(k){
                     case sf::Keyboard::Key::Right  :
-                        engine->addCommand(new MoveCommand(EST,pokeTarId),0);
+                        engine->addCommand(new MoveCommand(EST,0),0);
                         break;
                     case sf::Keyboard::Key::Left :
-                        engine->addCommand(new MoveCommand(WEST,pokeTarId),0);
+                        engine->addCommand(new MoveCommand(WEST,0),0);
                         break;
                     case sf::Keyboard::Key::Up:
-                        engine->addCommand(new MoveCommand(NORTH,pokeTarId),0);
+                        engine->addCommand(new MoveCommand(NORTH,0),0);
                         break;
                     case sf::Keyboard::Key::Down:
-                        engine->addCommand(new MoveCommand(SOUTH,pokeTarId),0);
+                        engine->addCommand(new MoveCommand(SOUTH,0),0);
                         break;
                     case sf::Keyboard::Key::A :
-                        engine->addCommand(new AttackCommand(pokeTarId),0);
+                        engine->addCommand(new AttackCommand(0),0);
                         break;
                     case sf::Keyboard::Key::H:
-                        engine->addCommand(new HealCommand(this->pokeTarId),0);
+                        engine->addCommand(new HealCommand(0),0);
                         break;
                     default:
                         break;
@@ -149,8 +149,8 @@ void Scene::updateMap() {
     uint tileWidth = engine ->getState().getMap()->getTileWidth();
     uint tileHeight = engine->getState().getMap()->getTileHeight();
 
-    this->xCenter = engine->getState().getPlayers().at(pokeTarId)->getPokemon()->getPosition().x*tileWidth;
-    this->yCenter = engine->getState().getPlayers().at(pokeTarId)->getPokemon()->getPosition().y*tileHeight;
+//    this->xCenter = engine->getState().getPlayers().at(0)->getPokemon()->getPosition().x*tileWidth;
+//    this->yCenter = engine->getState().getPlayers().at(0)->getPokemon()->getPosition().y*tileHeight;
 
     for(auto layer: *(engine->getState().getMap()->getLayers()))
     {
@@ -176,7 +176,7 @@ void Scene::stateChanged(const state::Event& e) {
     if(e.getEventType()==TAB_EVENT) {
         cout << "tab event" << endl;
         state::TabEvent eventTab = *(TabEvent*)(event1.clone());
-        unsigned int pokeId = this->engine->getState().getPlayers().at(eventTab.playerId)->getPokemon()->getID();
+        unsigned int pokeId = engine->getState().getPlayers().at(eventTab.playerId)->getPokemon()->getID();
         switch(eventTab.tabEventId) {
             case MOVE:
                 this->pokeVec[pokeId]->setPosition(engine->getState().getPlayers().at(eventTab.playerId)->getPokemon()->
@@ -186,6 +186,7 @@ void Scene::stateChanged(const state::Event& e) {
                 break;
             case DEATH:
                 pokeVec.erase(pokeId);
+                updatePlayers();
                 break;
             case ORIENT:
                 updatePlayers();
@@ -216,7 +217,7 @@ void Scene::stateChanged(const state::Event& e) {
 
 void Scene::updatePlayers() {
     this->pokeVec.clear();
-    if(engine->getState().getPlayers().size() <=0){
+    if(engine->getState().getPlayers().size() <1){
         throw new runtime_error("cannot render a state with no players");
     }
     this->xCenter = engine->getState().getPlayers().at(pokeTarId)->getPokemon()->getPosition().x*tileSize.x;
@@ -227,7 +228,7 @@ void Scene::updatePlayers() {
 
         if(player.second->getPokemon()->getAlive()){
             pokeRender.reset(new sf::Sprite());
-            pokeRender->setTexture(*pokeTileSet);
+            pokeRender->setTexture(*(pokeTileSet.get()));
             std::shared_ptr<state::Pokemon> pokemon = player.second->getPokemon();
             unsigned int tileNumber = 0;
             switch (pokemon->getType()) {
@@ -241,8 +242,7 @@ void Scene::updatePlayers() {
                     tileNumber = 54;
                     break;
                 default:
-                    throw new runtime_error("pokemon rendering error");
-                    break;
+                    throw runtime_error("pokemon rendering error");
 
             }
             Position position = pokemon->getPosition();
@@ -252,7 +252,7 @@ void Scene::updatePlayers() {
             int tv = tileNumber / (pokeTileSet->getSize().x / tileSize.x);
             pokeRender->setTextureRect(sf::IntRect(tu * (tileSize.x+1)+1,tv * (tileSize.y+1)+1,tileSize.x,tileSize.y));
             pokeRender->setPosition(position.x* tileSize.x,position.y*tileSize.y);
-            pokeVec.insert(make_pair(player.second->getID(),pokeRender));
+            pokeVec.insert(make_pair(player.second->getPokemon()->getID(),pokeRender));
         }
 
     }

@@ -47,8 +47,9 @@ void AttackCommand::execute(state::State &state) {
                 }
                 state_ref.getPlayers().at(id_attacked)->getPokemon()->setCurrentLife(newLife);
                 if(newLife==0) {
+
                     state_ref.getPlayers()[id_attacked]->getPokemon()->setAlive(false);
-                    TabEvent event(TabEventId::DEATH,idPlayer);
+                    TabEvent event(TabEventId::DEATH,id_attacked);
                     state_ref.notifyObservers(event);
                 }
                 else {

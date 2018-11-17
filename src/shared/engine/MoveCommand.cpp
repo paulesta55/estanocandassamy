@@ -22,15 +22,17 @@ void MoveCommand::execute(state::State &state) {
     State& state_ref = state;
     shared_ptr<Player> player_ptr = nullptr;
 //    unique_ptr<Pokemon> poke_ptr;
-    for( auto player : state_ref.getPlayers())
-    {
-        if(player.second->getID()== idPlayer)
-        {
-            player_ptr = player.second;
+//    for( auto player : state_ref.getPlayers())
+//    {
+//        if(player.second->getID()== idPlayer)
+//        {
+//            player_ptr = player.second;
 //            cout << "player found" <<endl;
-        }
-    }
+//        }
+//    }
 
+
+    player_ptr = state.getPlayers()[idPlayer];
 
     if(!player_ptr)
     {
@@ -104,9 +106,10 @@ void MoveCommand::execute(state::State &state) {
 
                             newMap.reset(new Map(mapPath));
                             state_ref.setMap(newMap);
-
                             new_id = 2;
                             new_position = Position(13,5);
+//                            state.getPlayers().erase(1);
+
                             state_ref.getPlayers().insert(make_pair(new_id,make_shared<Player>(true,newName,new_id,make_shared<Carapuce>(new_id,EST,200,Position(4,4)))));
                             state_ref.getPlayers()[idPlayer]->getPokemon()->setPosition(new_position);
                             break;
