@@ -10,5 +10,9 @@ $ git clone <projectUrl>
 ```sh
 $ cd ./estanocandassamy
 $ make
-$ ./bin/client engine
+```
+
+# Launch The Game
+```sh
+$ ./bin/client heuristic_ai
 ```
