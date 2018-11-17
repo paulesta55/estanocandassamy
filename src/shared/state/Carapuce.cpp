@@ -9,12 +9,12 @@ using namespace state;
 using namespace std;
 
 
-Carapuce::Carapuce(unsigned int &id, Orientation orientation, unsigned int currentLife, Position position, bool alive) {
+Carapuce::Carapuce(Orientation orientation, unsigned int currentLife, Position position, bool alive) {
     this->currentLife = currentLife;
     this->position = position;
     this->alive = alive;
     this->orientation = orientation;
     fullLife = 200;
     this->type = PokeType ::CARAPUCE;
-    this->ID = ID;
+
 }

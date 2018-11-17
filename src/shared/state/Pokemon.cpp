@@ -8,10 +8,6 @@ using namespace std;
 using namespace state;
 
 
-uint Pokemon::getID() {
-    return this->ID;
-}
-
 PokeType Pokemon::getType() {
     return this->type;
 }

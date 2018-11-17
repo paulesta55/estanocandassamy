@@ -10,9 +10,8 @@ using namespace state;
 using namespace std;
 
 
-Salameche::Salameche(unsigned int &ID, Orientation orientation, unsigned int currentLife, Position position,
+Salameche::Salameche(Orientation orientation, unsigned int currentLife, Position position,
                      bool alive) {
-    this->ID = ID;
     this->currentLife = currentLife;
     this->position = position;
     this->alive = alive;

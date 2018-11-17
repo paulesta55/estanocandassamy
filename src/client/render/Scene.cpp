@@ -23,7 +23,7 @@ using namespace state;
 using namespace engine;
 using namespace ai;
 Scene::Scene(shared_ptr<engine::Engine> engine,string tileSet,unsigned int  pokeTarId) : engine(
-        std::move(engine)),pokeTarId(pokeTarId) {
+        std::move(engine)),playerTarId(pokeTarId) {
 
 
     this->tileset= std::move(tileSet);
@@ -124,7 +124,7 @@ void Scene::draw(sf::RenderWindow& window) {
 
 
     sf::Text t2;
-    t2.setString("Use: 'L' to change the level\n'A' to attack\n'Arrow Keys' to move\n'H' to heal");
+    t2.setString("Use: 'A' to attack\n'Arrow Keys' to move\n'H' to heal");
     t2.setPosition(xCenter,yCenter+40);
     t2.setFont(f);
     t2.setFillColor(sf::Color::Red);
@@ -176,16 +176,16 @@ void Scene::stateChanged(const state::Event& e) {
     if(e.getEventType()==TAB_EVENT) {
         cout << "tab event" << endl;
         state::TabEvent eventTab = *(TabEvent*)(event1.clone());
-        unsigned int pokeId = engine->getState().getPlayers().at(eventTab.playerId)->getPokemon()->getID();
+        ;
         switch(eventTab.tabEventId) {
             case MOVE:
-                this->pokeVec[pokeId]->setPosition(engine->getState().getPlayers().at(eventTab.playerId)->getPokemon()->
+                this->pokeVec[eventTab.playerId]->setPosition(engine->getState().getPlayers().at(eventTab.playerId)->getPokemon()->
                         getPosition().x*24,engine->getState().getPlayers().at(eventTab.playerId)->getPokemon()->getPosition().y*24);
-                this->xCenter = engine->getState().getPlayers().at(pokeTarId)->getPokemon()->getPosition().x*tileSize.x;
-                this->yCenter = engine->getState().getPlayers().at(pokeTarId)->getPokemon()->getPosition().y*tileSize.y;
+                this->xCenter = engine->getState().getPlayers().at(playerTarId)->getPokemon()->getPosition().x*tileSize.x;
+                this->yCenter = engine->getState().getPlayers().at(playerTarId)->getPokemon()->getPosition().y*tileSize.y;
                 break;
             case DEATH:
-                pokeVec.erase(pokeId);
+                pokeVec.erase(eventTab.playerId);
                 updatePlayers();
                 break;
             case ORIENT:
@@ -220,8 +220,8 @@ void Scene::updatePlayers() {
     if(engine->getState().getPlayers().size() <1){
         throw new runtime_error("cannot render a state with no players");
     }
-    this->xCenter = engine->getState().getPlayers().at(pokeTarId)->getPokemon()->getPosition().x*tileSize.x;
-    this->yCenter = engine->getState().getPlayers().at(pokeTarId)->getPokemon()->getPosition().y*tileSize.y;
+    this->xCenter = engine->getState().getPlayers()[playerTarId]->getPokemon()->getPosition().x*tileSize.x;
+    this->yCenter = engine->getState().getPlayers()[playerTarId]->getPokemon()->getPosition().y*tileSize.y;
     for( auto player :engine->getState().getPlayers())
     {
         shared_ptr<sf::Sprite> pokeRender;
@@ -252,7 +252,7 @@ void Scene::updatePlayers() {
             int tv = tileNumber / (pokeTileSet->getSize().x / tileSize.x);
             pokeRender->setTextureRect(sf::IntRect(tu * (tileSize.x+1)+1,tv * (tileSize.y+1)+1,tileSize.x,tileSize.y));
             pokeRender->setPosition(position.x* tileSize.x,position.y*tileSize.y);
-            pokeVec.insert(make_pair(player.second->getPokemon()->getID(),pokeRender));
+            pokeVec.insert(make_pair(player.second->getID(),pokeRender));
         }
 
     }

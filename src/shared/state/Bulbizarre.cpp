@@ -10,10 +10,9 @@ using namespace state;
 
 
 
-Bulbizarre::Bulbizarre(unsigned int &ID, Orientation orientation, unsigned int currentLife, Position position,
+Bulbizarre::Bulbizarre(Orientation orientation, unsigned int currentLife, Position position,
                        bool alive) {
 
-    this->ID = ID;
     this->currentLife = currentLife;
     this->position = position;
     this->alive = alive;

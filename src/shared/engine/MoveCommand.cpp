@@ -110,7 +110,7 @@ void MoveCommand::execute(state::State &state) {
                             new_position = Position(13,5);
 //                            state.getPlayers().erase(1);
 
-                            state_ref.getPlayers().insert(make_pair(new_id,make_shared<Player>(true,newName,new_id,make_shared<Carapuce>(new_id,EST,200,Position(4,4)))));
+                            state_ref.getPlayers().insert(make_pair(new_id,make_shared<Player>(true,newName,new_id,make_shared<Carapuce>(EST,200,Position(4,4)))));
                             state_ref.getPlayers()[idPlayer]->getPokemon()->setPosition(new_position);
                             break;
 
@@ -120,7 +120,7 @@ void MoveCommand::execute(state::State &state) {
                             state_ref.setMap(newMap);
                             new_id = 3;
                             new_position = Position(21,3);
-                            state_ref.getPlayers().insert(make_pair(new_id,make_shared<Player>(true,newName,new_id,make_shared<Carapuce>(new_id,EST,200,Position(3,21)))));
+                            state_ref.getPlayers().insert(make_pair(new_id,make_shared<Player>(true,newName,new_id,make_shared<Carapuce>(EST,200,Position(3,21)))));
                             state_ref.getPlayers()[idPlayer]->getPokemon()->setPosition(new_position);
                             break;
                         case 3:
