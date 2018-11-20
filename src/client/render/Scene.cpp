@@ -42,10 +42,31 @@ Scene::Scene(shared_ptr<engine::Engine> engine,string tileSet,unsigned int  poke
 
 void Scene::draw(sf::RenderWindow& window) {
 
+//    if (this->engine->getState().menu) {
+//        sf::Event event1;
+//        while (window.pollEvent(event1)) {
+//            switch (event1.type) {
+//                case :
+//                default:
+//                    break;
+//                case sf::Event::KeyPressed:
+//                    sf::Keyboard::Key k1 = event1.key.code;
+//                    switch(k1) {
+//                        default:
+//                            break;
+//                        case sf::Keyboard::Return:
+//                            this->engine->getState().menu = false;
+//                            break;
+//                    }
+//                    break;
+//            }
+//        }
+//    } else {
+
+
     sf::Event event;
-    while (window.pollEvent(event))
-    {
-        switch(event.type) {
+    while (window.pollEvent(event)) {
+        switch (event.type) {
             default:
                 break;
             case sf::Event::Closed :
@@ -53,24 +74,24 @@ void Scene::draw(sf::RenderWindow& window) {
                 break;
             case sf::Event::KeyPressed:
                 sf::Keyboard::Key k = event.key.code;
-                switch(k){
+                switch (k) {
                     case sf::Keyboard::Key::Right  :
-                        engine->addCommand(new MoveCommand(EST,0),0);
+                        engine->addCommand(new MoveCommand(EST, 0), 0);
                         break;
                     case sf::Keyboard::Key::Left :
-                        engine->addCommand(new MoveCommand(WEST,0),0);
+                        engine->addCommand(new MoveCommand(WEST, 0), 0);
                         break;
                     case sf::Keyboard::Key::Up:
-                        engine->addCommand(new MoveCommand(NORTH,0),0);
+                        engine->addCommand(new MoveCommand(NORTH, 0), 0);
                         break;
                     case sf::Keyboard::Key::Down:
-                        engine->addCommand(new MoveCommand(SOUTH,0),0);
+                        engine->addCommand(new MoveCommand(SOUTH, 0), 0);
                         break;
                     case sf::Keyboard::Key::A :
-                        engine->addCommand(new AttackCommand(0),0);
+                        engine->addCommand(new AttackCommand(0), 0);
                         break;
                     case sf::Keyboard::Key::H:
-                        engine->addCommand(new HealCommand(0),0);
+                        engine->addCommand(new HealCommand(0), 0);
                         break;
                     default:
                         break;
@@ -78,26 +99,23 @@ void Scene::draw(sf::RenderWindow& window) {
 
 
         }
-        if(event.type == sf::Event::Closed)
+        if (event.type == sf::Event::Closed)
             window.close();
 
     }
 
 
-
     window.clear();
-    for(const auto &layerRend : layerVec)
-    {
+    for (const auto &layerRend : layerVec) {
         window.draw(*layerRend);
     }
-    for(auto pokeRend: pokeVec)
-    {
+    for (auto pokeRend: pokeVec) {
 
         window.draw(*(pokeRend.second));
     }
 
     sf::Font f;
-    if(!f.loadFromFile("res/src/arial.ttf")){
+    if (!f.loadFromFile("res/src/arial.ttf")) {
         throw new runtime_error("cannot load font");
     }
 
@@ -106,30 +124,30 @@ void Scene::draw(sf::RenderWindow& window) {
 
     infoPlayers = "";
     int c = 0;
-    for(auto player : engine->getState().getPlayers())
-    {
-        infoPlayers += "pokemon "+to_string(c)+" current life : "+
-                       to_string(player.second->getPokemon()->getCurrentLife()) + "/"+ to_string(player.second->getPokemon()->getFullLife())+"\n";
+    for (auto player : engine->getState().getPlayers()) {
+        infoPlayers += "pokemon " + to_string(c) + " current life : " +
+                       to_string(player.second->getPokemon()->getCurrentLife()) + "/" +
+                       to_string(player.second->getPokemon()->getFullLife()) + "\n";
         c++;
     }
 
     sf::Text text;
     text.setString(infoPlayers);
-    text.setPosition(xCenter-90,yCenter-90);
+    text.setPosition(xCenter - 90, yCenter - 90);
     text.setFont(f);
-    text.setFillColor(sf::Color::White);
+    text.setColor(sf::Color::White);
     text.setCharacterSize(30);
-    text.setScale(sf::Vector2f(0.27,0.27));
+    text.setScale(sf::Vector2f(0.27, 0.27));
     text.setStyle(sf::Text::Regular);
 
 
     sf::Text t2;
     t2.setString("Use: 'A' to attack\n'Arrow Keys' to move\n'H' to heal");
-    t2.setPosition(xCenter,yCenter+40);
+    t2.setPosition(xCenter, yCenter + 40);
     t2.setFont(f);
-    t2.setFillColor(sf::Color::Red);
+    t2.setColor(sf::Color::Red);
     t2.setCharacterSize(25);
-    t2.setScale(sf::Vector2f(0.27,0.27));
+    t2.setScale(sf::Vector2f(0.27, 0.27));
     t2.setStyle(sf::Text::Bold);
 
     window.draw(text);
@@ -137,6 +155,7 @@ void Scene::draw(sf::RenderWindow& window) {
 //        count--;
     window.setView(view2);
     window.display();
+//}
 }
 
 void Scene::updateMap() {
