@@ -125,6 +125,7 @@ void MoveCommand::execute(state::State &state) {
                             break;
                         case 3:
                             state_ref.setGameFinished(true);
+                            state_ref.gameWon = true;
                             cout << "GAME WON!!!" << endl;
                             break;
 

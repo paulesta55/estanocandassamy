@@ -72,7 +72,71 @@ void Scene::draw(sf::RenderWindow& window) {
         window.draw(s);
         window.setView(v);
         window.display();
-    } else {
+    } else if(engine->getState().isGameFinished()) {
+            if(engine->getState().gameWon) {
+                sf::Event event;
+                while (window.pollEvent(event)) {
+                    switch (event.type) {
+                        case sf::Event::Closed:
+                            window.close();
+                            break;
+                        default:
+                            break;
+                        case sf::Event::KeyPressed:
+                            sf::Keyboard::Key k1 = event.key.code;
+                            switch(k1) {
+                                default:
+                                    break;
+                                case sf::Keyboard::Return:
+                                    window.close();
+                                    break;
+                            }
+                            break;
+                    }
+                }
+                sf::Texture texture;
+                texture.loadFromFile("res/src/pokemonfinalscene.png");
+                sf::Sprite s;
+                s.setPosition(0,0);
+                s.setTexture(texture);
+                sf::View v(sf::Vector2f(100,100),sf::Vector2f(200.f, 200.f));
+                window.draw(s);
+                window.setView(v);
+                window.display();
+            }
+            else {
+                sf::Event event;
+                while (window.pollEvent(event)) {
+                    switch (event.type) {
+                        case sf::Event::Closed:
+                            window.close();
+                            break;
+                        default:
+                            break;
+                        case sf::Event::KeyPressed:
+                            sf::Keyboard::Key k1 = event.key.code;
+                            switch(k1) {
+                                default:
+                                    break;
+                                case sf::Keyboard::Return:
+                                    window.close();
+                                    break;
+                            }
+                            break;
+                    }
+                }
+                sf::Texture texture;
+                texture.loadFromFile("res/src/pokemongameoverscene.png");
+                sf::Sprite s;
+                s.setPosition(0,0);
+                s.setTexture(texture);
+                sf::View v(sf::Vector2f(100,100),sf::Vector2f(200.f, 200.f));
+                window.draw(s);
+                window.setView(v);
+                window.display();
+            }
+        }
+        else {
 
 
     sf::Event event;

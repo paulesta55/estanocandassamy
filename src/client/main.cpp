@@ -108,11 +108,11 @@ int main(int argc,char* argv[])
 //        cout << "window opened" <<endl;
                 // handle events
 
-                if (engine->getState().isGameFinished()) window.close();
                 for (auto player: engine->getState().getPlayers()) {
                     if (!(player.second->getIA()) && !(player.second->getPokemon()->getAlive())) {
                         cout << "GAME OVER" << endl;
-                        window.close();
+                        engine->getState().gameOver = true;
+                        engine->getState().setGameFinished(true);
                     }
                 }
                 scene3->draw(window);
@@ -138,11 +138,11 @@ int main(int argc,char* argv[])
 //        cout << "window opened" <<endl;
                 // handle events
 
-                if (engine->getState().isGameFinished()) window.close();
                 for (auto player: engine->getState().getPlayers()) {
                     if (!(player.second->getIA()) && !(player.second->getPokemon()->getAlive())) {
                         cout << "GAME OVER" << endl;
-                        window.close();
+                        engine->getState().gameOver = true;
+                        engine->getState().setGameFinished(true);
                     }
                 }
                 scene3->draw(window);
@@ -177,11 +177,13 @@ int main(int argc,char* argv[])
 //        cout << "window opened" <<endl;
                 // handle events
 
-                if (engine->getState().isGameFinished()) window.close();
+
                 for (auto player: engine->getState().getPlayers()) {
                     if (!(player.second->getIA()) && !(player.second->getPokemon()->getAlive())) {
                         cout << "GAME OVER" << endl;
-                        window.close();
+                        engine->getState().gameOver = true;
+                        engine->getState().setGameFinished(true);
+
                     }
                 }
                 scene3->draw(window);
@@ -213,11 +215,12 @@ int main(int argc,char* argv[])
             while(window.isOpen()) {
 
 
-                if (engine->getState().isGameFinished()) window.close();
+//                if (engine->getState().isGameFinished()) window.close();
                 for (auto player: engine->getState().getPlayers()) {
                     if (!(player.second->getIA()) && !(player.second->getPokemon()->getAlive())) {
                         cout << "GAME OVER" << endl;
-                        window.close();
+                        engine->getState().setGameFinished(true);
+                        engine->getState().gameOver = true;
                     }
                 }
                 scene3->draw(window);
