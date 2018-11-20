@@ -42,26 +42,37 @@ Scene::Scene(shared_ptr<engine::Engine> engine,string tileSet,unsigned int  poke
 
 void Scene::draw(sf::RenderWindow& window) {
 
-//    if (this->engine->getState().menu) {
-//        sf::Event event1;
-//        while (window.pollEvent(event1)) {
-//            switch (event1.type) {
-//                case :
-//                default:
-//                    break;
-//                case sf::Event::KeyPressed:
-//                    sf::Keyboard::Key k1 = event1.key.code;
-//                    switch(k1) {
-//                        default:
-//                            break;
-//                        case sf::Keyboard::Return:
-//                            this->engine->getState().menu = false;
-//                            break;
-//                    }
-//                    break;
-//            }
-//        }
-//    } else {
+    if (this->engine->getState().menu) {
+        sf::Event event1;
+        while (window.pollEvent(event1)) {
+            switch (event1.type) {
+                case sf::Event::Closed:
+                    window.close();
+                    break;
+                default:
+                    break;
+                case sf::Event::KeyPressed:
+                    sf::Keyboard::Key k1 = event1.key.code;
+                    switch(k1) {
+                        default:
+                            break;
+                        case sf::Keyboard::Return:
+                            this->engine->getState().menu = false;
+                            break;
+                    }
+                    break;
+            }
+        }
+        sf::Texture texture;
+        texture.loadFromFile("res/src/pokemonentryscene.png");
+        sf::Sprite s;
+        s.setPosition(0,0);
+        s.setTexture(texture);
+        sf::View v(sf::Vector2f(100,100),sf::Vector2f(200.f, 200.f));
+        window.draw(s);
+        window.setView(v);
+        window.display();
+    } else {
 
 
     sf::Event event;
@@ -155,7 +166,7 @@ void Scene::draw(sf::RenderWindow& window) {
 //        count--;
     window.setView(view2);
     window.display();
-//}
+    }
 }
 
 void Scene::updateMap() {
