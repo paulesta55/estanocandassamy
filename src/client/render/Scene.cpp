@@ -151,22 +151,22 @@ void Scene::draw(sf::RenderWindow& window) {
                 sf::Keyboard::Key k = event.key.code;
                 switch (k) {
                     case sf::Keyboard::Key::Right  :
-                        engine->addCommand(new MoveCommand(EST, 0), 0);
+                        engine->addCommand(make_shared<MoveCommand>(EST, 0), 0);
                         break;
                     case sf::Keyboard::Key::Left :
-                        engine->addCommand(new MoveCommand(WEST, 0), 0);
+                        engine->addCommand(make_shared<MoveCommand>(WEST, 0), 0);
                         break;
                     case sf::Keyboard::Key::Up:
-                        engine->addCommand(new MoveCommand(NORTH, 0), 0);
+                        engine->addCommand(make_shared<MoveCommand>(NORTH, 0), 0);
                         break;
                     case sf::Keyboard::Key::Down:
-                        engine->addCommand(new MoveCommand(SOUTH, 0), 0);
+                        engine->addCommand(make_shared<MoveCommand>(SOUTH, 0), 0);
                         break;
                     case sf::Keyboard::Key::A :
-                        engine->addCommand(new AttackCommand(0), 0);
+                        engine->addCommand(make_shared<AttackCommand>(0), 0);
                         break;
                     case sf::Keyboard::Key::H:
-                        engine->addCommand(new HealCommand(0), 0);
+                        engine->addCommand(make_shared<HealCommand>(0), 0);
                         break;
                     default:
                         break;
@@ -265,31 +265,32 @@ void movePokeRender(unsigned int pokeId)
 
 
 void Scene::stateChanged(const state::Event& e) {
-    const Event& event1 = e;
+//    const Event& event1 = e;
 
     if(e.getEventType()==TAB_EVENT) {
         cout << "tab event" << endl;
-        state::TabEvent eventTab = *(TabEvent*)(event1.clone());
-        ;
-        switch(eventTab.tabEventId) {
+        unique_ptr<state::Event> eventTab(((TabEvent*)e.clone()));
+
+        switch(((TabEvent*)eventTab.get())->tabEventId) {
             case MOVE:
-                this->pokeVec[eventTab.playerId]->setPosition(engine->getState().getPlayers().at(eventTab.playerId)->getPokemon()->
-                        getPosition().x*24,engine->getState().getPlayers().at(eventTab.playerId)->getPokemon()->getPosition().y*24);
+                this->pokeVec[((TabEvent*)eventTab.get())->playerId]->setPosition(engine->getState().getPlayers().at(((TabEvent*)eventTab.get())->playerId)->getPokemon()->
+                        getPosition().x*24,engine->getState().getPlayers().at(((TabEvent*)eventTab.get())->playerId)->getPokemon()->getPosition().y*24);
                 this->xCenter = engine->getState().getPlayers().at(playerTarId)->getPokemon()->getPosition().x*tileSize.x;
                 this->yCenter = engine->getState().getPlayers().at(playerTarId)->getPokemon()->getPosition().y*tileSize.y;
                 break;
             case DEATH:
-                pokeVec.erase(eventTab.playerId);
+                pokeVec.erase(((TabEvent*)eventTab.get())->playerId);
                 updatePlayers();
                 break;
             case ORIENT:
                 updatePlayers();
                 break;
         }
+
     }
     else
-    { StateEvent event = *(StateEvent*)(e.clone());
-        switch(event.stateEvent)
+    { unique_ptr<StateEvent> event((StateEvent*)(e.clone()));
+        switch(event->stateEvent)
         {
             case ATTACK:
                 break;

@@ -19,7 +19,7 @@ void ai::RandomAI::run(Engine &e, unsigned int player) {
     Position IAPos = e.getState().getPlayers()[player]->getPokemon()->getPosition();
     if (e.getState().getPlayers()[player]->getPokemon()->getCurrentLife() != e.getState().getPlayers()[player]
             ->getPokemon()->getFullLife()) {
-        e.addCommand(new HealCommand(player), 1);
+        e.addCommand(make_shared<HealCommand>(player), 1);
 
         return;
     }
@@ -27,10 +27,10 @@ void ai::RandomAI::run(Engine &e, unsigned int player) {
         if (IAPos.x == (p2.second->getPokemon()->getPosition().x + 1) && IAPos.y ==  (p2.second->getPokemon()->getPosition().y) && !(p2.second->getIA())) {
             switch (e.getState().getPlayers()[player]->getPokemon()->getOrientation()) {
                 case WEST:
-                    e.addCommand(new AttackCommand(player), 1);
+                    e.addCommand(make_shared<AttackCommand>(player), 1);
                     break;
                 default:
-                    e.addCommand(new MoveCommand(WEST, player), 1);
+                    e.addCommand(make_shared<MoveCommand>(WEST, player), 1);
                     break;
             }
             return;
@@ -39,10 +39,10 @@ void ai::RandomAI::run(Engine &e, unsigned int player) {
 
             switch (e.getState().getPlayers()[player]->getPokemon()->getOrientation()) {
                 case EST:
-                    e.addCommand(new AttackCommand(player), 1);
+                    e.addCommand(make_shared<AttackCommand>(player), 1);
                     break;
                 default:
-                    e.addCommand(new MoveCommand(EST, player), 1);
+                    e.addCommand(make_shared< MoveCommand>(EST, player), 1);
                     break;
             }
             return;
@@ -51,10 +51,10 @@ void ai::RandomAI::run(Engine &e, unsigned int player) {
 
             switch (e.getState().getPlayers()[player]->getPokemon()->getOrientation()) {
                 case NORTH:
-                    e.addCommand(new AttackCommand(player), 1);
+                    e.addCommand(make_shared<AttackCommand>(player), 1);
                     break;
                 default:
-                    e.addCommand(new MoveCommand(NORTH, player), 1);
+                    e.addCommand(make_shared<MoveCommand>(NORTH, player), 1);
                     break;
             }
             return;
@@ -63,10 +63,10 @@ void ai::RandomAI::run(Engine &e, unsigned int player) {
 
             switch (e.getState().getPlayers()[player]->getPokemon()->getOrientation() && !(p2.second->getIA())) {
                 case SOUTH:
-                    e.addCommand(new AttackCommand(player), 1);
+                    e.addCommand(make_shared<AttackCommand>(player), 1);
                     break;
                 default:
-                    e.addCommand(new MoveCommand(SOUTH, player), 1);
+                    e.addCommand(make_shared<MoveCommand>(SOUTH, player), 1);
                     break;
             }
             return;
@@ -92,7 +92,7 @@ void ai::RandomAI::run(Engine &e, unsigned int player) {
             o = WEST;
             break;
     }
-    e.addCommand(new MoveCommand(o, player), 1);
+    e.addCommand(make_shared<MoveCommand>(o, player), 1);
 
 }
 

@@ -13,8 +13,7 @@ EventType StateEvent::getEventType() const {
 }
 
 Event *StateEvent::clone() const {
-    shared_ptr<Event> e;
-    e.reset( new StateEvent(stateEvent));
 
-    return e.get();
+
+    return new StateEvent(*this);
 }

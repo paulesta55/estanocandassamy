@@ -33,19 +33,18 @@ Engine::Engine(State s):currentState(std::move(s))
 
 
 }
-void engine::Engine::addCommand(Command* command, unsigned int priority) {
+void engine::Engine::addCommand(shared_ptr<Command> command, unsigned int priority) {
     if(!command)
     {
         throw new runtime_error("empty command error");
     }
-    shared_ptr<Command> command_shared;
-    command_shared.reset(command);
+
 //    cout << "new adding command"<< endl;
 if(commands.find(priority) == commands.cend())
-    commands.insert(make_pair(priority,command_shared));
+    commands[priority] = command;
 else{
     priority = static_cast<unsigned int>(commands.size());
-    commands.insert(make_pair(priority,command_shared));
+    commands[priority] = command;
 
 }
 //    cout << "new command added" <<endl;
@@ -61,10 +60,10 @@ void engine::Engine::runCommands() {
         it->second->execute(currentState);
 //        cout << "end of commands ? " << endbool << endl;
 
-        commands.erase(it);
+        it = commands.erase(it);
         //        commands.erase(it);
-        it++;
     }
+
 
 //    commands.clear();
 //    cout << "end of commands" <<endl;

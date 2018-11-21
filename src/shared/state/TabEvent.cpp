@@ -14,8 +14,5 @@ state::EventType state::TabEvent::getEventType() const {
 }
 
 state::Event *state::TabEvent::clone() const {
-
-    shared_ptr<TabEvent> e_ptr;
-    e_ptr.reset( new TabEvent(this->tabEventId,this->playerId));
-    return e_ptr.get();
+    return new TabEvent(*this);
 }
