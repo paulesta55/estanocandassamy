@@ -78,25 +78,12 @@ void ai::HeuristicAI::run(engine::Engine &e, unsigned int player) {
     }
     Position objectif = e.getState().getPlayers()[0]->getPokemon()->getPosition();
     Position current = e.getState().getPlayers()[player]->getPokemon()->getPosition();
-//    auto h = static_cast<unsigned int>(std::sqrt(((int)(objectif.x) - (int)(current.x)) * ((int) (objectif.x) - (int)
-//            (current.x)) + ((int)(objectif.y) - (int)(current.y)) * ((int)(objectif.y)-(int)(current.y))));
-//
-//    shared_ptr<Node> n=make_shared<Node>(nullptr,Position(),0,0);
-//    Node objectifNode(n,e.getState().getPlayers()[0]->getPokemon()->getPosition(),0,0);
-//    Node source(n,current,0,h);
-//    AstarComputer astarComputer(e.getState().getMap(),objectifNode,source);
-//    auto c = astarComputer.compute();
-//TODO : use AstarComputer
-//TODO : add a static int computeHeuristic method to AstarComputer
-//Node objectif(nullptr,e.getState().getPlayers()[0]->getPokemon()->getPosition(),0,)//TODO: change the hardcoded ID
-//AstarComputer astarComputer(e.getState().getMap(),);
 
     AStar::Generator generator;
     int width = (int)(e.getState().getMap()->getWidth());
     int height = (int)(e.getState().getMap()->getHeight());
     generator.setWorldSize({(int)(e.getState().getMap()->getWidth()), (int)(e.getState().getMap()->getHeight())});
     generator.setHeuristic(AStar::Heuristic::manhattan);
-//    generator.setDiagonalMovement(false);
     int k = 0;
     for (int i =0 ; i<height; i++ )
     {
@@ -119,10 +106,7 @@ void ai::HeuristicAI::run(engine::Engine &e, unsigned int player) {
     obj.x = objectif.x;
     obj.y = objectif.y;
     auto path = generator.findPath(srce,obj);
-    for(auto c : path)
-    {
-        cout << c.x << " " << c.y <<endl;
-    }
+
 
     auto nextTile = path[path.size()-2];
 
