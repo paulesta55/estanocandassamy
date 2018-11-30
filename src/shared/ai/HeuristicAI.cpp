@@ -78,9 +78,9 @@ void ai::HeuristicAI::run(engine::Engine &e, unsigned int player) {
     }
     Position objectif = e.getState().getPlayers()[0]->getPokemon()->getPosition();
     Position current = e.getState().getPlayers()[player]->getPokemon()->getPosition();
-    int distance = sqrt(pow((objectif.x -current.x),2) + pow((objectif.y-current.y),2));
+    double distance = static_cast<int>(sqrt(pow(((int)(objectif.x) - (int)(current.x)), 2) + pow(((int)(objectif.y) - (int)(current.y)), 2)));
     cout << "distance" << distance << endl;
-    if(distance<5){
+    if(distance<4){
     AStar::Generator generator;
     int width = (int)(e.getState().getMap()->getWidth());
     int height = (int)(e.getState().getMap()->getHeight());
