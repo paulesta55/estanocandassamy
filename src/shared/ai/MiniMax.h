@@ -43,7 +43,7 @@ namespace MiniMax {
     private:
         shared_ptr<State> state;
         BestAction tour(State,MinMax,uint epoch,uint playerId, uint enemyId,ActionType);
-        int computeCost(State&);
+        int computeCost(State&, uint enemyId, uint playerId);
         bool checkCase(Position, State&);
         vector<Orientation> findNeighbors(Position&,State&,Position&);
     public:

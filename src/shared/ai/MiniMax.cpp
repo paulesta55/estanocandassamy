@@ -15,8 +15,8 @@ using namespace engine;
 using namespace AStar;
 
 BestAction MinMaxGenerator::tour(State s, MinMax m, uint epoch, uint playerId, uint enemyId,ActionType previousAction) {
-    if(epoch==0) {
-        return BestAction(this->computeCost(s),previousAction);
+    if(epoch<=0) {
+        return BestAction(this->computeCost(s,enemyId,playerId),previousAction);
     }
     else {
         int cost = m == MAX?0:INT_MAX;
@@ -59,7 +59,7 @@ BestAction MinMaxGenerator::tour(State s, MinMax m, uint epoch, uint playerId, u
                     obj.y = objectif.y;
                     auto path = generator.findPath(srce, obj);
                     auto nextTile = path[path.size() - 2];
-                    cout << nextTile.x << " " << nextTile.y << endl;
+//                    cout << nextTile.x << " " << nextTile.y << endl;
                     Position p(nextTile.x, nextTile.y);
                     engine.getState().getPlayers()[playerId]->getPokemon()->setPosition(p);
                     tempAction = MOVE_CL;
@@ -67,32 +67,32 @@ BestAction MinMaxGenerator::tour(State s, MinMax m, uint epoch, uint playerId, u
                     break;
                 case MOVE_AW:
                     // go to enemy orientation if possible. If not go to the first possible location
-
+                {
                     bool oppositeOrient = false;
                     //check position according to enemyOrient
-                    switch(enemyOrient) {
+                    switch (enemyOrient) {
                         case SOUTH:
-                            oppositeOrient = checkCase(Position(current.x,current.y+1),engine.getState());
+                            oppositeOrient = checkCase(Position(current.x, current.y + 1), engine.getState());
                             break;
                         case EST:
-                            oppositeOrient = checkCase(Position(current.x+1,current.y),engine.getState());
+                            oppositeOrient = checkCase(Position(current.x + 1, current.y), engine.getState());
                             break;
                         case NORTH:
-                            oppositeOrient = checkCase(Position(current.x,current.y-1),engine.getState());
+                            oppositeOrient = checkCase(Position(current.x, current.y - 1), engine.getState());
                             break;
                         case WEST:
-                            oppositeOrient = checkCase(Position(current.x-1,current.y),engine.getState());
+                            oppositeOrient = checkCase(Position(current.x - 1, current.y), engine.getState());
                             break;
                     }
-                    if(oppositeOrient) {
-                        engine.addCommand(make_shared<MoveCommand>(enemyOrient,playerId),0);
-                    }
-                    else {
-                        auto neighbors = findNeighbors(current,engine.getState(),objectif);
-                        engine.addCommand(make_shared<MoveCommand>(neighbors[0],playerId),0);
+                    if (oppositeOrient) {
+                        engine.addCommand(make_shared<MoveCommand>(enemyOrient, playerId), 0);
+                    } else {
+                        auto neighbors = findNeighbors(current, engine.getState(), objectif);
+                        engine.addCommand(make_shared<MoveCommand>(neighbors[0], playerId), 0);
                     }
                     engine.runCommands();
                     tempAction = MOVE_AW;
+                }
                     break;
                 case ActionType::ATTACK: {
                     // if player can attack then enemyPV-=1 else does nothing
@@ -110,14 +110,17 @@ BestAction MinMaxGenerator::tour(State s, MinMax m, uint epoch, uint playerId, u
                 }
                     break;
             }
-            epoch--
+            epoch--;
             if(m == MinMax::MAX) {
-                int tempCost = tour(engine.getState(),MIN,epoch,enemyId,playerId,tempAction);
+                int tempCost = tour(engine.getState(),MIN,epoch,enemyId,playerId,tempAction).getCost();
                 cost = tempCost > cost?tempCost:cost;
                 action = tempCost > cost?tempAction:action;
-            }else {
-                int tempCost = tour(newState,MAX,epoch,enemyId,playerId,tempAction);
+                cout << "cost " << cost << endl;
+            }
+            else {
+                int tempCost = tour(newState,MAX,epoch,enemyId,playerId,tempAction).getCost();
                 cost = tempCost < cost?tempCost:cost;
+                cout << "cost " << cost << endl;
                 action = tempCost < cost?tempAction:action;
             }
         }
@@ -125,58 +128,59 @@ BestAction MinMaxGenerator::tour(State s, MinMax m, uint epoch, uint playerId, u
     }
 }
 
-int Generator::computeCost(State& s, uint enemyId, uint playerId) {
+int MinMaxGenerator::computeCost(State& s, uint enemyId, uint playerId) {
     Position enemyP=s.getPlayers()[enemyId]->getPokemon()->getPosition();
     Position currentP = s.getPlayers()[playerId]->getPokemon()->getPosition();
     // use manhattan formula * 10
-    uint  distance = static_cast<uint >(10*(abs(enemyP.x-currentP.x)+abs(enemyP.y-currentP.y)));
+    uint  distance = static_cast<uint >(10*(abs((int)(enemyP.x)-(int)currentP.x))+abs((int)enemyP.y-(int)(currentP.y)));
     int cost = s.getPlayers()[playerId]->getPokemon()->getCurrentLife()-s.getPlayers()[enemyId]->getPokemon()->getCurrentLife()-distance;
     return 0;
 }
 
-bool Generator::checkCase(Position p, State& s) {
+bool MinMaxGenerator::checkCase(Position p, State& s) {
     uint tileNumber = p.x + p.y * s.getMap()->getWidth();
-    if(s.getMap()->getLayers()->at(0).getData()[tileNumber]!=35) {
+    if(s.getMap()->getLayers()->at(0).getData()->at(tileNumber)!=35) {
         return true;
     }
     return false;
 }
 
-vector<Orientation> Generator::findNeighbors(Position& p, State& s,Position& forbiddP) {
+vector<Orientation> MinMaxGenerator::findNeighbors(Position& p, State& s,Position& forbiddP) {
     vector<Orientation> neighbors;
-    for(auto o : Orientation) {
+    for(int k = 0; k<4;k++) {
+        auto o = static_cast<Orientation >(k);
         switch(o) {
-            case SOUTH:
+            case SOUTH:{
                 Position southP = Position(p.x,p.y+1);
                 if(checkCase(southP,s) && southP.x != forbiddP.x && southP.y != forbiddP.y) {
                     neighbors.push_back(SOUTH);
-                }
+                }}
                 break;
-            case NORTH:
+            case NORTH:{
                 Position northP = Position(p.x, p.y-1);
                 if(checkCase(northP,s) && northP.x != forbiddP.x && northP.y != forbiddP.y) {
                     neighbors.push_back(NORTH);
-                }
+                }}
                 break;
-            case EST:
+            case EST:{
                 Position estP= Position(p.x+1, p.y);
                 if(checkCase(estP,s) && estP.x != forbiddP.x && estP.y != forbiddP.y) {
                     neighbors.push_back(EST);
-                }
+                }}
                 break;
-            case WEST:
+            case WEST: {
                 Position westP= Position(p.x-1, p.y);
                 if(checkCase(westP,s) && westP.x != forbiddP.x && westP.y != forbiddP.y) {
                     neighbors.push_back(WEST);
-                }
+                }}
                 break;
-
         }
     }
     return neighbors;
+
 }
 
-BestAction compute(State s,uint epoch,uint playerId, uint enemyId) {
-    BestAction action = tour(s,MAX,4,playerId,enemyId);
+BestAction MinMaxGenerator::compute(State s,uint epoch,uint playerId, uint enemyId) {
+    BestAction action =this->tour(s, MAX, epoch, playerId, enemyId,HEAL);
     return action;
 }
