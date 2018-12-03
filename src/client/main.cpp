@@ -269,7 +269,11 @@ int main(int argc,char* argv[])
                     if (player.second->getIA() && player.second->getPokemon()->getAlive()) {
                         cout << "run ai" << endl;
                         ai->run(*engine, player.first);
-                        aiTest->run(*engine,player.first);
+                        shared_ptr<Engine> engine2 = make_shared<Engine>(*engine);
+                        engine2->getState().unregisterObservers();
+
+                        aiTest->run(*engine2,player.first);
+
                         break;
                     }
                 }
