@@ -20,3 +20,7 @@ Bulbizarre::Bulbizarre(Orientation orientation, unsigned int currentLife, Positi
     this->type = PokeType ::BULBIZARRE;
     fullLife = 250;
 }
+
+Pokemon *Bulbizarre::clone() const {
+    return new Bulbizarre(*this);
+}

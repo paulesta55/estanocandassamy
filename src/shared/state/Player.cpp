@@ -45,4 +45,11 @@ Player::~Player() {
 
 }
 
+void Player::setPokemon(std::shared_ptr<Pokemon> p) {
+    pokemon = p;
+}
 
+
+Player* Player::clone() const {
+    return new Player(*this);
+}

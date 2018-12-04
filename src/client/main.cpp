@@ -271,7 +271,6 @@ int main(int argc,char* argv[])
                         ai->run(*engine, player.first);
                         shared_ptr<Engine> engine2 = make_shared<Engine>(*engine);
                         engine2->getState().unregisterObservers();
-
                         aiTest->run(*engine2,player.first);
 
                         break;

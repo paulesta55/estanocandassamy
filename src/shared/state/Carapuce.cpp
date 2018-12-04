@@ -18,3 +18,7 @@ Carapuce::Carapuce(Orientation orientation, unsigned int currentLife, Position p
     this->type = PokeType ::CARAPUCE;
 
 }
+
+Pokemon *Carapuce::clone() const {
+    return new Carapuce(*this);
+}

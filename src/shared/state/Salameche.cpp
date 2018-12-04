@@ -19,3 +19,7 @@ Salameche::Salameche(Orientation orientation, unsigned int currentLife, Position
     this->type = PokeType :: SALAMECHE;
 this->fullLife = 200;
 }
+
+Pokemon *Salameche::clone() const {
+    return new Salameche(*this);
+}

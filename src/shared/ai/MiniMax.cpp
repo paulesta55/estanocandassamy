@@ -23,8 +23,31 @@ BestAction MinMaxGenerator::tour(State s, MinMax m, uint epoch, uint playerId, u
         ActionType action;
         for(int i =0; i<4;i++) {
             ActionType tempAction;
+            // clone the state so that the current state is not impacted by the AI
+            // TODO: create and use a "lightweight state" only used by the AI
             State newState = s;
-            shared_ptr<Engine> enginePtr(new Engine(s));
+            auto it = newState.getPlayers().begin();
+            while(it!=newState.getPlayers().cend()) {
+                it->second = make_shared<Player>(*(it->second->clone()));
+                shared_ptr<Pokemon> poke;
+                switch(it->second->getPokemon()->getType()) {
+                    case PokeType::BULBIZARRE :
+                        poke.reset((Bulbizarre*)(it->second->getPokemon()->clone()));
+                        break;
+                    case SALAMECHE:
+                        poke.reset((Salameche*)(it->second->getPokemon()->clone()));
+                        break;
+                    case CARAPUCE:
+                        poke.reset((Carapuce*)(it->second->getPokemon()->clone()));
+                        break;
+                    default:
+                        break;
+                }
+
+                it->second->setPokemon(poke);
+                it++;
+            }
+            shared_ptr<Engine> enginePtr(new Engine(newState));
 
             Position objectif = enginePtr->getState().getPlayers()[enemyId]->getPokemon()->getPosition();
             Position current = enginePtr->getState().getPlayers()[playerId]->getPokemon()->getPosition();
@@ -133,7 +156,7 @@ int MinMaxGenerator::computeCost(State& s, uint enemyId, uint playerId) {
     Position enemyP=s.getPlayers()[enemyId]->getPokemon()->getPosition();
     Position currentP = s.getPlayers()[playerId]->getPokemon()->getPosition();
     // use manhattan formula * 10
-    uint  distance = static_cast<uint >(10*(abs((int)(enemyP.x)-(int)currentP.x))+abs((int)enemyP.y-(int)(currentP.y)));
+    uint  distance = static_cast<uint >((abs((int)(enemyP.x)-(int)currentP.x))+abs((int)enemyP.y-(int)(currentP.y)));
     int cost = s.getPlayers()[playerId]->getPokemon()->getCurrentLife()-s.getPlayers()[enemyId]->getPokemon()->getCurrentLife()-distance;
     return cost;
 }
