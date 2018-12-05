@@ -50,7 +50,7 @@ file(GLOB_RECURSE jsoncpp_sources extern/jsoncpp-1.8.0/*.cpp)
 #add_library(json ${jsoncpp_sources})
 
 # Executables
-add_executable(client ${client_sources} ${shared_sources}  ${jsoncpp_sources} ${test_sources})
+add_executable(client ${client_sources} ${shared_sources}  ${jsoncpp_sources} ${test_sources} src/shared/ai/AIUtils.cpp)
 #add_executable(server ${server_sources} ${shared_sources} ${jsoncpp_sources})
 
 # SFML
