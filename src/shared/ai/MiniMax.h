@@ -44,7 +44,7 @@ namespace MiniMax {
 
 
     public:
-        static void moveAw(shared_ptr<Engine> e,Position current, Orientation enemyOrient, uint playerId,Position objectif);
+        static void moveAw(Engine& e,Position current, Orientation enemyOrient, uint playerId,Position objectif);
         BestAction compute(State s,uint epoch,uint playerId, uint enemyId);
         static bool checkCase(Position, State&);
         static vector<Orientation> findNeighbors(Position&,State&,Position&);

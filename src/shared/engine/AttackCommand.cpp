@@ -41,9 +41,9 @@ void AttackCommand::execute(state::State &state) {
             {
                 unsigned int lifeAttacked = state_ref.getPlayers().at(id_attacked)->getPokemon()->getCurrentLife();
                 unsigned int newLife = 0;
-                if(lifeAttacked > 50)
+                if(lifeAttacked > 30)
                 {
-                    newLife = lifeAttacked - 50;
+                    newLife = lifeAttacked - 30;
                 }
                 state_ref.getPlayers().at(id_attacked)->getPokemon()->setCurrentLife(newLife);
                 if(newLife==0) {

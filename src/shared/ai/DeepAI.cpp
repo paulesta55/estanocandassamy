@@ -31,43 +31,13 @@ void DeepAI::run (engine::Engine& e, unsigned int player) {
 
         case 1: {
             cout << "ai : MOVE AW" << endl;
-            bool oppositeOrient = false;
             //check position according to enemyOrient
-            switch (s.getPlayers()[0]->getPokemon()->getOrientation()) {
-                case SOUTH:
-                    oppositeOrient = MinMaxGenerator::checkCase(Position(s.getPlayers()[player]->getPokemon()->getPosition().x, s.getPlayers()[player]->getPokemon()->getPosition().y + 1), s);
-                    break;
-                case EST:
-                    oppositeOrient = MinMaxGenerator::checkCase(Position(s.getPlayers()[player]->getPokemon()->getPosition().x + 1, s.getPlayers()[player]->getPokemon()->getPosition().y), s);
-                    break;
-                case NORTH:
-                    oppositeOrient = MinMaxGenerator::checkCase(Position(s.getPlayers()[player]->getPokemon()->getPosition().x, s.getPlayers()[player]->getPokemon()->getPosition().y - 1), s);
-                    break;
-                case WEST:
-                    oppositeOrient = MinMaxGenerator::checkCase(Position(s.getPlayers()[player]->getPokemon()->getPosition().x - 1, s.getPlayers()[player]->getPokemon()->getPosition().y), s);
-                    break;
-            }
-            if (oppositeOrient) {
-                e.addCommand(make_shared<MoveCommand>(s.getPlayers()[0]->getPokemon()->getOrientation(), player), 1);
-            } else {
-                auto playerP =s.getPlayers()[player]->getPokemon()->getPosition();
-                auto enemyP =s.getPlayers()[0]->getPokemon()->getPosition();
-
-                auto neighbors = MiniMax::MinMaxGenerator::findNeighbors(playerP,
-                        s, enemyP);
-                if(neighbors.size()>0) e.addCommand(make_shared<MoveCommand>(neighbors[0], player), 1);
-                else e.addCommand(make_shared<HealCommand>(player),1);
-
-            }
-//            MiniMax::MinMaxGenerator::moveAw(engine,s.getPlayers()[player]->getPokemon()->getPosition(),
-//                    s.getPlayers()[0]->getPokemon()->getOrientation(),player,s.getPlayers()[0]->getPokemon()->getPosition());
-//            engine->runCommands();
+            AIUtils::flee(e,player);
             }
             break;
         case 2 : {
             cout << "ai : ATTACK" << endl;
-
-            e.addCommand(make_shared<AttackCommand>(player), 1);
+            e.addCommand(make_shared<AttackCommand>(player), player);
 //            engine->runCommands();
         }
             break;
@@ -76,7 +46,7 @@ void DeepAI::run (engine::Engine& e, unsigned int player) {
             cout << "ai : HEAL" << endl;
 
             // if player wounded playerPV+=1 else does nothing
-            e.addCommand(make_shared<HealCommand>(player), 1);
+            e.addCommand(make_shared<HealCommand>(player), player);
 //            engine->runCommands();
         }
         break;

@@ -9,7 +9,9 @@
 #include <cmath>
 #include "AStar.hpp"
 #include <iostream>
+#include <engine/Engine.h>
 #include "ai.h"
+#include "AIUtils.h"
 using namespace MiniMax;
 
 using namespace engine;
@@ -50,70 +52,38 @@ BestAction MinMaxGenerator::tour(State s, MinMax m, uint epoch, uint playerId, u
                 it->second->setPokemon(poke);
                 it++;
             }
-            shared_ptr<Engine> enginePtr(new Engine(newState));
+            Engine e(newState);
 
-            Position objectif = enginePtr->getState().getPlayers()[enemyId]->getPokemon()->getPosition();
-            Position current = enginePtr->getState().getPlayers()[playerId]->getPokemon()->getPosition();
-            Orientation enemyOrient = enginePtr->getState().getPlayers()[enemyId]->getPokemon()->getOrientation();
+            Position objectif = e.getState().getPlayers()[enemyId]->getPokemon()->getPosition();
+            Position current = e.getState().getPlayers()[playerId]->getPokemon()->getPosition();
+            Orientation enemyOrient = e.getState().getPlayers()[enemyId]->getPokemon()->getOrientation();
 
             auto actionType = static_cast<ActionType>(i);
             switch(actionType) {
                 case MOVE_CL: {
-//                    cout << "moving closer" <<endl;
-                    // use AStar AI
-//                    AStar::Generator generator;
-//                    int width = (int) (enginePtr->getState().getMap()->getWidth());
-//                    int height = (int) (enginePtr->getState().getMap()->getHeight());
-//                    generator.setWorldSize({(int) (enginePtr->getState().getMap()->getWidth()),
-//                                            (int) (enginePtr->getState().getMap()->getHeight())});
-//                    generator.setHeuristic(AStar::Heuristic::manhattan);
-//                    int k = 0;
-//                    for (int _i = 0; _i < height; _i++) {
-//                        for (int j = 0; j < width; j++) {
-//                            if (enginePtr->getState().getMap()->getLayers()->at(0).getData()->at(k) != 35) {
-//                                Vec2i v;
-//                                v.x = j;
-//                                v.y = _i;
-//                                generator.addCollision(v);
-//                            }
-//                            k++;
-//                        }
-//                    }
-//                    Vec2i srce, obj;
-//                    srce.x = current.x;
-//                    srce.y = current.y;
-//
-//                    obj.x = objectif.x;
-//                    obj.y = objectif.y;
-//                    auto path = generator.findPath(srce, obj);
-//                    auto nextTile = path[path.size() - 2];
-//                    cout << nextTile.x << " " << nextTile.y << endl;
-//                    Position p(nextTile.x, nextTile.y);
-//                    enginePtr->getState().getPlayers()[playerId]->getPokemon()->setPosition(p);
                     unique_ptr<AI> ai;
                     ai.reset(new HeuristicAI);
-                    ai->run(*enginePtr,playerId);
-                    enginePtr->runCommands();
+                    ai->run(e,playerId);
+                    e.runCommands();
                 }
                     break;
                 case MOVE_AW:
                     // go to enemy orientation if possible. If not go to the first possible location
                 {
-                    moveAw(enginePtr, current,enemyOrient,playerId,objectif);
-                    enginePtr->runCommands();
+                    moveAw(e, current,enemyOrient,playerId,objectif);
+                    e.runCommands();
                 }
                     break;
                 case ActionType::ATTACK: {
                     // if player can attack then enemyPV-=1 else does nothing
-
-                    enginePtr->addCommand(make_shared<AttackCommand>(playerId),playerId);
-                    enginePtr->runCommands();
+                    e.addCommand(make_shared<AttackCommand>(playerId),playerId);
+                    e.runCommands();
                 }
                     break;
                 case ActionType::HEAL : {
                     // if player wounded playerPV+=1 else does nothing
-                    enginePtr->addCommand(make_shared<HealCommand>(playerId), playerId);
-                    enginePtr->runCommands();
+                    e.addCommand(make_shared<HealCommand>(playerId), playerId);
+                    e.runCommands();
                 }
                     break;
             }
@@ -147,7 +117,11 @@ int MinMaxGenerator::computeCost(State& s, uint enemyId, uint playerId) {
     Position currentP = s.getPlayers()[playerId]->getPokemon()->getPosition();
     // use manhattan formula * 10
     uint  distance = static_cast<uint >((abs((int)(enemyP.x)-(int)currentP.x))+abs((int)enemyP.y-(int)(currentP.y)));
-    int cost = s.getPlayers()[playerId]->getPokemon()->getCurrentLife()-s.getPlayers()[enemyId]->getPokemon()->getCurrentLife()-distance;
+    int cost = 0;
+//    if(s.getPlayers()[playerId]->getPokemon()->getCurrentLife() >=  s.getPlayers()[playerId]->getPokemon()->getCurrentLife())
+    cost = s.getPlayers()[playerId]->getPokemon()->getCurrentLife()-s.getPlayers()[enemyId]->getPokemon()->getCurrentLife()-distance;
+//    else cost = s.getPlayers()[playerId]->getPokemon()->getCurrentLife()-s.getPlayers()[enemyId]->getPokemon()->getCurrentLife()+distance;
+
     return cost;
 }
 
@@ -197,29 +171,8 @@ BestAction MinMaxGenerator::compute(State s,uint epoch,uint playerId, uint enemy
     return action;
 }
 
-void MinMaxGenerator::moveAw(shared_ptr<Engine> enginePtr, Position current, Orientation enemyOrient, uint playerId,
+void MinMaxGenerator::moveAw(Engine& enginePtr, Position current, Orientation enemyOrient, uint playerId,
         Position objectif) {
-    bool oppositeOrient = false;
-    //check position according to enemyOrient
-    switch (enemyOrient) {
-        case SOUTH:
-            oppositeOrient = checkCase(Position(current.x, current.y + 1), enginePtr->getState());
-            break;
-        case EST:
-            oppositeOrient = checkCase(Position(current.x + 1, current.y), enginePtr->getState());
-            break;
-        case NORTH:
-            oppositeOrient = checkCase(Position(current.x, current.y - 1), enginePtr->getState());
-            break;
-        case WEST:
-            oppositeOrient = checkCase(Position(current.x - 1, current.y), enginePtr->getState());
-            break;
-    }
-    if (oppositeOrient) {
-        enginePtr->addCommand(make_shared<MoveCommand>(enemyOrient, playerId), playerId);
-    } else {
-        auto neighbors = findNeighbors(current, enginePtr->getState(), objectif);
-        if(neighbors.size()>0) enginePtr->addCommand(make_shared<MoveCommand>(neighbors[0], playerId), playerId);
+    AIUtils::flee(enginePtr,playerId);
 
-    }
 }
