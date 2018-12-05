@@ -21,26 +21,7 @@ using namespace AStar;
 
 
 
-Position HeuristicAI::nextP(Position p, Orientation o) {
-    switch(o) {
-        case SOUTH: {
-            return Position(p.x,p.y+1);
-        }
-        case NORTH: {
-            return Position(p.x,p.y-1);
-        }
-        case WEST: {
-            return Position(p.x-1,p.y);
-        }
-        case EST: {
-            return Position(p.x+1,p.y);
-        }
-        default:
-            cerr << "bad orientation in Heuristic AI::run" << endl;
-            break;
-    }
-    return {};
-}
+
 
 void ai::HeuristicAI::run(engine::Engine &e, unsigned int player) {
 
