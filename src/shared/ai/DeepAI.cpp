@@ -18,7 +18,7 @@ void DeepAI::run (engine::Engine& e, unsigned int player) {
     unique_ptr<MinMaxGenerator> generator;
     shared_ptr<Engine> engine = make_shared<Engine>(e);
     State s = engine->getState();
-    BestAction action = generator->compute(s,3,player,0);
+    BestAction action = generator->compute(s,5,player,0);
     switch(action.getActionType()) {
         case 0: {
             cout << "ai : MOVE CL" << endl;

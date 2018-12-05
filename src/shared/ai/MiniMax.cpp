@@ -106,13 +106,13 @@ BestAction MinMaxGenerator::tour(State s, MinMax m, uint epoch, uint playerId, u
                 case ActionType::ATTACK: {
                     // if player can attack then enemyPV-=1 else does nothing
 
-                    enginePtr->addCommand(make_shared<AttackCommand>(playerId),0);
+                    enginePtr->addCommand(make_shared<AttackCommand>(playerId),playerId);
                     enginePtr->runCommands();
                 }
                     break;
                 case ActionType::HEAL : {
                     // if player wounded playerPV+=1 else does nothing
-                    enginePtr->addCommand(make_shared<HealCommand>(playerId), 0);
+                    enginePtr->addCommand(make_shared<HealCommand>(playerId), playerId);
                     enginePtr->runCommands();
                 }
                     break;
@@ -216,10 +216,10 @@ void MinMaxGenerator::moveAw(shared_ptr<Engine> enginePtr, Position current, Ori
             break;
     }
     if (oppositeOrient) {
-        enginePtr->addCommand(make_shared<MoveCommand>(enemyOrient, playerId), 1);
+        enginePtr->addCommand(make_shared<MoveCommand>(enemyOrient, playerId), playerId);
     } else {
         auto neighbors = findNeighbors(current, enginePtr->getState(), objectif);
-        if(neighbors.size()>0) enginePtr->addCommand(make_shared<MoveCommand>(neighbors[0], playerId), 1);
+        if(neighbors.size()>0) enginePtr->addCommand(make_shared<MoveCommand>(neighbors[0], playerId), playerId);
 
     }
 }

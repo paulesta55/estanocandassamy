@@ -57,7 +57,7 @@ void engine::Engine::runCommands() {
     while(it!=commands.cend())
     {
 //        cout <<"command "<<it->first<<endl;
-        it->second->execute(currentState);
+        if(this->getState().getPlayers()[it->first]->getPokemon()->getAlive()) it->second->execute(currentState);
 //        cout << "end of commands ? " << endbool << endl;
 
         it = commands.erase(it);

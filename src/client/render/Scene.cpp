@@ -151,22 +151,22 @@ void Scene::draw(sf::RenderWindow& window) {
                 sf::Keyboard::Key k = event.key.code;
                 switch (k) {
                     case sf::Keyboard::Key::Right  :
-                        engine->addCommand(make_shared<MoveCommand>(EST, 0), 0);
+                        engine->addCommand(make_shared<MoveCommand>(EST, playerTarId), playerTarId);
                         break;
                     case sf::Keyboard::Key::Left :
-                        engine->addCommand(make_shared<MoveCommand>(WEST, 0), 0);
+                        engine->addCommand(make_shared<MoveCommand>(WEST, playerTarId), playerTarId);
                         break;
                     case sf::Keyboard::Key::Up:
-                        engine->addCommand(make_shared<MoveCommand>(NORTH, 0), 0);
+                        engine->addCommand(make_shared<MoveCommand>(NORTH, playerTarId), playerTarId);
                         break;
                     case sf::Keyboard::Key::Down:
-                        engine->addCommand(make_shared<MoveCommand>(SOUTH, 0), 0);
+                        engine->addCommand(make_shared<MoveCommand>(SOUTH, playerTarId), playerTarId);
                         break;
                     case sf::Keyboard::Key::A :
-                        engine->addCommand(make_shared<AttackCommand>(0), 0);
+                        engine->addCommand(make_shared<AttackCommand>(playerTarId), playerTarId);
                         break;
                     case sf::Keyboard::Key::H:
-                        engine->addCommand(make_shared<HealCommand>(0), 0);
+                        engine->addCommand(make_shared<HealCommand>(playerTarId), playerTarId);
                         break;
                     default:
                         break;
