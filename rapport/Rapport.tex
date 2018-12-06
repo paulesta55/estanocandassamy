@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 
->>>>>>> master
 \documentclass[a4paper,12pt]{article}
 \usepackage{times}
 \usepackage[francais]{babel}
@@ -22,34 +19,15 @@
 {â}{{\^a}}1
 }
 \lstset{language=C++,
-<<<<<<< HEAD
-                basicstyle=\footnotesize,
-                keywordstyle=\footnotesize\color{blue},
-                otherkeywords={override,nullptr}
-=======
 basicstyle=\footnotesize,
 keywordstyle=\footnotesize\color{blue},
 otherkeywords={override,nullptr}
->>>>>>> master
 }
 \definecolor{orange}{rgb}{0.8,0.4,0.0}
 \definecolor{darkblue}{rgb}{0.0,0.0,0.6}
 \definecolor{cyan}{rgb}{0.0,0.6,0.6}
 \lstdefinelanguage{JSON}
 {
-<<<<<<< HEAD
-  basicstyle=\normalsize,
-  columns=fullflexible,
-  showstringspaces=false,
-  commentstyle=\color{gray}\upshape,
-  morestring=[b]",
-  morestring=[s]{>}{<},
-  morecomment=[s]{<?}{?>},
-  stringstyle=\color{orange},
-  identifierstyle=\color{darkblue},
-  keywordstyle=\color{blue},
-  morekeywords={string,number,array,object}% list your attributes here
-=======
 basicstyle=\normalsize,
 columns=fullflexible,
 showstringspaces=false,
@@ -61,7 +39,6 @@ stringstyle=\color{orange},
 identifierstyle=\color{darkblue},
 keywordstyle=\color{blue},
 morekeywords={string,number,array,object}% list your attributes here
->>>>>>> master
 }
 
 \sloppy
@@ -76,127 +53,6 @@ morekeywords={string,number,array,object}% list your attributes here
 
 \begin{document}
 
-<<<<<<< HEAD
-\thispagestyle{empty}
-
-\begin{titlepage}
-
-\vspace*{2cm}
-
-\begin{center}\textbf{\Huge Projet Logiciel Transversal}\end{center}{\Large \par}
-
-\begin{center}\textbf{\large Auteurs}\end{center}{\large \par}
-
-\vspace{2cm}
-
-%\begin{figure}[h]
-%\begin{center}
-%\includegraphics[width=\textwidth]{exemple.png}
-%\caption{\label{pacmangame}Exemple du jeu}
-%\end{center}
-%\end{figure}
-
-\clearpage
-
-{\small
-\tableofcontents
-}
-
-\end{titlepage}
-
-\clearpage
-\section{Présentation Générale}
-
-\subsection{Archétype}
-
-
-\subsection{Règles du jeu}
-
-\subsection{Ressources}
-
-
-
-\clearpage
-\section{Description et conception des états}
-
-\subsection{Description des états}
-
-
-\subsection{Conception Logiciel}
-
-
-%\begin{landscape}
-%\begin{figure}[p]
-%\includegraphics[width=0.9\paperheight]{state.pdf}
-%\caption{\label{uml:state}Diagramme des classes d'état.} 
-%\end{figure}
-%\end{landscape}
-
-\clearpage
-\section{Rendu: Stratégie et Conception}
-
-\subsection{Stratégie de rendu d'un état}
-
-
-\subsection{Conception logiciel}
-
-%\begin{landscape}
-%\begin{figure}[p]
-%\includegraphics[width=0.9\paperheight]{render.pdf}
-%\caption{\label{uml:render}Diagramme des classes de rendu.} 
-%\end{figure}
-%\end{landscape}
-
-\clearpage
-\section{Règles de changement d'états et moteur de jeu}
-
-\subsection{Règles}
-
-\clearpage
-\subsection{Conception logiciel}
-
-
-%\begin{landscape}
-%\begin{figure}[p]
-%\includegraphics[width=0.9\paperheight]{engine.pdf}
-%\caption{\label{uml:engine}Diagramme des classes de moteur de jeu.} 
-%\end{figure}
-%\end{landscape}
-
-
-\section{Intelligence Artificielle}
-
-\subsection{Stratégies}
-
-\clearpage
-\subsection{Conception logiciel}
-
-
-%\begin{landscape}
-%\begin{figure}[p]
-%\includegraphics[width=0.9\paperheight]{ai.pdf}
-%\caption{\label{uml:ai}Diagramme des classes d'intelligence artificielle.} 
-%\end{figure}
-%\end{landscape}
-
-
-\section{Modularisation}
-\label{sec:module}
-
-\subsection{Organisation des modules}
-
-\clearpage
-\subsection{Conception logiciel}
-
-
-%
-%\begin{landscape}
-%\begin{figure}[p]
-%\includegraphics[width=0.9\paperheight]{module.pdf}
-%\caption{\label{uml:module}Diagramme des classes pour la modularisation.} 
-%\end{figure}
-%\end{landscape}
-=======
     \thispagestyle{empty}
 
     \begin{titlepage}
@@ -429,14 +285,35 @@ Par ailleurs, le changement de niveau étant provoqué par un déplacement sur l
     
     Le stratégie de l'AI aléatoire est de se déplacer de manière aléatoire sur la map, lors qu'il rencontre un ennemi, il peut alors combattre et lorsque ses pv tombent bas, il se soigne.
     
+    \subsubsection{Intelligence basé sur les heuristiques}
+    
+    Nous avons ajouté des heuristiques aux pokémons ennemies afin qu'il puisse battre le pokémon du joueur :\begin{enumerate}
+        \item Si le pokémon a un nombre de points de vie supérieur à celui de son adversaire, il l'attaque si il est en face de lui. 
+\item Si le pokemon a un nombre de points de vie supérieure ou égale à celui de son adversaire et qu'il est à distance de celui-ci, il se rapproche.
+        \item Si le pokémon a un nombre de points de vie trop faible pour gagner le combat, il tentera de fuir son adversaire si celui-ci peut l'attaquer.
+         \item Si le pokémon ne risque pas de perdre des points de vie suite à une attaque ennemie et qu'il lui en manque, il tentera de se soigner.
+    \end{enumerate}
+    Et finalement pour que le pokémon ennemi se rapproche de celui du joueur, nous avons utilisé l'algorithme A* qui est un algorithme de recherche de chemin dans une graphe (ici notre carte).
+    Nous avons notamment utilisé le code disponible ici : \textcolor{blue}{\underline{ https://github.com/daancode/a-star}}
+    
+    
     \clearpage
     \subsection{Conception logiciel}
     
     Le diagramme des classes d'AI est affiché ci-dessous
     
     \emph{Classes AI}. Les classes filles de la classe AI implémente 3 stratégie d'IA suivi par le pokemon adverse :\begin{enumerate}
-        \item RandomAI : Intelligence Artificielle aléatoire
+      
+\item RandomAI : Intelligence Artificielle aléatoire
+\item HeuristicAI :  Intelligence Artificielle Heuristique
     \end{enumerate}
+    \textbf{AStar Generator} :
+    \\Malheureusement, le code provenant d'un projet extérieur, nous n'avons pas pu intégrer les classes du AStar dans notre fichier \emph{ai.dia}.
+    Pour utiliser le générateur on doit tout d'abord les fournir une version "alléger" de l'environnement ( i.e. de la classe \emph{Map} ) contenant seulement les obstacles de la carte.
+   \\\textbf{AIUtils} :
+   \\Nous avons également séparé plusieurs méthodes utilitaires consommées par HeuristicAI (et à l'avenir par DeepAI) dans une classe \emph{AIUtils}. Ses méthodes étant indépendantes, elles sont déclarées comme \emph{static} ce qui permet de les utiliser sans instancier d'objet superflus. 
+   La méthode flee permet notamment de calculer le meilleurs déplacement possible pour fuir un adversaire.
+    
 
 
     \begin{landscape}
@@ -467,6 +344,5 @@ Par ailleurs, le changement de niveau étant provoqué par un déplacement sur l
     %\caption{\label{uml:module}Diagramme des classes pour la modularisation.}
     %\end{figure}
     %\end{landscape}
->>>>>>> master
 
 \end{document}
