@@ -63,7 +63,7 @@ BestAction MinMaxGenerator::tour(State s, MinMax m, uint epoch, uint playerId, u
                 case MOVE_CL: {
                     unique_ptr<AI> ai;
                     ai.reset(new HeuristicAI);
-                    ai->run(e,playerId);
+                    ai->run(e,playerId,enemyId);
                     e.runCommands();
                 }
                     break;

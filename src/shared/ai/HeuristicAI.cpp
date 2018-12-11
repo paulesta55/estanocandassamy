@@ -9,6 +9,7 @@
 #include <cmath>
 #include "AStar.hpp"
 #include <iostream>
+#include <climits>
 #include "MiniMax.h"
 
 
@@ -17,19 +18,19 @@ using namespace ai;
 using namespace state;
 using namespace std;
 using namespace AStar;
+using namespace MiniMax;
 
 
 
 
 
+void ai::HeuristicAI::run(engine::Engine &e, unsigned int player, unsigned int enemy) {
 
-void ai::HeuristicAI::run(engine::Engine &e, unsigned int player) {
-
-    unsigned int enemyLife = e.getState().getPlayers()[0]->getPokemon()->getCurrentLife();
+    unsigned int enemyLife = e.getState().getPlayers()[enemy]->getPokemon()->getCurrentLife();
     unsigned int currentLife = e.getState().getPlayers()[player]->getPokemon()->getCurrentLife();
 
     Position IAPos = e.getState().getPlayers()[player]->getPokemon()->getPosition();
-    Position enemyP = e.getState().getPlayers()[0]->getPokemon()->getPosition();
+    Position enemyP = e.getState().getPlayers()[enemy]->getPokemon()->getPosition();
     if (currentLife != e.getState().getPlayers()[player]->getPokemon()->getFullLife()
     && currentLife < enemyLife) {
         if(AIUtils::computeD(IAPos,enemyP) < 2) {
@@ -90,11 +91,12 @@ void ai::HeuristicAI::run(engine::Engine &e, unsigned int player) {
 
 
     }
-    Position objectif = e.getState().getPlayers()[0]->getPokemon()->getPosition();
+    Position objectif = e.getState().getPlayers()[enemy]->getPokemon()->getPosition();
     Position current = e.getState().getPlayers()[player]->getPokemon()->getPosition();
     double distance = static_cast<int>(sqrt(pow(((int)(objectif.x) - (int)(current.x)), 2) + pow(((int)(objectif.y) - (int)(current.y)), 2)));
     cout << "distance" << distance << endl;
-    if(distance<5){
+    unsigned int  area = restrictArea?5:INT_MAX;
+    if(distance<area){
     AStar::Generator generator;
     int width = (int)(e.getState().getMap()->getWidth());
     int height = (int)(e.getState().getMap()->getHeight());

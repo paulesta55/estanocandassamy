@@ -14,17 +14,17 @@ using namespace MiniMax;
 using namespace engine;
 using namespace ai;
 
-void DeepAI::run (engine::Engine& e, unsigned int player) {
+void DeepAI::run (engine::Engine& e, unsigned int player, unsigned int enemy) {
     unique_ptr<MinMaxGenerator> generator;
     shared_ptr<Engine> engine = make_shared<Engine>(e);
     State s = engine->getState();
-    BestAction action = generator->compute(s,5,player,0);
+    BestAction action = generator->compute(s,5,player,enemy);
     switch(action.getActionType()) {
         case 0: {
             cout << "ai : MOVE CL" << endl;
             unique_ptr<AI> ai;
             ai.reset(new HeuristicAI);
-            ai->run(e,player);
+            ai->run(e,player, enemy);
 //            engine->runCommands();
             }
             break;

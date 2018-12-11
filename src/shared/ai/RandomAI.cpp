@@ -15,7 +15,7 @@ using namespace state;
 using namespace std;
 using namespace engine;
 
-void ai::RandomAI::run(Engine &e, unsigned int player) {
+void ai::RandomAI::run(Engine &e, unsigned int player, unsigned int enemy) {
     Position IAPos = e.getState().getPlayers()[player]->getPokemon()->getPosition();
     if (e.getState().getPlayers()[player]->getPokemon()->getCurrentLife() != e.getState().getPlayers()[player]
             ->getPokemon()->getFullLife()) {

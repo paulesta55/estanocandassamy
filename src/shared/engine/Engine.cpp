@@ -17,19 +17,7 @@ using namespace state;
 Engine::Engine(State s):currentState(std::move(s))
 {
 
-    const unsigned int id = 1;
-    unsigned int idPlayer1 = 1;
-    string player = "Alice";
-    const pair<const unsigned int, shared_ptr<Player>> pair1 = make_pair(id,make_shared<Player>(true,player,idPlayer1,make_shared<Bulbizarre>(WEST
-            ,200,Position(3,9))));
-    this->currentState.getPlayers().insert(pair1);
-    const unsigned int id2 = 0;
-    unsigned int idPlayer2 = 0;
-    string player2 = "Bob";
-    const pair<const unsigned int, shared_ptr<Player>> pair2 =make_pair(id2,make_shared<Player>(false,player2,idPlayer2,make_shared<Salameche>(EST
-            ,150,Position(20,20))));
-    this->currentState.getPlayers().insert(pair2);
-    this->currentState.center = Position(7,7);
+
 
 
 }
@@ -47,19 +35,16 @@ else{
     commands[priority] = command;
 
 }
-//    cout << "new command added" <<endl;
+//    cerr << "new command added" <<endl;
 }
 
 void engine::Engine::runCommands() {
 
     auto it = commands.begin();
-//    cout << "begin to run commands" <<endl;
+//    cerr << "begin to run commands" <<endl;
     while(it!=commands.cend())
     {
-//        cout <<"command "<<it->first<<endl;
         if(this->getState().getPlayers()[it->first]->getPokemon()->getAlive()) it->second->execute(currentState);
-//        cout << "end of commands ? " << endbool << endl;
-
         it = commands.erase(it);
         //        commands.erase(it);
     }
