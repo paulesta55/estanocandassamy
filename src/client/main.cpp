@@ -290,7 +290,7 @@ int main(int argc,char* argv[])
         unsigned int idPlayer1 = 1;
         string player = "Alice";
         const pair<const unsigned int, shared_ptr<Player>> pair1 = make_pair(id,make_shared<Player>(true,player,idPlayer1,make_shared<Bulbizarre>(WEST
-                ,200,Position(3,9))));
+                ,200,Position(5,20))));
         engine->getState().getPlayers().insert(pair1);
         const unsigned int id2 = 0;
         unsigned int idPlayer2 = 0;
@@ -308,9 +308,9 @@ int main(int argc,char* argv[])
 
         // Call our AI computer
         unique_ptr<AI> aiTest;
-        aiTest.reset(new HeuristicAI);
+        aiTest.reset(new RandomAI);
 
-
+        aiTest->restrictArea = false;
 
         while(window.isOpen()) {
 
@@ -331,9 +331,9 @@ int main(int argc,char* argv[])
                 engine->getState().gameOver = true;
             }
             scene3->draw(window);
-            //if (!engine->getCommands().empty()) {
-
-            unique_ptr<unsigned int> enemyId;
+            if(!(engine->getState().menu) ) {
+                //if (!engine->getCommands().empty()) {
+                unique_ptr<unsigned int> enemyId;
                 for (auto player : engine->getState().getPlayers()) {
                     if (player.second->getIA() && player.second->getPokemon()->getAlive()) {
                         cout << "run ai" << endl;
@@ -344,7 +344,9 @@ int main(int argc,char* argv[])
                     }
                 }
                 engine->runCommands();
-            //}
+                //}
+            }
+
         }
     }
     if(!strcmp(argv[1],"deep_ai")) {
