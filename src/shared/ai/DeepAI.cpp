@@ -15,15 +15,17 @@ using namespace engine;
 using namespace ai;
 
 void DeepAI::run (engine::Engine& e, unsigned int player, unsigned int enemy) {
-    unique_ptr<MinMaxGenerator> generator;
+    unique_ptr<MinMaxGenerator> generator(new MinMaxGenerator);
     shared_ptr<Engine> engine = make_shared<Engine>(e);
     State s = engine->getState();
-    BestAction action = generator->compute(s,5,player,enemy);
+    BestAction action = generator->compute(s,4,player,enemy);
     switch(action.getActionType()) {
         case 0: {
             cout << "ai : MOVE CL" << endl;
             unique_ptr<AI> ai;
+
             ai.reset(new HeuristicAI);
+            ai->restrictArea = false;
             ai->run(e,player, enemy);
 //            engine->runCommands();
             }
@@ -32,7 +34,8 @@ void DeepAI::run (engine::Engine& e, unsigned int player, unsigned int enemy) {
         case 1: {
             cout << "ai : MOVE AW" << endl;
             //check position according to enemyOrient
-            AIUtils::flee(e,player);
+            AIUtils::flee(e,player,enemy);
+
             }
             break;
         case 2 : {
@@ -46,7 +49,7 @@ void DeepAI::run (engine::Engine& e, unsigned int player, unsigned int enemy) {
             cout << "ai : HEAL" << endl;
 
             // if player wounded playerPV+=1 else does nothing
-            e.addCommand(make_shared<HealCommand>(player), player);
+            e.addCommand(make_shared<engine::HealCommand>(player), player);
 //            engine->runCommands();
         }
         break;

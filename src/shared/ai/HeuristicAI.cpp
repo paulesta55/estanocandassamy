@@ -35,13 +35,13 @@ void ai::HeuristicAI::run(engine::Engine &e, unsigned int player, unsigned int e
     && currentLife < enemyLife) {
         if(AIUtils::computeD(IAPos,enemyP) < 2) {
             cerr << "Heuristic AI flees" << endl;
-            AIUtils::flee(e,player);
+            AIUtils::flee(e,player,enemy);
         }
         else e.addCommand(make_shared<HealCommand>(player), player);
         return;
     }
     for (const auto &p2 : e.getState().getPlayers()) {
-        if (IAPos.x == (p2.second->getPokemon()->getPosition().x + 1) && IAPos.y ==  (p2.second->getPokemon()->getPosition().y) && !(p2.second->getIA())) {
+        if (IAPos.x == (p2.second->getPokemon()->getPosition().x + 1) && IAPos.y ==  (p2.second->getPokemon()->getPosition().y) /*&& !(p2.second->getIA())*/) {
             switch (e.getState().getPlayers()[player]->getPokemon()->getOrientation()) {
                 case WEST:
                     e.addCommand(make_shared<AttackCommand>(player), player);
@@ -52,7 +52,7 @@ void ai::HeuristicAI::run(engine::Engine &e, unsigned int player, unsigned int e
             }
             return;
         }
-        if (IAPos.x == (p2.second->getPokemon()->getPosition().x - 1) && IAPos.y ==  (p2.second->getPokemon()->getPosition().y) && !(p2.second->getIA())) {
+        if (IAPos.x == (p2.second->getPokemon()->getPosition().x - 1) && IAPos.y ==  (p2.second->getPokemon()->getPosition().y) /*&& !(p2.second->getIA())*/) {
 
             switch (e.getState().getPlayers()[player]->getPokemon()->getOrientation()) {
                 case EST:
@@ -64,7 +64,7 @@ void ai::HeuristicAI::run(engine::Engine &e, unsigned int player, unsigned int e
             }
             return;
         }
-        if (IAPos.y == (p2.second->getPokemon()->getPosition().y + 1) && IAPos.x ==  (p2.second->getPokemon()->getPosition().x) && !(p2.second->getIA())) {
+        if (IAPos.y == (p2.second->getPokemon()->getPosition().y + 1) && IAPos.x ==  (p2.second->getPokemon()->getPosition().x) /*&& !(p2.second->getIA())*/) {
 
             switch (e.getState().getPlayers()[player]->getPokemon()->getOrientation()) {
                 case NORTH:
@@ -76,7 +76,7 @@ void ai::HeuristicAI::run(engine::Engine &e, unsigned int player, unsigned int e
             }
             return;
         }
-        if (IAPos.y == (p2.second->getPokemon()->getPosition().y - 1) && IAPos.x ==  (p2.second->getPokemon()->getPosition().x) && !(p2.second->getIA())) {
+        if (IAPos.y == (p2.second->getPokemon()->getPosition().y - 1) && IAPos.x ==  (p2.second->getPokemon()->getPosition().x) /*&& !(p2.second->getIA())*/) {
 
             switch (e.getState().getPlayers()[player]->getPokemon()->getOrientation() && !(p2.second->getIA())) {
                 case SOUTH:

@@ -290,7 +290,7 @@ int main(int argc,char* argv[])
         unsigned int idPlayer1 = 1;
         string player = "Alice";
         const pair<const unsigned int, shared_ptr<Player>> pair1 = make_pair(id,make_shared<Player>(true,player,idPlayer1,make_shared<Bulbizarre>(WEST
-                ,200,Position(5,20))));
+                ,200,Position(7,7))));
         engine->getState().getPlayers().insert(pair1);
         const unsigned int id2 = 0;
         unsigned int idPlayer2 = 0;
@@ -308,7 +308,7 @@ int main(int argc,char* argv[])
 
         // Call our AI computer
         unique_ptr<AI> aiTest;
-        aiTest.reset(new RandomAI);
+        aiTest.reset(new HeuristicAI);
 
         aiTest->restrictArea = false;
 

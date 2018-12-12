@@ -54,15 +54,13 @@ BestAction MinMaxGenerator::tour(State s, MinMax m, uint epoch, uint playerId, u
             }
             Engine e(newState);
 
-            Position objectif = e.getState().getPlayers()[enemyId]->getPokemon()->getPosition();
-            Position current = e.getState().getPlayers()[playerId]->getPokemon()->getPosition();
-            Orientation enemyOrient = e.getState().getPlayers()[enemyId]->getPokemon()->getOrientation();
 
             auto actionType = static_cast<ActionType>(i);
             switch(actionType) {
                 case MOVE_CL: {
                     unique_ptr<AI> ai;
                     ai.reset(new HeuristicAI);
+                    ai->restrictArea = false;
                     ai->run(e,playerId,enemyId);
                     e.runCommands();
                 }
@@ -70,7 +68,8 @@ BestAction MinMaxGenerator::tour(State s, MinMax m, uint epoch, uint playerId, u
                 case MOVE_AW:
                     // go to enemy orientation if possible. If not go to the first possible location
                 {
-                    moveAw(e, current,enemyOrient,playerId,objectif);
+                    AIUtils::flee(e,playerId,enemyId);
+
                     e.runCommands();
                 }
                     break;
@@ -173,6 +172,5 @@ BestAction MinMaxGenerator::compute(State s,uint epoch,uint playerId, uint enemy
 
 void MinMaxGenerator::moveAw(Engine& enginePtr, Position current, Orientation enemyOrient, uint playerId,
         Position objectif) {
-    AIUtils::flee(enginePtr,playerId);
 
 }

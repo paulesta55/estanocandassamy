@@ -33,7 +33,9 @@ std::shared_ptr<PreviousState> AttackCommand::execute(state::State &state) {
 
     Position p(player_ptr->getPokemon()->getPosition());
     unsigned int id_attacked = this->idPlayer;
-    auto prevStat = make_shared<PreviousState>(state_ref.getPlayers().at(id_attacked)->getPokemon()->getOrientation(),id_attacked,state_ref.getPlayers().at(id_attacked)->getPokemon()->getPosition(),state_ref.getPlayers().at(id_attacked)->getPokemon()->getCurrentLife(),ACTION_MV);
+    shared_ptr<PreviousState> prevStat(new PreviousState(state_ref.getPlayers().at(id_attacked)->getPokemon()->
+    getOrientation(),id_attacked,state_ref.getPlayers().at(id_attacked)->getPokemon()->getPosition(),
+    state_ref.getPlayers().at(id_attacked)->getPokemon()->getCurrentLife(),ACTION_MV));
 
     switch(player_ptr->getPokemon()->getOrientation())
     {

@@ -13,10 +13,10 @@ using namespace state;
 using namespace std;
 using namespace ai;
 
-void AIUtils::flee(Engine& e, unsigned int player) {
+void AIUtils::flee(Engine& e, unsigned int player,unsigned int enemy) {
 
     Position IAPos = e.getState().getPlayers()[player]->getPokemon()->getPosition();
-    Position enemyP = e.getState().getPlayers()[0]->getPokemon()->getPosition();
+    Position enemyP = e.getState().getPlayers()[enemy]->getPokemon()->getPosition();
     auto currentO = e.getState().getPlayers()[player]->getPokemon()->getOrientation();
     auto nextAIP = nextP(IAPos,currentO);
     if(nextAIP.y != enemyP.y && nextAIP.x != enemyP.x) e.addCommand(make_shared<MoveCommand>(currentO,player),player);
