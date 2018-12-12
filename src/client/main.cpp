@@ -308,7 +308,7 @@ int main(int argc,char* argv[])
 
         // Call our AI computer
         unique_ptr<AI> aiTest;
-        aiTest.reset(new DeepAI);
+        aiTest.reset(new HeuristicAI);
 
         aiTest->restrictArea = false;
 
