@@ -75,15 +75,10 @@ void engine::Engine::runCommands() {
 //    cerr << "begin to run commands" <<endl;
     while(it!=commands.cend())
     {
-<<<<<<< HEAD
+
         if(this->getState().getPlayers()[it->first]->getPokemon()->getAlive()){ 
             auto prevState = it->second->execute(currentState);
             previous_commands.push(prevState);
-=======
-        if(this->getState().getPlayers()[it->first]->getPokemon()->getAlive()) {
-            it->second->execute(currentState);
-
->>>>>>> 5c7e51b955e2b9c364ea58ff6ea56caaa0d6247a
         }
         it = commands.erase(it);
         //        commands.erase(it);
