@@ -45,21 +45,28 @@ void engine::Engine::undoCommands(){
         this->previous_commands.pop();
         switch(action){
             case engine ::ACTION_ATT:{
-                this->getState().getPlayers()[prevState->playerId]->getPokemon()->setCurrentLife(prevState->previousLife);
                 this->getState().getPlayers()[prevState->playerId]->getPokemon()->setAlive(true);
+                this->getState().getPlayers()[prevState->playerId]->getPokemon()->setOrientation(prevState->previousO);
+                this->getState().getPlayers()[prevState->playerId]->getPokemon()->setPosition(prevState->previousP);
+                this->getState().getPlayers()[prevState->playerId]->getPokemon()->setCurrentLife(prevState->previousLife);
                 StateEvent e(StateEventId::ALL_CHANGED);
                 this->getState().notifyObservers(e);
                 break;
             }
             case engine ::ACTION_HEAL:{
+                this->getState().getPlayers()[prevState->playerId]->getPokemon()->setAlive(true);
+                this->getState().getPlayers()[prevState->playerId]->getPokemon()->setOrientation(prevState->previousO);
+                this->getState().getPlayers()[prevState->playerId]->getPokemon()->setPosition(prevState->previousP);
                 this->getState().getPlayers()[prevState->playerId]->getPokemon()->setCurrentLife(prevState->previousLife);
                 StateEvent e(StateEventId::ALL_CHANGED);
                 this->getState().notifyObservers(e);
                 break;
             }
             case engine ::ACTION_MV:{
+                this->getState().getPlayers()[prevState->playerId]->getPokemon()->setAlive(true);
                 this->getState().getPlayers()[prevState->playerId]->getPokemon()->setOrientation(prevState->previousO);
                 this->getState().getPlayers()[prevState->playerId]->getPokemon()->setPosition(prevState->previousP);
+                this->getState().getPlayers()[prevState->playerId]->getPokemon()->setCurrentLife(prevState->previousLife);
                 StateEvent e(StateEventId::ALL_CHANGED);
                 this->getState().notifyObservers(e);
                 break;
