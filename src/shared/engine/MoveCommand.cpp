@@ -16,7 +16,7 @@ MoveCommand::MoveCommand(state::Orientation o, unsigned int id) {
     this->idPlayer = id;
 }
 
-void MoveCommand::execute(state::State &state) {
+std::shared_ptr<PreviousState> MoveCommand::execute(state::State &state) {
 
     cout << "begin movecommand" <<endl;
     State& state_ref = state;
@@ -33,6 +33,9 @@ void MoveCommand::execute(state::State &state) {
 
 
     player_ptr = state.getPlayers()[idPlayer];
+
+    auto prevStat = make_shared<PreviousState>(state.getPlayers()[idPlayer]->getPokemon()->getOrientation(),idPlayer,state.getPlayers()[idPlayer]->getPokemon()->getPosition(),state.getPlayers()[idPlayer]->getPokemon()->getCurrentLife(),ACTION_MV);
+
 
     if(!player_ptr)
     {
@@ -154,6 +157,8 @@ void MoveCommand::execute(state::State &state) {
         TabEvent tabEvent(TabEventId::ORIENT,idPlayer);
         state_ref.notifyObservers(tabEvent);
     }
+
+    return prevStat;
 
 //    cout << "end of move command" << endl;
 }

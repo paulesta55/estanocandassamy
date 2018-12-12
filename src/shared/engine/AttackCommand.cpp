@@ -5,13 +5,15 @@
 #include "state.h"
 #include <memory>
 #include <iostream>
+#include <engine.h>
+
 using namespace engine;
 using namespace std;
 using namespace state;
 
 
 
-void AttackCommand::execute(state::State &state) {
+std::shared_ptr<PreviousState> AttackCommand::execute(state::State &state) {
     State& state_ref = state;
     shared_ptr<Player> player_ptr = nullptr;
 //    unique_ptr<Pokemon> poke_ptr;
@@ -31,6 +33,8 @@ void AttackCommand::execute(state::State &state) {
 
     Position p(player_ptr->getPokemon()->getPosition());
     unsigned int id_attacked = this->idPlayer;
+    auto prevStat = make_shared<PreviousState>(state_ref.getPlayers().at(id_attacked)->getPokemon()->getOrientation(),id_attacked,state_ref.getPlayers().at(id_attacked)->getPokemon()->getPosition(),state_ref.getPlayers().at(id_attacked)->getPokemon()->getCurrentLife(),ACTION_MV);
+
     switch(player_ptr->getPokemon()->getOrientation())
     {
         case EST:
@@ -57,6 +61,7 @@ void AttackCommand::execute(state::State &state) {
                 }
 
             }
+            return prevStat;
             break;
 
         case SOUTH:
@@ -80,8 +85,8 @@ void AttackCommand::execute(state::State &state) {
                     StateEvent e(StateEventId::ATTACK);
                     state_ref.notifyObservers(e);
                 }
-
             }
+            return prevStat;
             break;
         case NORTH:
             p.y--;
@@ -104,8 +109,8 @@ void AttackCommand::execute(state::State &state) {
                     StateEvent e(StateEventId::ATTACK);
                     state_ref.notifyObservers(e);
                 }
-
             }
+            return prevStat;
             break;
         case WEST:
             p.x--;
@@ -128,7 +133,9 @@ void AttackCommand::execute(state::State &state) {
                     StateEvent e(StateEventId::ATTACK);
                     state_ref.notifyObservers(e);
                 }
+
             }
+            return prevStat;
             break;
 
 

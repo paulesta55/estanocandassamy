@@ -4,19 +4,23 @@
 #include <state/StateEventId.h>
 #include "HealCommand.h"
 #include "state.h"
+#include "engine.h"
 
 using namespace state;
 using namespace std;
+using namespace engine;
 
 engine::HealCommand::HealCommand(unsigned int id) {
     idPlayer = id;}
 
-void engine::HealCommand::execute(state::State &state) {
+std::shared_ptr<PreviousState>  engine::HealCommand::execute(state::State &state) {
     for(auto player : state.getPlayers())
     {
         if(player.second->getID() == idPlayer && player.second->getPokemon()->getAlive())
         {
             if(player.second->getPokemon().get()){
+            auto prevStat = make_shared<PreviousState>(state.getPlayers()[idPlayer]->getPokemon()->getOrientation(),idPlayer,state.getPlayers()[idPlayer]->getPokemon()->getPosition(),state.getPlayers()[idPlayer]->getPokemon()->getCurrentLife(),ACTION_MV);
+
                 unsigned int fullLife = player.second->getPokemon()->getFullLife();
                 unsigned int curLife =player.second->getPokemon()->getCurrentLife();
                 if(curLife+20<fullLife)
@@ -29,6 +33,7 @@ void engine::HealCommand::execute(state::State &state) {
                 }
                 StateEvent e(StateEventId::ATTACK);
                 state.notifyObservers(e);
+                return prevStat;
             }
             else
                 {
