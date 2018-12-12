@@ -168,6 +168,9 @@ void Scene::draw(sf::RenderWindow& window) {
                     case sf::Keyboard::Key::H:
                         engine->addCommand(make_shared<HealCommand>(playerTarId), playerTarId);
                         break;
+                    case sf::Keyboard::Key::R:
+                        engine->undoCommands();
+                    break;
                     default:
                         break;
                 }

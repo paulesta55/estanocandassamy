@@ -46,23 +46,22 @@ void engine::Engine::undoCommands(){
         switch(action){
             case engine ::ACTION_ATT:{
                 this->getState().getPlayers()[prevState->playerId]->getPokemon()->setCurrentLife(prevState->previousLife);
-                StateEvent e(StateEventId::ATTACK);
+                this->getState().getPlayers()[prevState->playerId]->getPokemon()->setAlive(true);
+                StateEvent e(StateEventId::ALL_CHANGED);
                 this->getState().notifyObservers(e);
                 break;
             }
             case engine ::ACTION_HEAL:{
                 this->getState().getPlayers()[prevState->playerId]->getPokemon()->setCurrentLife(prevState->previousLife);
-                StateEvent e(StateEventId::ATTACK);
+                StateEvent e(StateEventId::ALL_CHANGED);
                 this->getState().notifyObservers(e);
                 break;
             }
             case engine ::ACTION_MV:{
                 this->getState().getPlayers()[prevState->playerId]->getPokemon()->setOrientation(prevState->previousO);
                 this->getState().getPlayers()[prevState->playerId]->getPokemon()->setPosition(prevState->previousP);
-                TabEvent tabEvent(TabEventId::ORIENT,prevState->playerId);
-                this->getState().notifyObservers(tabEvent);
-                TabEvent tabEvent2(TabEventId::MOVE,prevState->playerId);
-                this->getState().notifyObservers(tabEvent2);
+                StateEvent e(StateEventId::ALL_CHANGED);
+                this->getState().notifyObservers(e);
                 break;
             }
         }
