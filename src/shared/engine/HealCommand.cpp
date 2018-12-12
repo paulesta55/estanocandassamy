@@ -19,7 +19,7 @@ std::shared_ptr<PreviousState>  engine::HealCommand::execute(state::State &state
         if(player.second->getID() == idPlayer && player.second->getPokemon()->getAlive())
         {
             if(player.second->getPokemon().get()){
-            auto prevStat = make_shared<PreviousState>(state.getPlayers()[idPlayer]->getPokemon()->getOrientation(),idPlayer,state.getPlayers()[idPlayer]->getPokemon()->getPosition(),state.getPlayers()[idPlayer]->getPokemon()->getCurrentLife(),ACTION_HEAL);
+            auto prevStat = make_shared<PreviousState>(player.second->getPokemon()->getOrientation(),idPlayer,player.second->getPokemon()->getPosition(),player.second->getPokemon()->getCurrentLife(),ACTION_HEAL);
 
                 unsigned int fullLife = player.second->getPokemon()->getFullLife();
                 unsigned int curLife =player.second->getPokemon()->getCurrentLife();
