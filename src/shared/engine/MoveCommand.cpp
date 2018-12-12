@@ -28,7 +28,7 @@ std::shared_ptr<PreviousState> MoveCommand::execute(state::State &state) {
 //        {
 //            player_ptr = player.second;
 //            cout << "player found" <<endl;
-//        }
+//        }<
 //    }
 
 

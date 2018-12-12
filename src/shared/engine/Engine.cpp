@@ -38,13 +38,53 @@ else{
 //    cerr << "new command added" <<endl;
 }
 
+void engine::Engine::undoCommands(){
+    if(!previous_commands.empty()){
+        auto prevState = this->previous_commands.top();
+        auto action = prevState->aType;
+        this->previous_commands.pop();
+        switch(action){
+            case engine ::ACTION_ATT:{
+                this->getState().getPlayers()[prevState->playerId]->getPokemon()->setCurrentLife(prevState->previousLife);
+                StateEvent e(StateEventId::ATTACK);
+                this->getState().notifyObservers(e);
+                break;
+            }
+            case engine ::ACTION_HEAL:{
+                this->getState().getPlayers()[prevState->playerId]->getPokemon()->setCurrentLife(prevState->previousLife);
+                StateEvent e(StateEventId::ATTACK);
+                this->getState().notifyObservers(e);
+                break;
+            }
+            case engine ::ACTION_MV:{
+                this->getState().getPlayers()[prevState->playerId]->getPokemon()->setOrientation(prevState->previousO);
+                this->getState().getPlayers()[prevState->playerId]->getPokemon()->setPosition(prevState->previousP);
+                TabEvent tabEvent(TabEventId::ORIENT,prevState->playerId);
+                this->getState().notifyObservers(tabEvent);
+                TabEvent tabEvent2(TabEventId::MOVE,prevState->playerId);
+                this->getState().notifyObservers(tabEvent2);
+                break;
+            }
+        }
+    }
+}
+
 void engine::Engine::runCommands() {
 
     auto it = commands.begin();
 //    cerr << "begin to run commands" <<endl;
     while(it!=commands.cend())
     {
-        if(this->getState().getPlayers()[it->first]->getPokemon()->getAlive()) it->second->execute(currentState);
+<<<<<<< HEAD
+        if(this->getState().getPlayers()[it->first]->getPokemon()->getAlive()){ 
+            auto prevState = it->second->execute(currentState);
+            previous_commands.push(prevState);
+=======
+        if(this->getState().getPlayers()[it->first]->getPokemon()->getAlive()) {
+            it->second->execute(currentState);
+
+>>>>>>> 5c7e51b955e2b9c364ea58ff6ea56caaa0d6247a
+        }
         it = commands.erase(it);
         //        commands.erase(it);
     }
