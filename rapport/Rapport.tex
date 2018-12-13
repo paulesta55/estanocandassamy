@@ -11,6 +11,7 @@
 \usepackage{pdflscape}
 \usepackage{listings}
 \usepackage{longtable}
+\usepackage{mathtools}
 \lstset{literate=
 {é}{{\'e}}1
 {è}{{\`e}}1
@@ -270,6 +271,9 @@ Les commandes \emph{AttackCommand} et \emph{HeakCommand} agissent sur l'état de
 
 Par ailleurs, le changement de niveau étant provoqué par un déplacement sur la case escalier après qu'un joueur (non IA) ait éliminé tous ses ennemis; cet évènement est entièrement géré et intégré à la commande \emph{MoveCommand}.
 
+Lors de l'exécution de chaque commande, on crée un objet associé à la commande qui permet de sauvegarder des données importante de l'état du jeu comme la vie, la position et l'orientation d'un pokémon. 
+\\Ces données sont stockées dans des objets de type \emph{PreviousState} et eux même stockés dans une \emph{stack}, ce qui permet d'annuler les commandes exécutées précédemment en dépilant un à un les éléments contenus dans cette \emph{stack} grâce à la méthode \emph{undoCommands()}.
+
     \begin{landscape}
     \begin{figure}[p]
     \includegraphics[width=0.9\paperheight]{engine.png}
@@ -296,6 +300,19 @@ Par ailleurs, le changement de niveau étant provoqué par un déplacement sur l
     Et finalement pour que le pokémon ennemi se rapproche de celui du joueur, nous avons utilisé l'algorithme A* qui est un algorithme de recherche de chemin dans une graphe (ici notre carte).
     Nous avons notamment utilisé le code disponible ici : \textcolor{blue}{\underline{ https://github.com/daancode/a-star}}
     
+    \subsubsection{Intelligence avancée}
+        Nous proposons en dernier lieu une intelligence avancée basée sur l'algorithme minmax à deux joueurs. Dans notre implémentation, l'IA avancée va explorer toutes les issues possibles et va tenter de maximiser ses chances de victoire face au joueur. Pour cela, nous avons implémenté une fonction de coût : 
+        \begin{equation}
+        cost  =  Life_{AI} -   D_{AI/Player} - Life_{Player}
+        \end{equation}        \\Cette fonction exprime trois comportements de l'IA avancée :\begin{enumerate}
+            \item le fait de se déplacer quand il ne voit pas d'ennemi autour, caractérisé par la distance entre l'IA et le Joueur.
+            \item le fait d'attaquer l'ennemi lorsqu'il est en position de force, qui résulte de la différence de points de vie entre l'IA et le Joueur.
+            \item le fait de s'enfuir et de se soigner lorsqu'il est en position de faiblesse qui résulte lui aussi de la différence de points de vie entre l'IA et le Joueur.
+        \end{enumerate}
+        
+        Ainsi à chaque tour, l'IA avancée va choisir le coup optimal parmi l'ensemble des actions qu'il peut effectuer et qui va maximiser ses chances de gagner au tour suivant grâce à cette fonction de coût où l'un des trois comportements va être mis en avant par rapport aux deux autres. Pour cela, l'algorithme va parcourir l'ensemble des issues possibles à chaque tour. Pour effectuer cette tâche, on a choisi de dupliquer la partie de l'état nécessaire au bon fonctionnement de l'algorithme (état des joueurs et des pokemons) à chaque noeud de l'arbre de recherche.\\
+        Pour ce qui est du déplacement sur la carte, nous avons gardé le même algorithme que celui de l'heuristique, à savoir le A *, afin que l'IA puisse se diriger et s'orienter vers le joueur sur la carte de façon optimum.
+    
     
     \clearpage
     \subsection{Conception logiciel}
@@ -306,6 +323,7 @@ Par ailleurs, le changement de niveau étant provoqué par un déplacement sur l
       
 \item RandomAI : Intelligence Artificielle aléatoire
 \item HeuristicAI :  Intelligence Artificielle Heuristique
+\item DeeoAI : Intelligence Artificielle avancée
     \end{enumerate}
     \textbf{AStar Generator} :
     \\Malheureusement, le code provenant d'un projet extérieur, nous n'avons pas pu intégrer les classes du AStar dans notre fichier \emph{ai.dia}.
@@ -313,8 +331,16 @@ Par ailleurs, le changement de niveau étant provoqué par un déplacement sur l
    \\\textbf{AIUtils} :
    \\Nous avons également séparé plusieurs méthodes utilitaires consommées par HeuristicAI (et à l'avenir par DeepAI) dans une classe \emph{AIUtils}. Ses méthodes étant indépendantes, elles sont déclarées comme \emph{static} ce qui permet de les utiliser sans instancier d'objet superflus. 
    La méthode flee permet notamment de calculer le meilleurs déplacement possible pour fuir un adversaire.
-    
-
+    \\\textbf{DeepAI} :
+	\\C'est une IA basée sur la résolution de problème à état finis. On utilise l'algorithme de parcours d'abres minmax. Ici on a un pokemon contre un autre.  Les critères de "jugement" de l'IA sont :
+    \begin{itemize}
+    \item     Sa vie qu'elle veut  maximiser
+\item La vide de l'ennemi  qu'elle veut minimiser
+\item Sa distance à l'ennemi qu'elle veut minimiser
+    \end{itemize}
+    Malheureusement, l'environnement étant relativement grand il est impossible pour l'IA de parcourir l'arbre de recherche en profondeur à chaque coup. En effet chaque noeud de l'arbre possède 4 branches ( fuir, se soigner, attaquer, se rapprocher) et la carte, bien que possédant des murs et des obstacles, contient 25x25 = 625 cases. Ainsi, on comprend qu'il est impossible de parcourir l'ensemble de l'arbre dans un temps acceptable. 
+    Dans la pratique, l'algorithme parcourt au maximum 4 niveaux de l'arbre. Malheureusement, cela ne semble pas suffisant pour obtenir une intelligence plus performante que l'IA Heuristique. 
+    Pour améliorer la performance de l'algorithme nous pourrions mettre en place des conditions pour le parcours des noeuds de l'arbre de recherche pour ainsi éviter le parcours de noeuds inutiles (algorithme alpha bêta). 
 
     \begin{landscape}
     \begin{figure}[p]
