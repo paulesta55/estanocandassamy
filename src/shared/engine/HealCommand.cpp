@@ -44,4 +44,5 @@ std::shared_ptr<PreviousState>  engine::HealCommand::execute(state::State &state
         }
 
     }
+    return nullptr;
 }

@@ -71,6 +71,8 @@ void engine::Engine::undoCommands(){
                 this->getState().notifyObservers(e);
                 break;
             }
+            case ACTION_LV:
+                break;
         }
     }
 }

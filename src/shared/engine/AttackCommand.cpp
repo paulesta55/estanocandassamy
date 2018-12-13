@@ -142,7 +142,7 @@ std::shared_ptr<PreviousState> AttackCommand::execute(state::State &state) {
 
 
     }
-
+    return nullptr;
 
 }
 
