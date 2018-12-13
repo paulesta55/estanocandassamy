@@ -1,6 +1,6 @@
 #include <iostream>
 #include "string.h"
-
+#include <unistd.h>
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include <SFML/Graphics.hpp>
 #include "state.h"
@@ -308,16 +308,16 @@ int main(int argc,char* argv[])
 
         // Call our AI computer
         unique_ptr<AI> aiTest;
-        aiTest.reset(new DeepAI);
+        aiTest.reset(new HeuristicAI);
 
         aiTest->restrictArea = false;
-
+        int count = 1;
         while(window.isOpen()) {
 
             // Look for living players
             bool playerAliveFound = false;
             for (auto player: engine->getState().getPlayers()) {
-                if (player.second && player.second->getPokemon()->getAlive()) {
+                if (player.second->getPokemon()->getAlive()) {
                     playerAliveFound = true;
                     break;
                 }
@@ -332,20 +332,36 @@ int main(int argc,char* argv[])
             }
             scene3->draw(window);
             if(!(engine->getState().menu) ) {
-                //if (!engine->getCommands().empty()) {
-                unique_ptr<unsigned int> enemyId;
-                for (auto player : engine->getState().getPlayers()) {
-                    if (player.second && player.second->getIA() && player.second->getPokemon()->getAlive()) {
-                        cout << "run ai" << endl;
-                        unsigned int pId = player.first;
-                        enemyId.reset(new unsigned int(findEnemy(engine->getState().getPlayers(),pId)));
-                        aiTest->run(*engine,player.first,*enemyId);
+            if(count < 60 ) {
+                count ++;    //}
 
+                    //if (!engine->getCommands().empty()) {
+                    unique_ptr<unsigned int> enemyId;
+                    for (auto player : engine->getState().getPlayers()) {
+                        if (player.second && player.second->getIA() && player.second->getPokemon()->getAlive()) {
+                            cout << "run ai" << endl;
+                            unsigned int pId = player.first;
+                            enemyId.reset(new unsigned int(findEnemy(engine->getState().getPlayers(),pId)));
+                            aiTest->run(*engine,player.first,*enemyId);
+
+                        }
                     }
+                    if(!(engine->getCommands().empty())) usleep(1000000);
+                    engine->runCommands();
+
                 }
-                engine->runCommands();
-                //}
+            else if(count >= 60 && count <= 180) {
+                engine->undoCommands();
+                count++;
+                usleep(500000);
             }
+
+            else {
+                window.close();
+            }
+            cout << "count :" << count << endl;
+            }
+
 
         }
     }
