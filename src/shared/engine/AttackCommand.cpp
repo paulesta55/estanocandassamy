@@ -159,7 +159,7 @@ unsigned int AttackCommand::findPokemon(state::Position &p,State& state_ref) {
 
     for(auto entry: state_ref.getPlayers())
     {
-        if(entry.second->getID() != this->idPlayer)
+        if(entry.second && entry.second->getID() != this->idPlayer)
         {
             if(entry.second->getPokemon()->getPosition().x == p.x && entry.second->getPokemon()->getPosition().y == p.y)
             {

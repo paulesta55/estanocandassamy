@@ -33,24 +33,30 @@ BestAction MinMaxGenerator::tour(State s, MinMax m, uint epoch, uint playerId, u
             newState.unregisterObservers();
             auto it = newState.getPlayers().begin();
             while(it!=newState.getPlayers().cend()) {
-                it->second = make_shared<Player>(*(it->second->clone()));
-                shared_ptr<Pokemon> poke;
-                switch(it->second->getPokemon()->getType()) {
-                    case PokeType::BULBIZARRE :
-                        poke.reset((Bulbizarre*)(it->second->getPokemon()->clone()));
-                        break;
-                    case SALAMECHE:
-                        poke.reset((Salameche*)(it->second->getPokemon()->clone()));
-                        break;
-                    case CARAPUCE:
-                        poke.reset((Carapuce*)(it->second->getPokemon()->clone()));
-                        break;
-                    default:
-                        break;
+                if(it->second) {
+                    it->second = make_shared<Player>(*(it->second->clone()));
+                    shared_ptr<Pokemon> poke;
+                    switch(it->second->getPokemon()->getType()) {
+                        case PokeType::BULBIZARRE :
+                            poke.reset((Bulbizarre*)(it->second->getPokemon()->clone()));
+                            break;
+                        case SALAMECHE:
+                            poke.reset((Salameche*)(it->second->getPokemon()->clone()));
+                            break;
+                        case CARAPUCE:
+                            poke.reset((Carapuce*)(it->second->getPokemon()->clone()));
+                            break;
+                        default:
+                            break;
+                    }
+
+                    it->second->setPokemon(poke);
+                    it++;
+                }
+                else {
+                    it = newState.getPlayers().erase(it);
                 }
 
-                it->second->setPokemon(poke);
-                it++;
             }
             Engine e(newState);
 

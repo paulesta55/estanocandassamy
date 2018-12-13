@@ -24,53 +24,56 @@ void ai::RandomAI::run(Engine &e, unsigned int player, unsigned int enemy) {
         return;
     }
     for (auto p2 : e.getState().getPlayers()) {
-        if (IAPos.x == (p2.second->getPokemon()->getPosition().x + 1) && IAPos.y ==  (p2.second->getPokemon()->getPosition().y) && !(p2.second->getIA())) {
-            switch (e.getState().getPlayers()[player]->getPokemon()->getOrientation()) {
-                case WEST:
-                    e.addCommand(make_shared<AttackCommand>(player), player);
-                    break;
-                default:
-                    e.addCommand(make_shared<MoveCommand>(WEST, player), player);
-                    break;
+        if(p2.second) {
+            if (IAPos.x == (p2.second->getPokemon()->getPosition().x + 1) && IAPos.y ==  (p2.second->getPokemon()->getPosition().y) && !(p2.second->getIA())) {
+                switch (e.getState().getPlayers()[player]->getPokemon()->getOrientation()) {
+                    case WEST:
+                        e.addCommand(make_shared<AttackCommand>(player), player);
+                        break;
+                    default:
+                        e.addCommand(make_shared<MoveCommand>(WEST, player), player);
+                        break;
+                }
+                return;
             }
-            return;
-        }
-        if (IAPos.x == (p2.second->getPokemon()->getPosition().x - 1) && IAPos.y ==  (p2.second->getPokemon()->getPosition().y) && !(p2.second->getIA())) {
+            if (IAPos.x == (p2.second->getPokemon()->getPosition().x - 1) && IAPos.y ==  (p2.second->getPokemon()->getPosition().y) && !(p2.second->getIA())) {
 
-            switch (e.getState().getPlayers()[player]->getPokemon()->getOrientation()) {
-                case EST:
-                    e.addCommand(make_shared<AttackCommand>(player), player);
-                    break;
-                default:
-                    e.addCommand(make_shared< MoveCommand>(EST, player), player);
-                    break;
+                switch (e.getState().getPlayers()[player]->getPokemon()->getOrientation()) {
+                    case EST:
+                        e.addCommand(make_shared<AttackCommand>(player), player);
+                        break;
+                    default:
+                        e.addCommand(make_shared< MoveCommand>(EST, player), player);
+                        break;
+                }
+                return;
             }
-            return;
-        }
-        if (IAPos.y == (p2.second->getPokemon()->getPosition().y + 1) && IAPos.x ==  (p2.second->getPokemon()->getPosition().x) && !(p2.second->getIA())) {
+            if (IAPos.y == (p2.second->getPokemon()->getPosition().y + 1) && IAPos.x ==  (p2.second->getPokemon()->getPosition().x) && !(p2.second->getIA())) {
 
-            switch (e.getState().getPlayers()[player]->getPokemon()->getOrientation()) {
-                case NORTH:
-                    e.addCommand(make_shared<AttackCommand>(player), player);
-                    break;
-                default:
-                    e.addCommand(make_shared<MoveCommand>(NORTH, player), player);
-                    break;
+                switch (e.getState().getPlayers()[player]->getPokemon()->getOrientation()) {
+                    case NORTH:
+                        e.addCommand(make_shared<AttackCommand>(player), player);
+                        break;
+                    default:
+                        e.addCommand(make_shared<MoveCommand>(NORTH, player), player);
+                        break;
+                }
+                return;
             }
-            return;
-        }
-        if (IAPos.y == (p2.second->getPokemon()->getPosition().y - 1) && IAPos.x ==  (p2.second->getPokemon()->getPosition().x) && !(p2.second->getIA())) {
+            if (IAPos.y == (p2.second->getPokemon()->getPosition().y - 1) && IAPos.x ==  (p2.second->getPokemon()->getPosition().x) && !(p2.second->getIA())) {
 
-            switch (e.getState().getPlayers()[player]->getPokemon()->getOrientation() && !(p2.second->getIA())) {
-                case SOUTH:
-                    e.addCommand(make_shared<AttackCommand>(player), player);
-                    break;
-                default:
-                    e.addCommand(make_shared<MoveCommand>(SOUTH, player), player);
-                    break;
+                switch (e.getState().getPlayers()[player]->getPokemon()->getOrientation() && !(p2.second->getIA())) {
+                    case SOUTH:
+                        e.addCommand(make_shared<AttackCommand>(player), player);
+                        break;
+                    default:
+                        e.addCommand(make_shared<MoveCommand>(SOUTH, player), player);
+                        break;
+                }
+                return;
             }
-            return;
         }
+
 
 
     }

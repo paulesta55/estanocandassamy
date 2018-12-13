@@ -84,7 +84,9 @@ void engine::Engine::runCommands() {
     while(it!=commands.cend())
     {
 
-        if(this->getState().getPlayers()[it->first]->getPokemon()->getAlive()){
+        if(this->getState().getPlayers()[it->first] && this->getState().getPlayers()[it->first]->getPokemon()
+        && this->getState().getPlayers()[it->first]->getPokemon()->getAlive()){
+        //if(this->getState().getPlayers()[it->first]->getPokemon()->getAlive()){
             auto prevState = it->second->execute(currentState);
             previous_commands.push(prevState);
         }

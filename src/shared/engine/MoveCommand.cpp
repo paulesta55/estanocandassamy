@@ -83,7 +83,7 @@ std::shared_ptr<PreviousState> MoveCommand::execute(state::State &state) {
                 bool changelevel = true;
                 for(auto player:state_ref.getPlayers())
                 {
-                    if(player.second->getID()!=this->idPlayer &&  player.second->getPokemon()->getAlive())
+                    if(player.second && player.second->getID()!=this->idPlayer &&  player.second->getPokemon()->getAlive())
                     {
                         changelevel = false;
                         break;
@@ -172,7 +172,7 @@ bool MoveCommand::checkMove(Position& p,State& state, unsigned int nextTile)
     }
     for(auto player : state.getPlayers())
     {
-        if(player.second->getID()!=this->idPlayer && player.second->getPokemon()->getPosition().x == p.x &&
+        if(player.second && player.second->getID()!=this->idPlayer && player.second->getPokemon()->getPosition().x == p.x &&
         player.second->getPokemon()->getPosition().y == p.y && player.second->getPokemon()->getAlive())
         {
             return false;

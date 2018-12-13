@@ -120,7 +120,7 @@ int main(int argc,char* argv[])
                 // handle events
 
                 for (auto player: engine->getState().getPlayers()) {
-                    if (!(player.second->getIA()) && !(player.second->getPokemon()->getAlive())) {
+                    if (player.second && !(player.second->getIA()) && !(player.second->getPokemon()->getAlive())) {
                         cout << "GAME OVER" << endl;
                         engine->getState().gameOver = true;
                         engine->getState().setGameFinished(true);
@@ -150,7 +150,7 @@ int main(int argc,char* argv[])
                 // handle events
 
                 for (auto player: engine->getState().getPlayers()) {
-                    if (!(player.second->getIA()) && !(player.second->getPokemon()->getAlive())) {
+                    if (player.second && !(player.second->getIA()) && !(player.second->getPokemon()->getAlive())) {
                         cout << "GAME OVER" << endl;
                         engine->getState().gameOver = true;
                         engine->getState().setGameFinished(true);
@@ -190,7 +190,7 @@ int main(int argc,char* argv[])
 
                 bool playerAliveFound = false;
                 for (auto player: engine->getState().getPlayers()) {
-                    if (!(player.second->getIA()) && player.second->getPokemon()->getAlive()) {
+                    if (player.second && !(player.second->getIA()) && player.second->getPokemon()->getAlive()) {
                         playerAliveFound = true;
                         break;
                     }
@@ -204,7 +204,7 @@ int main(int argc,char* argv[])
                 scene3->draw(window);
                 if (engine->getCommands().size() > 0) {
                     for (auto player : engine->getState().getPlayers()) {
-                        if (player.second->getIA() && player.second->getPokemon()->getAlive()) {
+                        if (player.second && player.second->getIA() && player.second->getPokemon()->getAlive()) {
                             cout << "run ai" << endl;
                             ai->run(*engine, player.first,0);
                             break;
@@ -250,7 +250,7 @@ int main(int argc,char* argv[])
                 // Look for real living players
                 bool playerAliveFound = false;
                 for (auto player: engine->getState().getPlayers()) {
-                    if (!(player.second->getIA()) && player.second->getPokemon()->getAlive()) {
+                    if (player.second && !(player.second->getIA()) && player.second->getPokemon()->getAlive()) {
                         playerAliveFound = true;
                         break;
                     }
@@ -266,7 +266,7 @@ int main(int argc,char* argv[])
                 scene3->draw(window);
                 if (!engine->getCommands().empty()) {
                     for (auto player : engine->getState().getPlayers()) {
-                        if (player.second->getIA() && player.second->getPokemon()->getAlive()) {
+                        if (player.second && player.second->getIA() && player.second->getPokemon()->getAlive()) {
                             cout << "run ai" << endl;
                             ai->run(*engine, player.first,0);
                             break;
@@ -317,7 +317,7 @@ int main(int argc,char* argv[])
             // Look for living players
             bool playerAliveFound = false;
             for (auto player: engine->getState().getPlayers()) {
-                if (player.second->getPokemon()->getAlive()) {
+                if (player.second && player.second->getPokemon()->getAlive()) {
                     playerAliveFound = true;
                     break;
                 }
@@ -335,7 +335,7 @@ int main(int argc,char* argv[])
                 //if (!engine->getCommands().empty()) {
                 unique_ptr<unsigned int> enemyId;
                 for (auto player : engine->getState().getPlayers()) {
-                    if (player.second->getIA() && player.second->getPokemon()->getAlive()) {
+                    if (player.second && player.second->getIA() && player.second->getPokemon()->getAlive()) {
                         cout << "run ai" << endl;
                         unsigned int pId = player.first;
                         enemyId.reset(new unsigned int(findEnemy(engine->getState().getPlayers(),pId)));
@@ -384,7 +384,7 @@ int main(int argc,char* argv[])
             // Look for real living players
             bool playerAliveFound = false;
             for (auto player: engine->getState().getPlayers()) {
-                if (!(player.second->getIA()) && player.second->getPokemon()->getAlive()) {
+                if (player.second && !(player.second->getIA()) && player.second->getPokemon()->getAlive()) {
                     playerAliveFound = true;
                     break;
                 }
@@ -399,7 +399,7 @@ int main(int argc,char* argv[])
             scene3->draw(window);
             if (!engine->getCommands().empty()) {
                 for (auto player : engine->getState().getPlayers()) {
-                    if (player.second->getIA() && player.second->getPokemon()->getAlive()) {
+                    if (player.second && player.second->getIA() && player.second->getPokemon()->getAlive()) {
                         cout << "run ai" << endl;
                         aiTest->run(*engine,player.first,0);
 

@@ -16,32 +16,35 @@ engine::HealCommand::HealCommand(unsigned int id) {
 std::shared_ptr<PreviousState>  engine::HealCommand::execute(state::State &state) {
     for(auto player : state.getPlayers())
     {
-        if(player.second->getID() == idPlayer && player.second->getPokemon()->getAlive())
-        {
-            if(player.second->getPokemon().get()){
-            auto prevStat = make_shared<PreviousState>(player.second->getPokemon()->getOrientation(),idPlayer,player.second->getPokemon()->getPosition(),player.second->getPokemon()->getCurrentLife(),ACTION_HEAL);
+        if(player.second) {
+            if(player.second->getID() == idPlayer && player.second->getPokemon()->getAlive())
+            {
+                if(player.second->getPokemon().get()){
+                    auto prevStat = make_shared<PreviousState>(player.second->getPokemon()->getOrientation(),idPlayer,player.second->getPokemon()->getPosition(),player.second->getPokemon()->getCurrentLife(),ACTION_HEAL);
 
-                unsigned int fullLife = player.second->getPokemon()->getFullLife();
-                unsigned int curLife =player.second->getPokemon()->getCurrentLife();
-                if(curLife+20<fullLife)
-                {
-                    curLife+=20;
-                    player.second->getPokemon()->setCurrentLife(curLife);
+                    unsigned int fullLife = player.second->getPokemon()->getFullLife();
+                    unsigned int curLife =player.second->getPokemon()->getCurrentLife();
+                    if(curLife+20<fullLife)
+                    {
+                        curLife+=20;
+                        player.second->getPokemon()->setCurrentLife(curLife);
+                    }
+                    else {
+                        player.second->getPokemon()->setCurrentLife(fullLife);
+                    }
+                    StateEvent e(StateEventId::ATTACK);
+                    state.notifyObservers(e);
+                    return prevStat;
                 }
-                else {
-                    player.second->getPokemon()->setCurrentLife(fullLife);
-                }
-                StateEvent e(StateEventId::ATTACK);
-                state.notifyObservers(e);
-                return prevStat;
-            }
-            else
+                else
                 {
-                throw new std::runtime_error("non existing pokemon for heal command");
-            }
+                    throw new std::runtime_error("non existing pokemon for heal command");
+                }
 
-            break;
+                break;
+            }
         }
+
 
     }
     return nullptr;

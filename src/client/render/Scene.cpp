@@ -203,10 +203,13 @@ void Scene::draw(sf::RenderWindow& window) {
     infoPlayers = "";
     int c = 0;
     for (auto player : engine->getState().getPlayers()) {
-        infoPlayers += "pokemon " + to_string(c) + " current life : " +
-                       to_string(player.second->getPokemon()->getCurrentLife()) + "/" +
-                       to_string(player.second->getPokemon()->getFullLife()) + "\n";
-        c++;
+        if(player.second && player.second->getPokemon()) {
+
+            infoPlayers += "pokemon " + to_string(c) + " current life : " +
+                           to_string(player.second->getPokemon()->getCurrentLife()) + "/" +
+                           to_string(player.second->getPokemon()->getFullLife()) + "\n";
+            c++;
+        }
     }
 
     sf::Text text;
@@ -324,7 +327,7 @@ void Scene::updatePlayers() {
     {
         shared_ptr<sf::Sprite> pokeRender;
 
-        if(player.second->getPokemon()->getAlive()){
+        if(player.second && player.second->getPokemon()->getAlive()){
             pokeRender.reset(new sf::Sprite());
             pokeRender->setTexture(*(pokeTileSet.get()));
             std::shared_ptr<state::Pokemon> pokemon = player.second->getPokemon();
