@@ -21,7 +21,7 @@ void DeepAI::run (engine::Engine& e, unsigned int player, unsigned int enemy) {
     BestAction action = generator->compute(s,3,player,enemy);
     switch(action.getActionType()) {
         case 0: {
-            cout << "ai : MOVE CL" << endl;
+            cerr << "ai : MOVE CL" << endl;
             unique_ptr<AI> ai;
 
             ai.reset(new HeuristicAI);
@@ -32,21 +32,21 @@ void DeepAI::run (engine::Engine& e, unsigned int player, unsigned int enemy) {
             break;
 
         case 1: {
-            cout << "ai : MOVE AW" << endl;
+            cerr << "ai : MOVE AW" << endl;
             //check position according to enemyOrient
             AIUtils::flee(e,player,enemy);
 
             }
             break;
         case 2 : {
-            cout << "ai : ATTACK" << endl;
+            cerr << "ai : ATTACK" << endl;
             e.addCommand(make_shared<AttackCommand>(player), player);
 //            engine->runCommands();
         }
             break;
 
         case 3: {
-            cout << "ai : HEAL" << endl;
+            cerr << "ai : HEAL" << endl;
 
             // if player wounded playerPV+=1 else does nothing
             e.addCommand(make_shared<engine::HealCommand>(player), player);
@@ -54,5 +54,5 @@ void DeepAI::run (engine::Engine& e, unsigned int player, unsigned int enemy) {
         }
         break;
     }
-    cout << "cost "<<action.getCost()<< " action " << action.getActionType()<< endl ;
+    cerr << "cost "<<action.getCost()<< " action " << action.getActionType()<< endl ;
 }

@@ -15,20 +15,6 @@ bool render::LayerRender::load(const std::string &tileset, sf::Vector2u tileSize
     // resize the vertex array to fit the level size
     m_vertices.setPrimitiveType(sf::Quads);
     m_vertices.resize(width * height * 4);
-//    char n = 3;
-//    switch(3)
-//    {
-//        case 1:
-//            cout << "not ok" <<endl;
-//            break;
-//        case 3:
-//            cout <<"ok"<<endl;
-//            break;
-//        default:
-//            cout << "ntm" << endl;
-//            break;
-//
-//    }
 
     // populate the vertex array, with one quad per tile
     for (unsigned int i = 0; i < width; ++i)

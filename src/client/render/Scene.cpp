@@ -274,7 +274,6 @@ void Scene::stateChanged(const state::Event& e) {
 //    const Event& event1 = e;
 
     if(e.getEventType()==TAB_EVENT) {
-        cout << "tab event" << endl;
         unique_ptr<state::Event> eventTab(((TabEvent*)e.clone()));
 
         switch(((TabEvent*)eventTab.get())->tabEventId) {

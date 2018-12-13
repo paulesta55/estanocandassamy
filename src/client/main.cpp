@@ -267,7 +267,7 @@ int main(int argc,char* argv[])
                 if (!engine->getCommands().empty()) {
                     for (auto player : engine->getState().getPlayers()) {
                         if (player.second && player.second->getIA() && player.second->getPokemon()->getAlive()) {
-                            cout << "run ai" << endl;
+                            cerr << "run ai" << endl;
                             ai->run(*engine, player.first,0);
                             break;
                         }
@@ -339,7 +339,7 @@ int main(int argc,char* argv[])
                     unique_ptr<unsigned int> enemyId;
                     for (auto player : engine->getState().getPlayers()) {
                         if (player.second && player.second->getIA() && player.second->getPokemon()->getAlive()) {
-                            cout << "run ai" << endl;
+                            cerr << "run ai" << endl;
                             unsigned int pId = player.first;
                             enemyId.reset(new unsigned int(findEnemy(engine->getState().getPlayers(),pId)));
                             aiTest->run(*engine,player.first,*enemyId);
@@ -416,7 +416,7 @@ int main(int argc,char* argv[])
             if (!engine->getCommands().empty()) {
                 for (auto player : engine->getState().getPlayers()) {
                     if (player.second && player.second->getIA() && player.second->getPokemon()->getAlive()) {
-                        cout << "run ai" << endl;
+                        cerr << "run ai" << endl;
                         aiTest->run(*engine,player.first,0);
 
                         break;

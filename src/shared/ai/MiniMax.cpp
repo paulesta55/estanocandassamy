@@ -172,7 +172,7 @@ vector<Orientation> MinMaxGenerator::findNeighbors(Position& p, State& s,Positio
 
 BestAction MinMaxGenerator::compute(State s,uint epoch,uint playerId, uint enemyId) {
     BestAction action =this->tour(s, MAX, epoch, playerId, enemyId,HEAL);
-    cout << "cost end compute :" << action.getCost() <<endl;
+    cerr << "cost end compute :" << action.getCost() <<endl;
     return action;
 }
 

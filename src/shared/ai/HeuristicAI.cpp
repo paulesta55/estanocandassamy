@@ -99,7 +99,7 @@ void ai::HeuristicAI::run(engine::Engine &e, unsigned int player, unsigned int e
     Position current = e.getState().getPlayers()[player]->getPokemon()->getPosition();
     double distance = static_cast<int>(sqrt(
             pow(((int) (objectif.x) - (int) (current.x)), 2) + pow(((int) (objectif.y) - (int) (current.y)), 2)));
-    cout << "distance" << distance << endl;
+    cerr << "distance" << distance << endl;
     unsigned int area = restrictArea ? 5 : INT_MAX;
     if (distance < area) {
         AStar::Generator generator;
@@ -130,7 +130,7 @@ void ai::HeuristicAI::run(engine::Engine &e, unsigned int player, unsigned int e
 
         auto nextTile = path[path.size() - 2];
 
-        cout << nextTile.x << " " << nextTile.y << endl;
+        cerr << nextTile.x << " " << nextTile.y << endl;
         if (current.x == (unsigned int) nextTile.x) {
             if (current.y == (unsigned int) (nextTile.y - 1)) {
                 e.addCommand(make_shared<MoveCommand>(SOUTH, player), player);

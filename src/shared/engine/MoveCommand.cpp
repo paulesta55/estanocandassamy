@@ -18,7 +18,7 @@ MoveCommand::MoveCommand(state::Orientation o, unsigned int id) {
 
 std::shared_ptr<PreviousState> MoveCommand::execute(state::State &state) {
 
-    cout << "begin movecommand" <<endl;
+    cerr << "begin movecommand" <<endl;
     State& state_ref = state;
     shared_ptr<Player> player_ptr = nullptr;
 //    unique_ptr<Pokemon> poke_ptr;
