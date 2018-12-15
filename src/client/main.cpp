@@ -452,7 +452,7 @@ int main(int argc,char* argv[])
         const unsigned int id2 = 0;
         unsigned int idPlayer2 = 0;
         string player2 = "Bob";
-        const pair<const unsigned int, shared_ptr<Player>> pair2 =make_pair(id2,make_shared<Player>(false,player2,idPlayer2,make_shared<Salameche>(EST
+        const pair<const unsigned int, shared_ptr<Player>> pair2 =make_pair(id2,make_shared<Player>(true,player2,idPlayer2,make_shared<Salameche>(EST
                 ,150,Position(20,20))));
         engine->getState().getPlayers().insert(pair2);
         engine->getState().center = Position(7,7);
@@ -466,25 +466,25 @@ int main(int argc,char* argv[])
         // Call our AI computer
         shared_ptr<AI> aiTest;
         aiTest.reset(new HeuristicAI);
-
+        aiTest->restrictArea = false;
         thread eng([engine,aiTest,m]{
             cerr << "engine running" << endl;
             while(1) {
-                if (!engine->getCommands().empty()) {
+                //if (!engine->getCommands().empty()) {
+                unique_ptr<unsigned int> enemyId;
+                for (auto player : engine->getState().getPlayers()) {
+                    if (player.second && player.second->getIA() && player.second->getPokemon()->getAlive()) {
+                        cerr << "run ai" << endl;
+                        unsigned int pId = player.first;
+                        enemyId.reset(new unsigned int(findEnemy(engine->getState().getPlayers(),pId)));
+                        aiTest->run(*engine,player.first,*enemyId);
 
-                    for (auto player : engine->getState().getPlayers()) {
-                        if (player.second && player.second->getIA() && player.second->getPokemon()->getAlive()) {
-                            cerr << "run ai" << endl;
-
-                            aiTest->run(*engine,player.first,0);
-
-                            break;
-                        }
                     }
-
-                    engine->runCommands();
-
                 }
+                if(!(engine->getCommands().empty())) usleep(1000000);
+                engine->runCommands();
+
+                //}
             }
 
         });
@@ -496,7 +496,7 @@ int main(int argc,char* argv[])
                // Look for real living players
                bool playerAliveFound = false;
                for (auto player: engine->getState().getPlayers()) {
-                   if (player.second && !(player.second->getIA()) && player.second->getPokemon()->getAlive()) {
+                   if (player.second  && player.second->getPokemon()->getAlive()) {
                        playerAliveFound = true;
                        break;
                    }
