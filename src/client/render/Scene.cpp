@@ -2,6 +2,8 @@
 
 #include <utility>
 
+#include <utility>
+
 
 //
 // Created by paul on 22/10/18.
@@ -22,8 +24,8 @@ using namespace render;
 using namespace state;
 using namespace engine;
 using namespace ai;
-Scene::Scene(shared_ptr<engine::Engine> engine,string tileSet,unsigned int  pokeTarId) : engine(
-        std::move(engine)),playerTarId(pokeTarId) {
+Scene::Scene(shared_ptr<mutex> m, shared_ptr<engine::Engine> engine,string tileSet,unsigned int  pokeTarId) :
+engine(std::move(engine)),playerTarId(pokeTarId), commands_mutex(std::move(m)) {
 
 
     this->tileset= std::move(tileSet);

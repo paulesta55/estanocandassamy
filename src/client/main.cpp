@@ -13,6 +13,7 @@
 #include "engine.h"
 #include "ai.h"
 #include <thread>
+#include <mutex>
 
 void testSFML() {
     sf::Texture texture;
@@ -106,9 +107,11 @@ int main(int argc,char* argv[])
         if(!strcmp(argv[1],"render"))
         {
 
-            shared_ptr<Engine> engine = make_shared<Engine>(State(Position(),make_shared<Map>("res/src/etage1.json")));
+            shared_ptr<mutex> m = make_shared<mutex>();
+            // Create our engine
+            shared_ptr<Engine> engine = make_shared<Engine>(m,State(Position(),make_shared<Map>("res/src/etage1.json")));
             shared_ptr<Scene> scene3;
-            scene3.reset(new Scene(engine,"res/src/tilemap2.png",0));
+            scene3.reset(new Scene(m,engine,"res/src/tilemap2.png",0));
             engine->getState().registerObserver(scene3.get());
             sf::RenderWindow window(sf::VideoMode(620,620),"test window");
             //good dimensions : 620 x 620
@@ -136,9 +139,11 @@ int main(int argc,char* argv[])
         if(!strcmp(argv[1],"engine"))
         {
             cout << "engine" <<endl;
-            shared_ptr<Engine> engine = make_shared<Engine>(State(Position(),make_shared<Map>("res/src/etage1.json")));
+            shared_ptr<mutex> m = make_shared<mutex>();
+            // Create our engine
+            shared_ptr<Engine> engine = make_shared<Engine>(m,State(Position(),make_shared<Map>("res/src/etage1.json")));
             shared_ptr<Scene> scene3;
-            scene3.reset(new Scene(engine,"res/src/tilemap2.png",0));
+            scene3.reset(new Scene(m,engine,"res/src/tilemap2.png",0));
             engine->getState().registerObserver(scene3.get());
             sf::RenderWindow window(sf::VideoMode(620,620),"test window");
             //good dimensions : 620 x 620
@@ -175,11 +180,12 @@ int main(int argc,char* argv[])
         if(!strcmp(argv[1],"random_ai"))
         {
             cout << "random ai" <<endl;
-            shared_ptr<Engine> engine = make_shared<Engine>(State(Position(),make_shared<Map>("res/src/etage1.json")));
-
+            shared_ptr<mutex> m = make_shared<mutex>();
+            // Create our engine
+            shared_ptr<Engine> engine = make_shared<Engine>(m,State(Position(),make_shared<Map>("res/src/etage1.json")));
 
             shared_ptr<Scene> scene3;
-            scene3.reset(new Scene(engine,"res/src/tilemap2.png",0));
+            scene3.reset(new Scene(m,engine,"res/src/tilemap2.png",0));
             engine->getState().registerObserver(scene3.get());
             sf::RenderWindow window(sf::VideoMode(720,720),"test window");
 
@@ -218,8 +224,9 @@ int main(int argc,char* argv[])
         }
         if(!strcmp(argv[1],"heuristic_ai"))
         {
+            shared_ptr<mutex> m = make_shared<mutex>();
             // Create our engine
-            shared_ptr<Engine> engine = make_shared<Engine>(State(Position(),make_shared<Map>("res/src/etage1.json")));
+            shared_ptr<Engine> engine = make_shared<Engine>(m,State(Position(),make_shared<Map>("res/src/etage1.json")));
 
             // Create some players
             const unsigned int id = 1;
@@ -238,7 +245,7 @@ int main(int argc,char* argv[])
 
             // Set up the render
             shared_ptr<Scene> scene3;
-            scene3.reset(new Scene(engine,"res/src/tilemap2.png",0));
+            scene3.reset(new Scene(m,engine,"res/src/tilemap2.png",0));
             engine->getState().registerObserver(scene3.get());
             sf::RenderWindow window(sf::VideoMode(600,600),"test window");
 
@@ -282,9 +289,9 @@ int main(int argc,char* argv[])
     }
     if(!strcmp(argv[1],"rollback")) {
         cout << "ROLLBACK" <<endl;
-
+        shared_ptr<mutex> m = make_shared<mutex>();
         // Create our engine
-        shared_ptr<Engine> engine = make_shared<Engine>(State(Position(),make_shared<Map>("res/src/etage1.json")));
+        shared_ptr<Engine> engine = make_shared<Engine>(m,State(Position(),make_shared<Map>("res/src/etage1.json")));
 
         // Create some AI players
         const unsigned int id = 1;
@@ -303,7 +310,7 @@ int main(int argc,char* argv[])
 
         // Set up the render
         shared_ptr<Scene> scene3;
-        scene3.reset(new Scene(engine,"res/src/tilemap2.png",0));
+        scene3.reset(new Scene(m,engine,"res/src/tilemap2.png",0));
         engine->getState().registerObserver(scene3.get());
         sf::RenderWindow window(sf::VideoMode(600,600),"test window");
 
@@ -368,7 +375,8 @@ int main(int argc,char* argv[])
     }
     if(!strcmp(argv[1],"deep_ai")) {
         cout << "DEEP AI" <<endl;
-        shared_ptr<Engine> engine = make_shared<Engine>(State(Position(),make_shared<Map>("res/src/etage1.json")));
+        shared_ptr<mutex> m = make_shared<mutex>();
+        shared_ptr<Engine> engine = make_shared<Engine>(m,State(Position(),make_shared<Map>("res/src/etage1.json")));
 
         // Create some AI players
         const unsigned int id = 1;
@@ -387,7 +395,7 @@ int main(int argc,char* argv[])
 
         // Set up the render
         shared_ptr<Scene> scene3;
-        scene3.reset(new Scene(engine,"res/src/tilemap2.png",0));
+        scene3.reset(new Scene(m,engine,"res/src/tilemap2.png",0));
         engine->getState().registerObserver(scene3.get());
         sf::RenderWindow window(sf::VideoMode(600,600),"test window");
 
@@ -430,7 +438,9 @@ int main(int argc,char* argv[])
     }
     if(!strcmp(argv[1],"threads")) {
         cout << "threads" << endl;
-        shared_ptr<Engine> engine = make_shared<Engine>(State(Position(),make_shared<Map>("res/src/etage1.json")));
+
+        shared_ptr<mutex> m = make_shared<mutex>();
+        shared_ptr<Engine> engine = make_shared<Engine>(m,State(Position(),make_shared<Map>("res/src/etage1.json")));
 
         // Create some AI players
         const unsigned int id = 1;
@@ -449,27 +459,31 @@ int main(int argc,char* argv[])
 
         // Set up the render
         shared_ptr<Scene> scene3;
-        scene3.reset(new Scene(engine,"res/src/tilemap2.png",0));
+        scene3.reset(new Scene(m,engine,"res/src/tilemap2.png",0));
         engine->getState().registerObserver(scene3.get());
 
 
         // Call our AI computer
         shared_ptr<AI> aiTest;
-        aiTest.reset(new DeepAI);
+        aiTest.reset(new HeuristicAI);
 
-        thread eng([engine,aiTest]{
+        thread eng([engine,aiTest,m]{
             cerr << "engine running" << endl;
             while(1) {
                 if (!engine->getCommands().empty()) {
+
                     for (auto player : engine->getState().getPlayers()) {
                         if (player.second && player.second->getIA() && player.second->getPokemon()->getAlive()) {
                             cerr << "run ai" << endl;
+
                             aiTest->run(*engine,player.first,0);
 
                             break;
                         }
                     }
+
                     engine->runCommands();
+
                 }
             }
 
@@ -494,7 +508,9 @@ int main(int argc,char* argv[])
                    engine->getState().setGameFinished(true);
                    engine->getState().gameOver = true;
                }
+
                scene3->draw(window);
+
 
            }
    // });

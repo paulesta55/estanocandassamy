@@ -1,5 +1,7 @@
 #include <utility>
 
+#include <utility>
+
 //
 // Created by paul on 28/10/18.
 //
@@ -14,13 +16,8 @@ using namespace std;
 using namespace engine;
 using namespace state;
 
-Engine::Engine(State s):currentState(std::move(s))
-{
-
-
-
-
-}
+Engine::Engine(shared_ptr<mutex> m,State s):commands_mutex(std::move(m)),currentState(std::move(s))
+{}
 void engine::Engine::addCommand(shared_ptr<Command> command, unsigned int priority) {
     if(!command)
     {
@@ -28,6 +25,7 @@ void engine::Engine::addCommand(shared_ptr<Command> command, unsigned int priori
     }
 
 //    cout << "new adding command"<< endl;
+commands_mutex->lock();
 if(commands.find(priority) == commands.cend())
     commands[priority] = command;
 else{
@@ -35,6 +33,7 @@ else{
     commands[priority] = command;
 
 }
+commands_mutex->unlock();
 //    cerr << "new command added" <<endl;
 }
 
@@ -79,9 +78,15 @@ void engine::Engine::undoCommands(){
 
 void engine::Engine::runCommands() {
 
-    auto it = commands.begin();
+
 //    cerr << "begin to run commands" <<endl;
-    while(it!=commands.cend())
+    commands_mutex->lock();
+    unique_ptr<map<int,shared_ptr<Command>>> commands_buffer;
+    commands_buffer.reset(new map<int,shared_ptr<Command>>(commands));
+    commands.clear();
+    commands_mutex->unlock();
+    auto it = commands_buffer->begin();
+    while(it!=commands_buffer->cend())
     {
 
         if(this->getState().getPlayers()[it->first] && this->getState().getPlayers()[it->first]->getPokemon()
@@ -90,8 +95,9 @@ void engine::Engine::runCommands() {
             auto prevState = it->second->execute(currentState);
             previous_commands.push(prevState);
         }
-        it = commands.erase(it);
+        it++;
         //        commands.erase(it);
+
     }
 
 

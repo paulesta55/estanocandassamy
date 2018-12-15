@@ -30,6 +30,7 @@ BestAction MinMaxGenerator::tour(State s, MinMax m, uint epoch, uint playerId, u
             // clone the state so that the current state is not impacted by the AI
             // TODO: create and use a "lightweight state" only used by the AI
             State newState = s;
+
             newState.unregisterObservers();
             auto it = newState.getPlayers().begin();
             while(it!=newState.getPlayers().cend()) {
@@ -58,7 +59,7 @@ BestAction MinMaxGenerator::tour(State s, MinMax m, uint epoch, uint playerId, u
                 }
 
             }
-            Engine e(newState);
+            Engine e( make_shared<mutex>(),newState);
 
 
             auto actionType = static_cast<ActionType>(i);
