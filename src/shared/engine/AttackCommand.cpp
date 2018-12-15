@@ -6,6 +6,7 @@
 #include <memory>
 #include <iostream>
 #include <engine.h>
+#include <fstream>
 
 using namespace engine;
 using namespace std;
@@ -147,6 +148,13 @@ std::shared_ptr<PreviousState> AttackCommand::execute(state::State &state) {
 }
 
 AttackCommand::AttackCommand(unsigned int idPlayer) : idPlayer(idPlayer){
+    ofstream file;
+    file.open("Hello.txt", ios_base::app);
+    file << "\"commands\":{" << endl;
+    file << "   \"idPlayer\": \"" << idPlayer <<"\"," << endl;
+    file << "   \"type\": \"ATTACK\"" << endl;
+    file << "}" << endl;
+    file.close();
 }
 
 

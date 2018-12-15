@@ -7,6 +7,7 @@
 #include "MoveCommand.h"
 #include "engine.h"
 #include "state.h"
+#include <fstream>
 using namespace engine;
 using namespace std;
 using namespace state;
@@ -14,6 +15,14 @@ using namespace state;
 MoveCommand::MoveCommand(state::Orientation o, unsigned int id) {
     orientation = o;
     this->idPlayer = id;
+    ofstream file;
+    file.open("Hello.txt", ios_base::app);
+    file << "\"commands\":{" << endl;
+    file << "   \"idPlayer\": \"" << id <<"\"," << endl;
+    file << "   \"Orientation\": \"" << o <<"\"," << endl;
+    file << "   \"type\": \"MOVE\"" << endl;
+    file << "}" << endl;
+    file.close();
 }
 
 std::shared_ptr<PreviousState> MoveCommand::execute(state::State &state) {
@@ -55,7 +64,7 @@ std::shared_ptr<PreviousState> MoveCommand::execute(state::State &state) {
     if(orientation == player_ptr->getPokemon()->orientation)
     {
         Position p = player_ptr->getPokemon()->getPosition();
-
+        
         switch(orientation) {
             case Orientation ::SOUTH:
                 p.y++;

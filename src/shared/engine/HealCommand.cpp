@@ -5,31 +5,45 @@
 #include "HealCommand.h"
 #include "state.h"
 #include "engine.h"
+#include <iostream>
+#include <fstream>
 
 using namespace state;
 using namespace std;
 using namespace engine;
 
-engine::HealCommand::HealCommand(unsigned int id) {
-    idPlayer = id;}
+engine::HealCommand::HealCommand(unsigned int id)
+{
+    idPlayer = id;
+    ofstream file;
+    file.open("Hello.txt", ios_base::app);
+    file << "\"commands\":{" << endl;
+    file << "   \"idPlayer\": \"" << id <<"\"," << endl;
+    file << "   \"type\": \"HEAL\"" << endl;
+    file << "}" << endl;
+    file.close();
+}
 
-std::shared_ptr<PreviousState>  engine::HealCommand::execute(state::State &state) {
-    for(auto player : state.getPlayers())
+std::shared_ptr<PreviousState> engine::HealCommand::execute(state::State &state)
+{
+    for (auto player : state.getPlayers())
     {
-        if(player.second) {
-            if(player.second->getID() == idPlayer && player.second->getPokemon()->getAlive())
+        if (player.second)
+        {
+            if (player.second->getID() == idPlayer && player.second->getPokemon()->getAlive())
             {
-                if(player.second->getPokemon().get()){
-                    auto prevStat = make_shared<PreviousState>(player.second->getPokemon()->getOrientation(),idPlayer,player.second->getPokemon()->getPosition(),player.second->getPokemon()->getCurrentLife(),ACTION_HEAL);
-
+                if (player.second->getPokemon().get())
+                {
+                    auto prevStat = make_shared<PreviousState>(player.second->getPokemon()->getOrientation(), idPlayer, player.second->getPokemon()->getPosition(), player.second->getPokemon()->getCurrentLife(), ACTION_HEAL);
                     unsigned int fullLife = player.second->getPokemon()->getFullLife();
-                    unsigned int curLife =player.second->getPokemon()->getCurrentLife();
-                    if(curLife+20<fullLife)
+                    unsigned int curLife = player.second->getPokemon()->getCurrentLife();
+                    if (curLife + 20 < fullLife)
                     {
-                        curLife+=20;
+                        curLife += 20;
                         player.second->getPokemon()->setCurrentLife(curLife);
                     }
-                    else {
+                    else
+                    {
                         player.second->getPokemon()->setCurrentLife(fullLife);
                     }
                     StateEvent e(StateEventId::ATTACK);
@@ -44,8 +58,6 @@ std::shared_ptr<PreviousState>  engine::HealCommand::execute(state::State &state
                 break;
             }
         }
-
-
     }
     return nullptr;
 }
