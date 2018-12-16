@@ -15,15 +15,22 @@ using namespace state;
 MoveCommand::MoveCommand(state::Orientation o, unsigned int id) {
     orientation = o;
     this->idPlayer = id;
-    ofstream file;
-    file.open("Hello.txt", ios_base::app);
-    file << "\"commands\":{" << endl;
-    file << "   \"idPlayer\": \"" << id <<"\"," << endl;
-    file << "   \"Orientation\": \"" << o <<"\"," << endl;
-    file << "   \"type\": \"MOVE\"" << endl;
-    file << "}" << endl;
-    file.close();
+    // ofstream file;
+    // file.open("Hello.txt", ios_base::app);
+    // file << "\"commands\":{" << endl;
+    // file << "   \"idPlayer\": \"" << id <<"\"," << endl;
+    // file << "   \"Orientation\": \"" << o <<"\"," << endl;
+    // file << "   \"type\": \"MOVE\"" << endl;
+    // file << "}" << endl;
+    // file.close();
 }
+
+void MoveCommand::serialize(Json::Value &root){
+    root["Command"]["ACTION"] = "Move";
+    root["Command"]["idPlayer"] = this->idPlayer;
+    root["Command"]["orientation"] = this->orientation;
+}
+
 
 std::shared_ptr<PreviousState> MoveCommand::execute(state::State &state) {
 

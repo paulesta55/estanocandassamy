@@ -11,6 +11,7 @@
 #include "state.h"
 #include <iostream>
 #include <map>
+#include <fstream>
 
 using namespace std;
 using namespace engine;
@@ -23,6 +24,16 @@ void engine::Engine::addCommand(shared_ptr<Command> command, unsigned int priori
     {
         throw new runtime_error("empty command error");
     }
+
+    Json::Value root;
+    command->serialize(root);
+
+    ofstream file;
+    file.open("Hello.txt",ios_base::app);
+
+    Json::StyledWriter writer;
+    file << writer.write(root);
+    file.close();
 
 //    cout << "new adding command"<< endl;
 commands_mutex->lock();

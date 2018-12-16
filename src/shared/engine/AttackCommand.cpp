@@ -148,15 +148,19 @@ std::shared_ptr<PreviousState> AttackCommand::execute(state::State &state) {
 }
 
 AttackCommand::AttackCommand(unsigned int idPlayer) : idPlayer(idPlayer){
-    ofstream file;
-    file.open("Hello.txt", ios_base::app);
-    file << "\"commands\":{" << endl;
-    file << "   \"idPlayer\": \"" << idPlayer <<"\"," << endl;
-    file << "   \"type\": \"ATTACK\"" << endl;
-    file << "}" << endl;
-    file.close();
+    // ofstream file;
+    // file.open("Hello.txt", ios_base::app);
+    // file << "\"commands\":{" << endl;
+    // file << "   \"idPlayer\": \"" << idPlayer <<"\"," << endl;
+    // file << "   \"type\": \"ATTACK\"" << endl;
+    // file << "}" << endl;
+    // file.close();
 }
 
+void AttackCommand::serialize(Json::Value &root){
+    root["Command"]["ACTION"] = "Attack";
+    root["Command"]["idPlayer"] = this->idPlayer;
+}
 
 /**
  * @param p

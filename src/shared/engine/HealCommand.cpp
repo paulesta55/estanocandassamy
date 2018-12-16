@@ -15,13 +15,18 @@ using namespace engine;
 engine::HealCommand::HealCommand(unsigned int id)
 {
     idPlayer = id;
-    ofstream file;
-    file.open("Hello.txt", ios_base::app);
-    file << "\"commands\":{" << endl;
-    file << "   \"idPlayer\": \"" << id <<"\"," << endl;
-    file << "   \"type\": \"HEAL\"" << endl;
-    file << "}" << endl;
-    file.close();
+    // ofstream file;
+    // file.open("Hello.txt", ios_base::app);
+    // file << "\"commands\":{" << endl;
+    // file << "   \"idPlayer\": \"" << id <<"\"," << endl;
+    // file << "   \"type\": \"HEAL\"" << endl;
+    // file << "}" << endl;
+    // file.close();
+}
+
+void HealCommand::serialize(Json::Value &root){
+    root["Command"]["ACTION"] = "Heal";
+    root["Command"]["idPlayer"] = this->idPlayer;
 }
 
 std::shared_ptr<PreviousState> engine::HealCommand::execute(state::State &state)
