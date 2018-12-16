@@ -92,8 +92,10 @@ void engine::Engine::runCommands() {
         if(this->getState().getPlayers()[it->first] && this->getState().getPlayers()[it->first]->getPokemon()
         && this->getState().getPlayers()[it->first]->getPokemon()->getAlive()){
         //if(this->getState().getPlayers()[it->first]->getPokemon()->getAlive()){
+//        exec_cmd_mutex->lock();
             auto prevState = it->second->execute(currentState);
             previous_commands.push(prevState);
+//        exec_cmd_mutex->unlock();
         }
         it++;
         //        commands.erase(it);

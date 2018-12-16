@@ -108,10 +108,11 @@ int main(int argc,char* argv[])
         {
 
             shared_ptr<mutex> m = make_shared<mutex>();
+            shared_ptr<mutex> m_exec = make_shared<mutex>();
             // Create our engine
             shared_ptr<Engine> engine = make_shared<Engine>(m,State(Position(),make_shared<Map>("res/src/etage1.json")));
             shared_ptr<Scene> scene3;
-            scene3.reset(new Scene(m,engine,"res/src/tilemap2.png",0));
+            scene3.reset(new Scene(engine,"res/src/tilemap2.png",0));
             engine->getState().registerObserver(scene3.get());
             sf::RenderWindow window(sf::VideoMode(620,620),"test window");
             //good dimensions : 620 x 620
@@ -140,10 +141,11 @@ int main(int argc,char* argv[])
         {
             cout << "engine" <<endl;
             shared_ptr<mutex> m = make_shared<mutex>();
+            shared_ptr<mutex> m_exec = make_shared<mutex>();
             // Create our engine
             shared_ptr<Engine> engine = make_shared<Engine>(m,State(Position(),make_shared<Map>("res/src/etage1.json")));
             shared_ptr<Scene> scene3;
-            scene3.reset(new Scene(m,engine,"res/src/tilemap2.png",0));
+            scene3.reset(new Scene(engine,"res/src/tilemap2.png",0));
             engine->getState().registerObserver(scene3.get());
             sf::RenderWindow window(sf::VideoMode(620,620),"test window");
             //good dimensions : 620 x 620
@@ -181,11 +183,12 @@ int main(int argc,char* argv[])
         {
             cout << "random ai" <<endl;
             shared_ptr<mutex> m = make_shared<mutex>();
+            shared_ptr<mutex> m_exec = make_shared<mutex>();
             // Create our engine
             shared_ptr<Engine> engine = make_shared<Engine>(m,State(Position(),make_shared<Map>("res/src/etage1.json")));
 
             shared_ptr<Scene> scene3;
-            scene3.reset(new Scene(m,engine,"res/src/tilemap2.png",0));
+            scene3.reset(new Scene(engine,"res/src/tilemap2.png",0));
             engine->getState().registerObserver(scene3.get());
             sf::RenderWindow window(sf::VideoMode(720,720),"test window");
 
@@ -225,6 +228,7 @@ int main(int argc,char* argv[])
         if(!strcmp(argv[1],"heuristic_ai"))
         {
             shared_ptr<mutex> m = make_shared<mutex>();
+            shared_ptr<mutex> m_exec = make_shared<mutex>();
             // Create our engine
             shared_ptr<Engine> engine = make_shared<Engine>(m,State(Position(),make_shared<Map>("res/src/etage1.json")));
 
@@ -245,7 +249,7 @@ int main(int argc,char* argv[])
 
             // Set up the render
             shared_ptr<Scene> scene3;
-            scene3.reset(new Scene(m,engine,"res/src/tilemap2.png",0));
+            scene3.reset(new Scene(engine,"res/src/tilemap2.png",0));
             engine->getState().registerObserver(scene3.get());
             sf::RenderWindow window(sf::VideoMode(600,600),"test window");
 
@@ -290,6 +294,7 @@ int main(int argc,char* argv[])
     if(!strcmp(argv[1],"rollback")) {
         cout << "ROLLBACK" <<endl;
         shared_ptr<mutex> m = make_shared<mutex>();
+        shared_ptr<mutex> m_exec = make_shared<mutex>();
         // Create our engine
         shared_ptr<Engine> engine = make_shared<Engine>(m,State(Position(),make_shared<Map>("res/src/etage1.json")));
 
@@ -310,7 +315,7 @@ int main(int argc,char* argv[])
 
         // Set up the render
         shared_ptr<Scene> scene3;
-        scene3.reset(new Scene(m,engine,"res/src/tilemap2.png",0));
+        scene3.reset(new Scene(engine,"res/src/tilemap2.png",0));
         engine->getState().registerObserver(scene3.get());
         sf::RenderWindow window(sf::VideoMode(600,600),"test window");
 
@@ -395,7 +400,7 @@ int main(int argc,char* argv[])
 
         // Set up the render
         shared_ptr<Scene> scene3;
-        scene3.reset(new Scene(m,engine,"res/src/tilemap2.png",0));
+        scene3.reset(new Scene(engine,"res/src/tilemap2.png",0));
         engine->getState().registerObserver(scene3.get());
         sf::RenderWindow window(sf::VideoMode(600,600),"test window");
 
@@ -459,7 +464,7 @@ int main(int argc,char* argv[])
 
         // Set up the render
         shared_ptr<Scene> scene3;
-        scene3.reset(new Scene(m,engine,"res/src/tilemap2.png",0));
+        scene3.reset(new Scene(engine,"res/src/tilemap2.png",0));
         engine->getState().registerObserver(scene3.get());
 
 
