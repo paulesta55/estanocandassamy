@@ -39,32 +39,11 @@ Scene::Scene(shared_ptr<engine::Engine> engine, string tileSet, unsigned int pok
     updateMap();
     updatePlayers();
 
-
 }
 
 void Scene::draw(sf::RenderWindow &window) {
 
     if (this->engine->getState().menu) {
-        sf::Event event1;
-        while (window.pollEvent(event1)) {
-            switch (event1.type) {
-                case sf::Event::Closed:
-                    window.close();
-                    break;
-                default:
-                    break;
-                case sf::Event::KeyPressed:
-                    sf::Keyboard::Key k1 = event1.key.code;
-                    switch (k1) {
-                        default:
-                            break;
-                        case sf::Keyboard::Return:
-                            this->engine->getState().menu = false;
-                            break;
-                    }
-                    break;
-            }
-        }
         sf::Texture texture;
         texture.loadFromFile("res/src/pokemonentryscene.png");
         sf::Sprite s;
@@ -76,26 +55,6 @@ void Scene::draw(sf::RenderWindow &window) {
         window.display();
     } else if (engine->getState().isGameFinished()) {
         if (engine->getState().gameWon) {
-            sf::Event event;
-            while (window.pollEvent(event)) {
-                switch (event.type) {
-                    case sf::Event::Closed:
-                        window.close();
-                        break;
-                    default:
-                        break;
-                    case sf::Event::KeyPressed:
-                        sf::Keyboard::Key k1 = event.key.code;
-                        switch (k1) {
-                            default:
-                                break;
-                            case sf::Keyboard::Return:
-                                window.close();
-                                break;
-                        }
-                        break;
-                }
-            }
             sf::Texture texture;
             texture.loadFromFile("res/src/pokemonfinalscene.png");
             sf::Sprite s;
@@ -106,26 +65,6 @@ void Scene::draw(sf::RenderWindow &window) {
             window.setView(v);
             window.display();
         } else {
-            sf::Event event;
-            while (window.pollEvent(event)) {
-                switch (event.type) {
-                    case sf::Event::Closed:
-                        window.close();
-                        break;
-                    default:
-                        break;
-                    case sf::Event::KeyPressed:
-                        sf::Keyboard::Key k1 = event.key.code;
-                        switch (k1) {
-                            default:
-                                break;
-                            case sf::Keyboard::Return:
-                                window.close();
-                                break;
-                        }
-                        break;
-                }
-            }
             sf::Texture texture;
             texture.loadFromFile("res/src/pokemongameoverscene.png");
             sf::Sprite s;
@@ -137,53 +76,6 @@ void Scene::draw(sf::RenderWindow &window) {
             window.display();
         }
     } else {
-
-
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            switch (event.type) {
-                default:
-                    break;
-                case sf::Event::Closed :
-                    window.close();
-                    break;
-                case sf::Event::KeyPressed:
-
-                    sf::Keyboard::Key k = event.key.code;
-                    switch (k) {
-                        case sf::Keyboard::Key::Right  :
-                            engine->addCommand(make_shared<MoveCommand>(EST, playerTarId), playerTarId);
-                            break;
-                        case sf::Keyboard::Key::Left :
-                            engine->addCommand(make_shared<MoveCommand>(WEST, playerTarId), playerTarId);
-                            break;
-                        case sf::Keyboard::Key::Up:
-                            engine->addCommand(make_shared<MoveCommand>(NORTH, playerTarId), playerTarId);
-                            break;
-                        case sf::Keyboard::Key::Down:
-                            engine->addCommand(make_shared<MoveCommand>(SOUTH, playerTarId), playerTarId);
-                            break;
-                        case sf::Keyboard::Key::A :
-                            engine->addCommand(make_shared<AttackCommand>(playerTarId), playerTarId);
-                            break;
-                        case sf::Keyboard::Key::H:
-                            engine->addCommand(make_shared<HealCommand>(playerTarId), playerTarId);
-                            break;
-                        case sf::Keyboard::Key::R:
-                            engine->undoCommands();
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
-
-
-            }
-            if (event.type == sf::Event::Closed)
-                window.close();
-
-        }
-
 
         window.clear();
         render_m.lock();
