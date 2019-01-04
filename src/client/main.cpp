@@ -28,7 +28,21 @@ using namespace state;
 using namespace render;
 using namespace engine;
 using namespace ai;
+bool checkPlayerStatus(shared_ptr<Engine> engine) {
+    if(!engine) {
+        return new runtime_error("bad engine error");
+    }
 
+    bool playerAliveFound = false;
+    for (auto player: engine->getState().getPlayers()) {
+        if (player.second && !(player.second->getIA()) && player.second->getPokemon()->getAlive()) {
+            playerAliveFound = true;
+            break;
+        }
+
+    }
+    return playerAliveFound;
+}
 void handleInputs(shared_ptr<Engine> engine, sf::Window &window, unsigned int playerTarId) {
     if (engine->getState().menu) {
         sf::Event event1;
@@ -474,14 +488,7 @@ int main(int argc, char *argv[]) {
                 // Manage user inputs
                 handleInputs(engine, window, 0);
                 // Look for real living players
-                bool playerAliveFound = false;
-                for (auto player: engine->getState().getPlayers()) {
-                    if (player.second && !(player.second->getIA()) && player.second->getPokemon()->getAlive()) {
-                        playerAliveFound = true;
-                        break;
-                    }
-
-                }
+                bool playerAliveFound = checkPlayerStatus(engine);
 
                 // if no real player alive => game over
                 if (!playerAliveFound) {

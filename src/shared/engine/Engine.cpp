@@ -130,3 +130,15 @@ const std::map<int, std::shared_ptr<Command>> &Engine::getCommands() {
     return commands;
 }
 
+
+bool Engine::checkPlayerStatus() {
+    bool playerAliveFound = false;
+    for (auto player: currentState.getPlayers()) {
+        if (player.second && !(player.second->getIA()) && player.second->getPokemon()->getAlive()) {
+            playerAliveFound = true;
+            break;
+        }
+
+    }
+    return playerAliveFound;
+}
