@@ -622,6 +622,7 @@ int main(int argc, char *argv[]) {
         scene3.reset(new Scene(engine, "res/src/tilemap2.png", 0));
         engine->getState().registerObserver(scene3.get());
 
+        engine->getState().menu = false;
 
         // Call our AI computer
         shared_ptr<AI> aiTest;
@@ -629,36 +630,42 @@ int main(int argc, char *argv[]) {
         aiTest->restrictArea = false;
         cerr << "render running" << endl;
         sf::RenderWindow window(sf::VideoMode(600, 600), "test window");
-        while (window.isOpen()) {
-            thread eng([engine, aiTest, m] {
+        thread eng([engine, aiTest, m] {
+            while(1) {
                 cerr << "engine running" << endl;
                 unique_ptr<unsigned int> enemyId;
                 if (!(engine->getState().menu) && !(engine->getCommands().empty())) {
-                    for (auto player : engine->getState().getPlayers()) {
-                        if (player.second && player.second->getIA() && player.second->getPokemon()->getAlive()) {
-                            cerr << "run ai" << endl;
-                            unsigned int pId = player.first;
-                            enemyId.reset(new unsigned int(findEnemy(engine->getState().getPlayers(), pId)));
-                            aiTest->run(*engine, player.first, *enemyId);
+                for (auto player : engine->getState().getPlayers()) {
+                    if (player.second && player.second->getIA() && player.second->getPokemon()->getAlive()) {
+                        cerr << "run ai" << endl;
+                        unsigned int pId = player.first;
+                        enemyId.reset(new unsigned int(findEnemy(engine->getState().getPlayers(), pId)));
+                        aiTest->run(*engine, player.first, *enemyId);
 
-                        }
                     }
-                    cout << "about to sleep" << endl;
-                    //usleep(1000000);
-                    engine->runCommands();
-                    cout << "end commands" <<endl;
                 }
+                cout << "about to sleep" << endl;
+                //usleep(1000000);
+                engine->runCommands();
+                }
+                cout << "end commands" <<endl;
+                if(engine->getState().isGameFinished()) return 0;
+            }
 
-            });
+            //  }
+
+        });
+        while (window.isOpen()) {
+
             //thread render([engine,scene3] {
 
             handleInputs(engine, window, 0);
 
             scene3->draw(window);
 
-            eng.join();
-        }
 
+        }
+        eng.join();
 
     } else {
         cout << "I don't understand" << endl;

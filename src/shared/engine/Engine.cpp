@@ -85,7 +85,7 @@ void engine::Engine::undoCommands(){
     }
 }
 
-void engine::Engine::runCommands() {
+void engine::Engine::runCommands(bool prod) {
     commands_mutex->lock();
     unique_ptr<map<int,shared_ptr<Command>>> commands_buffer;
     commands_buffer.reset(new map<int,shared_ptr<Command>>(commands));
@@ -102,7 +102,8 @@ void engine::Engine::runCommands() {
         it++;
 
     }
-    checkPlayerStatus();
+    if(prod) checkPlayerStatus();
+
 }
 
 state::State &engine::Engine::getState() {
