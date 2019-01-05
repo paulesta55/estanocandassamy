@@ -17,7 +17,7 @@ using namespace std;
 using namespace engine;
 using namespace state;
 
-Engine::Engine(shared_ptr<mutex> m,State s):commands_mutex(std::move(m)),currentState(std::move(s))
+Engine::Engine(shared_ptr<mutex> m,State s,bool dev):dev(dev),commands_mutex(std::move(m)),currentState(std::move(s))
 {}
 void engine::Engine::addCommand(shared_ptr<Command> command, unsigned int priority) {
     if(!command)
@@ -25,17 +25,25 @@ void engine::Engine::addCommand(shared_ptr<Command> command, unsigned int priori
         throw new runtime_error("empty command error");
     }
 
-    Json::Value root;
-    command->serialize(root);
+    commands_mutex->lock();
+    if(dev) {
 
-    ofstream file;
-    file.open("Hello.txt",ios_base::app);
+        ifstream readF;
+        readF.open("replay.txt",ios_base::in);
+        Json::Reader reader;
+        Json::Value root;
+        vector<Command> prevCmds;
+        reader.parse(readF, root);
+        readF.close();
+        command->serialize(root);
+        ofstream file;
+        file.open("replay.txt",ios_base::out | ios_base::trunc);
+        Json::StyledWriter writer;
+        file << writer.write(root);
+        file.close();
+    }
 
-    Json::StyledWriter writer;
-    file << writer.write(root);
-    file.close();
 
-commands_mutex->lock();
 if(commands.find(priority) == commands.cend())
     commands[priority] = command;
 else{

@@ -26,9 +26,17 @@ MoveCommand::MoveCommand(state::Orientation o, unsigned int id) {
 }
 
 void MoveCommand::serialize(Json::Value &root){
-    root["Command"]["ACTION"] = "Move";
-    root["Command"]["idPlayer"] = this->idPlayer;
-    root["Command"]["orientation"] = this->orientation;
+    Json::Value newCmd;
+    newCmd["Command"]["CommandTypeId"] = 1;
+    newCmd["Command"]["idPlayer"] = this->idPlayer;
+    newCmd["Command"]["orientation"] = this->orientation;
+
+    if(!(root["commands"].empty())) {
+        root["commands"][root["commands"].size()] = newCmd;
+    }
+    else {
+        root["commands"][0] = newCmd;
+    }
 }
 
 

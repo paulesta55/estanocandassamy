@@ -25,8 +25,16 @@ engine::HealCommand::HealCommand(unsigned int id)
 }
 
 void HealCommand::serialize(Json::Value &root){
-    root["Command"]["ACTION"] = "Heal";
-    root["Command"]["idPlayer"] = this->idPlayer;
+    Json::Value newCmd;
+
+    newCmd["Command"]["CommandTypeId"] = 0;
+    newCmd["Command"]["idPlayer"] = this->idPlayer;
+    if(!(root["commands"].empty())) {
+        root["commands"][root["commands"].size()] = newCmd;
+    }
+    else {
+        root["commands"][0] = newCmd;
+    }
 }
 
 std::shared_ptr<PreviousState> engine::HealCommand::execute(state::State &state)
