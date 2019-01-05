@@ -14,7 +14,7 @@
 #include "ai.h"
 #include <thread>
 #include <mutex>
-
+sf::Clock clock1;
 void testSFML() {
     sf::Texture texture;
 }
@@ -28,22 +28,9 @@ using namespace state;
 using namespace render;
 using namespace engine;
 using namespace ai;
-bool checkPlayerStatus(shared_ptr<Engine> engine) {
-    if(!engine) {
-        return new runtime_error("bad engine error");
-    }
 
-    bool playerAliveFound = false;
-    for (auto player: engine->getState().getPlayers()) {
-        if (player.second && !(player.second->getIA()) && player.second->getPokemon()->getAlive()) {
-            playerAliveFound = true;
-            break;
-        }
-
-    }
-    return playerAliveFound;
-}
 void handleInputs(shared_ptr<Engine> engine, sf::Window &window, unsigned int playerTarId) {
+
     if (engine->getState().menu) {
         sf::Event event1;
         while (window.pollEvent(event1)) {
@@ -110,6 +97,7 @@ void handleInputs(shared_ptr<Engine> engine, sf::Window &window, unsigned int pl
             }
         }
     } else {
+
         sf::Event event;
         while (window.pollEvent(event)) {
             switch (event.type) {
@@ -121,32 +109,36 @@ void handleInputs(shared_ptr<Engine> engine, sf::Window &window, unsigned int pl
                 case sf::Event::KeyPressed:
 
                     sf::Keyboard::Key k = event.key.code;
-                    switch (k) {
-                        case sf::Keyboard::Key::Right  :
-                            engine->addCommand(make_shared<MoveCommand>(EST, playerTarId), playerTarId);
-                            break;
-                        case sf::Keyboard::Key::Left :
-                            engine->addCommand(make_shared<MoveCommand>(WEST, playerTarId), playerTarId);
-                            break;
-                        case sf::Keyboard::Key::Up:
-                            engine->addCommand(make_shared<MoveCommand>(NORTH, playerTarId), playerTarId);
-                            break;
-                        case sf::Keyboard::Key::Down:
-                            engine->addCommand(make_shared<MoveCommand>(SOUTH, playerTarId), playerTarId);
-                            break;
-                        case sf::Keyboard::Key::A :
-                            engine->addCommand(make_shared<AttackCommand>(playerTarId), playerTarId);
-                            break;
-                        case sf::Keyboard::Key::H:
-                            engine->addCommand(make_shared<HealCommand>(playerTarId), playerTarId);
-                            break;
-                        case sf::Keyboard::Key::R:
-                            engine->undoCommands();
-                            break;
-                        default:
-                            break;
+                    if(clock1.getElapsedTime().asMilliseconds()>110) {
+                        switch (k) {
+                            case sf::Keyboard::Key::Right  :
+                                engine->addCommand(make_shared<MoveCommand>(EST, playerTarId), playerTarId);
+                                break;
+                            case sf::Keyboard::Key::Left :
+                                engine->addCommand(make_shared<MoveCommand>(WEST, playerTarId), playerTarId);
+                                break;
+                            case sf::Keyboard::Key::Up:
+                                engine->addCommand(make_shared<MoveCommand>(NORTH, playerTarId), playerTarId);
+                                break;
+                            case sf::Keyboard::Key::Down:
+                                engine->addCommand(make_shared<MoveCommand>(SOUTH, playerTarId), playerTarId);
+                                break;
+                            case sf::Keyboard::Key::A :
+                                engine->addCommand(make_shared<AttackCommand>(playerTarId), playerTarId);
+                                break;
+                            case sf::Keyboard::Key::H:
+                                engine->addCommand(make_shared<HealCommand>(playerTarId), playerTarId);
+                                break;
+                            case sf::Keyboard::Key::R:
+                                engine->undoCommands();
+                                break;
+                            default:
+                                break;
+                        }
+                        clock1.restart();
                     }
                     break;
+
 
 
             }
@@ -272,21 +264,10 @@ int main(int argc, char *argv[]) {
             engine->getState().registerObserver(scene3.get());
             sf::RenderWindow window(sf::VideoMode(600, 600), "test window");
 
-//            unique_ptr<AI> ai;
-//            ai.reset(new RandomAI);
-//    int count = 300;
             while (window.isOpen()) {
-//        cout << "window opened" <<endl;
-                // handle events
-                // Manage user inputs
+
                 handleInputs(engine, window, 0);
-                for (auto player: engine->getState().getPlayers()) {
-                    if (player.second && !(player.second->getIA()) && !(player.second->getPokemon()->getAlive())) {
-                        cout << "GAME OVER" << endl;
-                        engine->getState().gameOver = true;
-                        engine->getState().setGameFinished(true);
-                    }
-                }
+
                 scene3->draw(window);
             }
 
@@ -333,30 +314,14 @@ int main(int argc, char *argv[]) {
             engine->getState().registerObserver(scene3.get());
             sf::RenderWindow window(sf::VideoMode(600, 600), "test window");
 
-//            unique_ptr<AI> ai;
-//            ai.reset(new RandomAI);
-//    int count = 300;
             while (window.isOpen()) {
 //        cout << "window opened" <<endl;
 
                 // Manage user inputs
                 handleInputs(engine, window, 0);
-                for (auto player: engine->getState().getPlayers()) {
-                    if (player.second && !(player.second->getIA()) && !(player.second->getPokemon()->getAlive())) {
-                        cout << "GAME OVER" << endl;
-                        engine->getState().gameOver = true;
-                        engine->getState().setGameFinished(true);
-                    }
-                }
+
                 scene3->draw(window);
-//                if (engine->getCommands().size() > 0) {
-//                    for (auto player : engine->getState().getPlayers()) {
-//                        if (player.second->getIA() && player.second->getPokemon()->getAlive()) {
-//                            cout << "run ai" << endl;
-//                            ai->run(*engine, player.first);
-//                            break;
-//                        }
-//                    }
+
                 engine->runCommands();
             }
 
@@ -410,20 +375,6 @@ int main(int argc, char *argv[]) {
             while (window.isOpen()) {
                 // Manage user inputs
                 handleInputs(engine, window, 0);
-
-                bool playerAliveFound = false;
-                for (auto player: engine->getState().getPlayers()) {
-                    if (player.second && !(player.second->getIA()) && player.second->getPokemon()->getAlive()) {
-                        playerAliveFound = true;
-                        break;
-                    }
-
-                }
-                if (!playerAliveFound) {
-                    cout << "GAME OVER" << endl;
-                    engine->getState().setGameFinished(true);
-                    engine->getState().gameOver = true;
-                }
 
                 scene3->draw(window);
                 if (engine->getCommands().size() > 0) {
@@ -488,14 +439,6 @@ int main(int argc, char *argv[]) {
                 // Manage user inputs
                 handleInputs(engine, window, 0);
                 // Look for real living players
-                bool playerAliveFound = checkPlayerStatus(engine);
-
-                // if no real player alive => game over
-                if (!playerAliveFound) {
-                    cout << "GAME OVER" << endl;
-                    engine->getState().setGameFinished(true);
-                    engine->getState().gameOver = true;
-                }
                 scene3->draw(window);
                 if (!engine->getCommands().empty()) {
                     for (auto player : engine->getState().getPlayers()) {
@@ -557,28 +500,10 @@ int main(int argc, char *argv[]) {
         int count = 1;
         while (window.isOpen()) {
 
-            // Look for living players
-            bool playerAliveFound = false;
-            for (auto player: engine->getState().getPlayers()) {
-                if (player.second->getPokemon()->getAlive()) {
-                    playerAliveFound = true;
-                    break;
-                }
-
-            }
-
-            // if no player alive => game over
-            if (!playerAliveFound) {
-                cout << "GAME OVER" << endl;
-                engine->getState().setGameFinished(true);
-                engine->getState().gameOver = true;
-            }
             scene3->draw(window);
             if (!(engine->getState().menu)) {
                 if (count < 60) {
-                    count++;    //}
-
-                    //if (!engine->getCommands().empty()) {
+                    count++;
                     unique_ptr<unsigned int> enemyId;
                     for (auto player : engine->getState().getPlayers()) {
                         if (player.second && player.second->getIA() && player.second->getPokemon()->getAlive()) {
@@ -586,7 +511,6 @@ int main(int argc, char *argv[]) {
                             unsigned int pId = player.first;
                             enemyId.reset(new unsigned int(findEnemy(engine->getState().getPlayers(), pId)));
                             aiTest->run(*engine, player.first, *enemyId);
-
                         }
                     }
                     if (!(engine->getCommands().empty())) usleep(1000000);
@@ -646,22 +570,7 @@ int main(int argc, char *argv[]) {
 
 
         while (window.isOpen()) {
-            handleInputs(engine,window,0);
-            // Look for real living players
-            bool playerAliveFound = false;
-            for (auto player: engine->getState().getPlayers()) {
-                if (player.second && !(player.second->getIA()) && player.second->getPokemon()->getAlive()) {
-                    playerAliveFound = true;
-                    break;
-                }
-
-            }
-            // if no real players => game over
-            if (!playerAliveFound) {
-                cout << "GAME OVER" << endl;
-                engine->getState().setGameFinished(true);
-                engine->getState().gameOver = true;
-            }
+            handleInputs(engine, window, 0);
             scene3->draw(window);
             if (!engine->getCommands().empty()) {
                 for (auto player : engine->getState().getPlayers()) {
@@ -698,7 +607,7 @@ int main(int argc, char *argv[]) {
         const unsigned int id2 = 0;
         unsigned int idPlayer2 = 0;
         string player2 = "Bob";
-        const pair<const unsigned int, shared_ptr<Player>> pair2 = make_pair(id2, make_shared<Player>(true, player2,
+        const pair<const unsigned int, shared_ptr<Player>> pair2 = make_pair(id2, make_shared<Player>(false, player2,
                                                                                                       idPlayer2,
                                                                                                       make_shared<Salameche>(
                                                                                                               EST, 150,
@@ -718,13 +627,13 @@ int main(int argc, char *argv[]) {
         shared_ptr<AI> aiTest;
         aiTest.reset(new HeuristicAI);
         aiTest->restrictArea = false;
-        thread eng([engine, aiTest, m] {
-            cerr << "engine running" << endl;
-            while (1) {
-
-                //if (!engine->getCommands().empty()) {
+        cerr << "render running" << endl;
+        sf::RenderWindow window(sf::VideoMode(600, 600), "test window");
+        while (window.isOpen()) {
+            thread eng([engine, aiTest, m] {
+                cerr << "engine running" << endl;
                 unique_ptr<unsigned int> enemyId;
-                if(!(engine->getState().menu)) {
+                if (!(engine->getState().menu) && !(engine->getCommands().empty())) {
                     for (auto player : engine->getState().getPlayers()) {
                         if (player.second && player.second->getIA() && player.second->getPokemon()->getAlive()) {
                             cerr << "run ai" << endl;
@@ -734,37 +643,20 @@ int main(int argc, char *argv[]) {
 
                         }
                     }
-                    if (!(engine->getCommands().empty())) usleep(1000000);
+                    cout << "about to sleep" << endl;
+                    //usleep(1000000);
                     engine->runCommands();
-                }
-                //}
-            }
-
-        });
-        //thread render([engine,scene3] {
-        cerr << "render running" << endl;
-        sf::RenderWindow window(sf::VideoMode(600, 600), "test window");
-        while (window.isOpen()) {
-            handleInputs(engine,window,0);
-            // Look for real living players
-            bool playerAliveFound = false;
-            for (auto player: engine->getState().getPlayers()) {
-                if (player.second && player.second->getPokemon()->getAlive()) {
-                    playerAliveFound = true;
-                    break;
+                    cout << "end commands" <<endl;
                 }
 
-            }
-            // if no real players => game over
-            if (!playerAliveFound) {
-                cout << "GAME OVER" << endl;
-                engine->getState().setGameFinished(true);
-                engine->getState().gameOver = true;
-            }
+            });
+            //thread render([engine,scene3] {
+
+            handleInputs(engine, window, 0);
 
             scene3->draw(window);
 
-
+            eng.join();
         }
 
 

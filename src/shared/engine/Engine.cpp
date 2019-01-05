@@ -35,7 +35,6 @@ void engine::Engine::addCommand(shared_ptr<Command> command, unsigned int priori
     file << writer.write(root);
     file.close();
 
-//    cout << "new adding command"<< endl;
 commands_mutex->lock();
 if(commands.find(priority) == commands.cend())
     commands[priority] = command;
@@ -45,7 +44,6 @@ else{
 
 }
 commands_mutex->unlock();
-//    cerr << "new command added" <<endl;
 }
 
 void engine::Engine::undoCommands(){
@@ -88,9 +86,6 @@ void engine::Engine::undoCommands(){
 }
 
 void engine::Engine::runCommands() {
-
-
-//    cerr << "begin to run commands" <<endl;
     commands_mutex->lock();
     unique_ptr<map<int,shared_ptr<Command>>> commands_buffer;
     commands_buffer.reset(new map<int,shared_ptr<Command>>(commands));
@@ -99,23 +94,15 @@ void engine::Engine::runCommands() {
     auto it = commands_buffer->begin();
     while(it!=commands_buffer->cend())
     {
-
         if(this->getState().getPlayers()[it->first] && this->getState().getPlayers()[it->first]->getPokemon()
         && this->getState().getPlayers()[it->first]->getPokemon()->getAlive()){
-        //if(this->getState().getPlayers()[it->first]->getPokemon()->getAlive()){
-//        exec_cmd_mutex->lock();
             auto prevState = it->second->execute(currentState);
             previous_commands.push(prevState);
-//        exec_cmd_mutex->unlock();
         }
         it++;
-        //        commands.erase(it);
 
     }
-
-
-//    commands.clear();
-//    cout << "end of commands" <<endl;
+    checkPlayerStatus();
 }
 
 state::State &engine::Engine::getState() {
@@ -131,14 +118,17 @@ const std::map<int, std::shared_ptr<Command>> &Engine::getCommands() {
 }
 
 
-bool Engine::checkPlayerStatus() {
-    bool playerAliveFound = false;
+void Engine::checkPlayerStatus() {
+    bool playersDead = true;
     for (auto player: currentState.getPlayers()) {
         if (player.second && !(player.second->getIA()) && player.second->getPokemon()->getAlive()) {
-            playerAliveFound = true;
+            playersDead = false;
             break;
         }
 
     }
-    return playerAliveFound;
+    if(playersDead) {
+        currentState.setGameFinished(true);
+        currentState.gameOver = true;
+    }
 }
