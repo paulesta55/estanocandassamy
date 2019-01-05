@@ -428,7 +428,7 @@ int main(int argc, char *argv[]) {
             shared_ptr<Scene> scene3;
             scene3.reset(new Scene(engine, "res/src/tilemap2.png", 0));
             engine->getState().registerObserver(scene3.get());
-            sf::RenderWindow window(sf::VideoMode(600, 600), "test window");
+            sf::RenderWindow window(sf::VideoMode(600, 600), "heuristic window");
 
             // Call our AI computer
             unique_ptr<AI> ai;
@@ -490,7 +490,7 @@ int main(int argc, char *argv[]) {
         shared_ptr<Scene> scene3;
         scene3.reset(new Scene(engine, "res/src/tilemap2.png", 0));
         engine->getState().registerObserver(scene3.get());
-        sf::RenderWindow window(sf::VideoMode(600, 600), "test window");
+        sf::RenderWindow window(sf::VideoMode(600, 600), "rollback window");
 
         // Call our AI computer
         unique_ptr<AI> aiTest;
@@ -498,10 +498,11 @@ int main(int argc, char *argv[]) {
 
         aiTest->restrictArea = false;
         int count = 1;
+        engine->getState().menu = false;
         while (window.isOpen()) {
 
             scene3->draw(window);
-            if (!(engine->getState().menu)) {
+            //if (!(engine->getState().menu)) {
                 if (count < 60) {
                     count++;
                     unique_ptr<unsigned int> enemyId;
@@ -514,7 +515,7 @@ int main(int argc, char *argv[]) {
                         }
                     }
                     if (!(engine->getCommands().empty())) usleep(1000000);
-                    engine->runCommands();
+                    engine->runCommands(false);
 
                 } else if (count >= 60 && count <= 180) {
                     engine->undoCommands();
@@ -524,7 +525,7 @@ int main(int argc, char *argv[]) {
                     window.close();
                 }
                 cout << "count :" << count << endl;
-            }
+            //}
 
 
         }
@@ -562,7 +563,7 @@ int main(int argc, char *argv[]) {
         shared_ptr<Scene> scene3;
         scene3.reset(new Scene(engine, "res/src/tilemap2.png", 0));
         engine->getState().registerObserver(scene3.get());
-        sf::RenderWindow window(sf::VideoMode(600, 600), "test window");
+        sf::RenderWindow window(sf::VideoMode(600, 600), "deep_ai window");
 
         // Call our AI computer
         unique_ptr<AI> aiTest;
@@ -586,8 +587,8 @@ int main(int argc, char *argv[]) {
         }
 
     }
-    if (!strcmp(argv[1], "threads")) {
-        cout << "threads" << endl;
+    if (!strcmp(argv[1], "thread")) {
+        cout << "thread" << endl;
 
 
         shared_ptr<mutex> m = make_shared<mutex>();
@@ -607,7 +608,7 @@ int main(int argc, char *argv[]) {
         const unsigned int id2 = 0;
         unsigned int idPlayer2 = 0;
         string player2 = "Bob";
-        const pair<const unsigned int, shared_ptr<Player>> pair2 = make_pair(id2, make_shared<Player>(false, player2,
+        const pair<const unsigned int, shared_ptr<Player>> pair2 = make_pair(id2, make_shared<Player>(true, player2,
                                                                                                       idPlayer2,
                                                                                                       make_shared<Salameche>(
                                                                                                               EST, 150,
@@ -629,12 +630,12 @@ int main(int argc, char *argv[]) {
         aiTest.reset(new HeuristicAI);
         aiTest->restrictArea = false;
         cerr << "render running" << endl;
-        sf::RenderWindow window(sf::VideoMode(600, 600), "test window");
+        sf::RenderWindow window(sf::VideoMode(600, 600), "thread window");
         thread eng([engine, aiTest, m] {
             while(1) {
                 cerr << "engine running" << endl;
                 unique_ptr<unsigned int> enemyId;
-                if (!(engine->getState().menu) && !(engine->getCommands().empty())) {
+                //if (!(engine->getState().menu) && !(engine->getCommands().empty())) {
                 for (auto player : engine->getState().getPlayers()) {
                     if (player.second && player.second->getIA() && player.second->getPokemon()->getAlive()) {
                         cerr << "run ai" << endl;
@@ -645,9 +646,9 @@ int main(int argc, char *argv[]) {
                     }
                 }
                 cout << "about to sleep" << endl;
-                //usleep(1000000);
-                engine->runCommands();
-                }
+                usleep(1000000);
+                engine->runCommands(false);
+                //}
                 cout << "end commands" <<endl;
                 if(engine->getState().isGameFinished()) return 0;
             }
@@ -657,7 +658,6 @@ int main(int argc, char *argv[]) {
         });
         while (window.isOpen()) {
 
-            //thread render([engine,scene3] {
 
             handleInputs(engine, window, 0);
 
