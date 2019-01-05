@@ -39,7 +39,7 @@ exec_program(${DIA2CODE} ARGS -ns server -d ../src/server -t cpp ../src/module.d
 
 # Sources
 file(GLOB_RECURSE client_sources src/client/*.cpp)
-#file(GLOB_RECURSE server_sources src/server/*.cpp)
+file(GLOB_RECURSE server_sources src/server/*.cpp)
 file(GLOB_RECURSE shared_sources src/shared/*.cpp)
 
 file(GLOB_RECURSE test_sources src/test/*.cpp)
@@ -50,8 +50,8 @@ file(GLOB_RECURSE jsoncpp_sources extern/jsoncpp-1.8.0/*.cpp)
 #add_library(json ${jsoncpp_sources})
 
 # Executables
+add_executable(server ${server_sources} ${shared_sources} ${jsoncpp_sources} src/shared/ai/AIUtils.cpp)
 add_executable(client ${client_sources} ${shared_sources}  ${jsoncpp_sources} ${test_sources} src/shared/ai/AIUtils.cpp)
-#add_executable(server ${server_sources} ${shared_sources} ${jsoncpp_sources})
 
 # SFML
 if(WIN32)
@@ -76,7 +76,7 @@ find_library(
 	NAMES microhttpd microhttpd-10 libmicrohttpd libmicrohttpd-dll
 	DOC "microhttpd library"
 )
-#target_link_libraries(server ${MHD_LIBRARY})
+target_link_libraries(server ${MHD_LIBRARY})
 macro(configure_files srcDir destDir)
 	message(STATUS "Configuring directory ${destDir}")
 	make_directory(${destDir})
