@@ -83,8 +83,8 @@ void Scene::draw(sf::RenderWindow &window) {
             window.draw(*layerRend);
         }
         for (auto pokeRend: pokeVec) {
+            if(pokeRend.second) window.draw(*(pokeRend.second));
 
-            window.draw(*(pokeRend.second));
         }
         render_m.unlock();
         sf::Font f;
@@ -171,15 +171,17 @@ void Scene::stateChanged(const state::Event &e) {
 
         switch (((TabEvent *) eventTab.get())->tabEventId) {
             case MOVE:
+                if(this->pokeVec[((TabEvent *) eventTab.get())->playerId]) {
+                    this->pokeVec[((TabEvent *) eventTab.get())->playerId]->setPosition(
+                            engine->getState().getPlayers().at(((TabEvent *) eventTab.get())->playerId)->getPokemon()->
+                                    getPosition().x * 24, engine->getState().getPlayers().at(
+                                    ((TabEvent *) eventTab.get())->playerId)->getPokemon()->getPosition().y * 24);
+                    this->xCenter =
+                            engine->getState().getPlayers().at(playerTarId)->getPokemon()->getPosition().x * tileSize.x;
+                    this->yCenter =
+                            engine->getState().getPlayers().at(playerTarId)->getPokemon()->getPosition().y * tileSize.y;
+                }
 
-                this->pokeVec[((TabEvent *) eventTab.get())->playerId]->setPosition(
-                        engine->getState().getPlayers().at(((TabEvent *) eventTab.get())->playerId)->getPokemon()->
-                                getPosition().x * 24, engine->getState().getPlayers().at(
-                                ((TabEvent *) eventTab.get())->playerId)->getPokemon()->getPosition().y * 24);
-                this->xCenter =
-                        engine->getState().getPlayers().at(playerTarId)->getPokemon()->getPosition().x * tileSize.x;
-                this->yCenter =
-                        engine->getState().getPlayers().at(playerTarId)->getPokemon()->getPosition().y * tileSize.y;
 
                 break;
             case DEATH:

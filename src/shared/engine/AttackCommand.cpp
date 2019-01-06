@@ -160,8 +160,8 @@ AttackCommand::AttackCommand(unsigned int idPlayer) : idPlayer(idPlayer){
 void AttackCommand::serialize(Json::Value &root){
 
     Json::Value newCmd;
-    newCmd["Command"]["CommandTypeId"] = 2;
-    newCmd["Command"]["idPlayer"] = this->idPlayer;
+    newCmd["CommandTypeId"] = 2;
+    newCmd["idPlayer"] = this->idPlayer;
     if(!(root["commands"].empty())) {
         root["commands"][root["commands"].size()] = newCmd;
     }

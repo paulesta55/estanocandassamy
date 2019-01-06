@@ -27,9 +27,9 @@ MoveCommand::MoveCommand(state::Orientation o, unsigned int id) {
 
 void MoveCommand::serialize(Json::Value &root){
     Json::Value newCmd;
-    newCmd["Command"]["CommandTypeId"] = 1;
-    newCmd["Command"]["idPlayer"] = this->idPlayer;
-    newCmd["Command"]["orientation"] = this->orientation;
+    newCmd["CommandTypeId"] = 1;
+    newCmd["idPlayer"] = this->idPlayer;
+    newCmd["orientation"] = this->orientation;
 
     if(!(root["commands"].empty())) {
         root["commands"][root["commands"].size()] = newCmd;
@@ -42,7 +42,7 @@ void MoveCommand::serialize(Json::Value &root){
 
 std::shared_ptr<PreviousState> MoveCommand::execute(state::State &state) {
 
-    cerr << "begin movecommand" <<endl;
+    //cerr << "begin movecommand" <<endl;
     State& state_ref = state;
     shared_ptr<Player> player_ptr = nullptr;
 //    unique_ptr<Pokemon> poke_ptr;
@@ -124,7 +124,7 @@ std::shared_ptr<PreviousState> MoveCommand::execute(state::State &state) {
                     mapPath+=to_string(state_ref.getEpoch()+1);
                     mapPath+=".json";
                     string newName = "IA "+std::to_string(new_epoch);
-                    unsigned int new_id = new_epoch+1;
+                    unsigned int new_id;
                     Position new_position;
 
                     switch(new_epoch)
@@ -135,7 +135,6 @@ std::shared_ptr<PreviousState> MoveCommand::execute(state::State &state) {
                             state_ref.setMap(newMap);
                             new_id = 2;
                             new_position = Position(13,5);
-//                            state.getPlayers().erase(1);
 
                             state_ref.getPlayers().insert(make_pair(new_id,make_shared<Player>(true,newName,new_id,make_shared<Carapuce>(EST,200,Position(4,4)))));
                             state_ref.getPlayers()[idPlayer]->getPokemon()->setPosition(new_position);

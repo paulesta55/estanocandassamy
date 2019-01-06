@@ -14,7 +14,11 @@
 #include "ai.h"
 #include <thread>
 #include <mutex>
+#include <fstream>
+#include <json/json.h>
+
 sf::Clock clock1;
+
 void testSFML() {
     sf::Texture texture;
 }
@@ -109,7 +113,7 @@ void handleInputs(shared_ptr<Engine> engine, sf::Window &window, unsigned int pl
                 case sf::Event::KeyPressed:
 
                     sf::Keyboard::Key k = event.key.code;
-                    if(clock1.getElapsedTime().asMilliseconds()>110) {
+                    if (clock1.getElapsedTime().asMilliseconds() > 110) {
                         switch (k) {
                             case sf::Keyboard::Key::Right  :
                                 engine->addCommand(make_shared<MoveCommand>(EST, playerTarId), playerTarId);
@@ -138,7 +142,6 @@ void handleInputs(shared_ptr<Engine> engine, sf::Window &window, unsigned int pl
                         clock1.restart();
                     }
                     break;
-
 
 
             }
@@ -503,28 +506,28 @@ int main(int argc, char *argv[]) {
 
             scene3->draw(window);
             //if (!(engine->getState().menu)) {
-                if (count < 60) {
-                    count++;
-                    unique_ptr<unsigned int> enemyId;
-                    for (auto player : engine->getState().getPlayers()) {
-                        if (player.second && player.second->getIA() && player.second->getPokemon()->getAlive()) {
-                            cerr << "run ai" << endl;
-                            unsigned int pId = player.first;
-                            enemyId.reset(new unsigned int(findEnemy(engine->getState().getPlayers(), pId)));
-                            aiTest->run(*engine, player.first, *enemyId);
-                        }
+            if (count < 60) {
+                count++;
+                unique_ptr<unsigned int> enemyId;
+                for (auto player : engine->getState().getPlayers()) {
+                    if (player.second && player.second->getIA() && player.second->getPokemon()->getAlive()) {
+                        cerr << "run ai" << endl;
+                        unsigned int pId = player.first;
+                        enemyId.reset(new unsigned int(findEnemy(engine->getState().getPlayers(), pId)));
+                        aiTest->run(*engine, player.first, *enemyId);
                     }
-                    if (!(engine->getCommands().empty())) usleep(1000000);
-                    engine->runCommands(false);
-
-                } else if (count >= 60 && count <= 180) {
-                    engine->undoCommands();
-                    count++;
-                    usleep(500000);
-                } else {
-                    window.close();
                 }
-                cout << "count :" << count << endl;
+                if (!(engine->getCommands().empty())) usleep(1000000);
+                engine->runCommands(false);
+
+            } else if (count >= 60 && count <= 180) {
+                engine->undoCommands();
+                count++;
+                usleep(500000);
+            } else {
+                window.close();
+            }
+            cout << "count :" << count << endl;
             //}
 
 
@@ -632,7 +635,7 @@ int main(int argc, char *argv[]) {
         cerr << "render running" << endl;
         sf::RenderWindow window(sf::VideoMode(600, 600), "thread window");
         thread eng([engine, aiTest, m] {
-            while(1) {
+            while (1) {
                 cerr << "engine running" << endl;
                 unique_ptr<unsigned int> enemyId;
                 //if (!(engine->getState().menu) && !(engine->getCommands().empty())) {
@@ -649,8 +652,8 @@ int main(int argc, char *argv[]) {
                 usleep(1000000);
                 engine->runCommands(false);
                 //}
-                cout << "end commands" <<endl;
-                if(engine->getState().isGameFinished()) return 0;
+                cout << "end commands" << endl;
+                if (engine->getState().isGameFinished()) return 0;
             }
 
             //  }
@@ -665,6 +668,98 @@ int main(int argc, char *argv[]) {
 
 
         }
+        eng.join();
+
+    }
+    if (!strcmp(argv[1], "play")) {
+
+        shared_ptr<mutex> m = make_shared<mutex>();
+        shared_ptr<Engine> engine = make_shared<Engine>(m, State(Position(), make_shared<Map>("res/src/etage1.json")));
+
+        // Create some AI players
+        const unsigned int id = 1;
+        unsigned int idPlayer1 = 1;
+        string player = "Alice";
+        const pair<const unsigned int, shared_ptr<Player>> pair1 = make_pair(id, make_shared<Player>(true, player,
+                                                                                                     idPlayer1,
+                                                                                                     make_shared<Bulbizarre>(
+                                                                                                             WEST, 200,
+                                                                                                             Position(3,
+                                                                                                                      9))));
+        engine->getState().getPlayers().insert(pair1);
+        const unsigned int id2 = 0;
+        unsigned int idPlayer2 = 0;
+        string player2 = "Bob";
+        const pair<const unsigned int, shared_ptr<Player>> pair2 = make_pair(id2, make_shared<Player>(true, player2,
+                                                                                                      idPlayer2,
+                                                                                                      make_shared<Salameche>(
+                                                                                                              EST, 150,
+                                                                                                              Position(
+                                                                                                                      20,
+                                                                                                                      20))));
+        engine->getState().getPlayers().insert(pair2);
+        engine->getState().center = Position(7, 7);
+
+        // Set up the render
+        shared_ptr<Scene> scene3;
+        scene3.reset(new Scene(engine, "res/src/tilemap2.png", 0));
+        engine->getState().registerObserver(scene3.get());
+
+        engine->getState().menu = false;
+
+        sf::RenderWindow window(sf::VideoMode(600, 600), "deep_ai window");
+
+
+        thread eng([engine, m] {
+            ifstream ifsMap("replay.txt", std::ifstream::in);
+            Json::Reader reader;
+            Json::Value obj;
+            if (reader.parse(ifsMap, obj)) {
+                const Json::Value &cmds = obj["commands"];
+                for (unsigned int i = 0; i < cmds.size() - 1; i++) {
+                    if (engine->getState().getPlayers()[0]->getPokemon()->getAlive() &&
+                        engine->getState().getPlayers()[1]->getPokemon()->getAlive()) {
+                        switch ((CommandTypeId) (cmds[i]["CommandTypeId"].asInt())) {
+                            case engine::CommandTypeId::ATTACK_CMD: {
+                                engine->addCommand(make_shared<AttackCommand>(cmds[i]["idPlayer"].asInt()), 0);
+                                break;
+                            }
+                            case engine::CommandTypeId::HEAL_CMD: {
+                                engine->addCommand(make_shared<HealCommand>(cmds[i]["idPlayer"].asInt()), 0);
+                                break;
+                            }
+                            case engine::CommandTypeId::MOVE_CMD: {
+                                engine->addCommand(
+                                        make_shared<MoveCommand>((Orientation) (cmds[i]["orientation"].asInt()),
+                                                                 cmds[i]["idPlayer"].asInt()), 0);
+                                break;
+                            }
+                            default:
+                                break;
+
+                        }
+                        engine->runCommands(false);
+                        usleep(1000000);
+                        cerr << "epoch :" << i << endl;
+                    }
+                }
+
+            }
+            engine->getState().setGameFinished(true);
+            ifsMap.close();
+            return;
+        });
+
+        while (window.isOpen()) {
+
+            scene3->draw(window);
+            if (engine->getState().isGameFinished()) {
+                cout << "the end" << endl;
+                window.close();
+            }
+
+        }
+
         eng.join();
 
     } else {

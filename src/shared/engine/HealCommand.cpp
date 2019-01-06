@@ -27,8 +27,8 @@ engine::HealCommand::HealCommand(unsigned int id)
 void HealCommand::serialize(Json::Value &root){
     Json::Value newCmd;
 
-    newCmd["Command"]["CommandTypeId"] = 0;
-    newCmd["Command"]["idPlayer"] = this->idPlayer;
+    newCmd["CommandTypeId"] = 0;
+    newCmd["idPlayer"] = this->idPlayer;
     if(!(root["commands"].empty())) {
         root["commands"][root["commands"].size()] = newCmd;
     }

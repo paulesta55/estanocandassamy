@@ -53,6 +53,7 @@ Map::Map(std::string mapPath) {
 //            cout << "can open file" << endl;
         Json::Reader reader;
         Json::Value obj;
+
         // parse the the map.json file
         if( reader.parse(ifsMap, obj))
         {
