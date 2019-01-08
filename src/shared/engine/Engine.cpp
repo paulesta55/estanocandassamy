@@ -17,7 +17,7 @@ using namespace std;
 using namespace engine;
 using namespace state;
 
-Engine::Engine(shared_ptr<mutex> m,State s,bool dev):dev(dev),commands_mutex(std::move(m)),currentState(std::move(s))
+Engine::Engine(State s,bool dev):dev(dev),currentState(std::move(s))
 {}
 void engine::Engine::addCommand(shared_ptr<Command> command, unsigned int priority) {
     if(!command)

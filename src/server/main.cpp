@@ -28,8 +28,7 @@ int main(int argc, char *argv[]) {
     if(!strcmp(argv[1], "record")) {
         cout << "record" << endl;
 
-        shared_ptr<mutex> m = make_shared<mutex>();
-        shared_ptr<Engine> engine = make_shared<Engine>(m, State(Position(), make_shared<Map>("res/src/etage1.json")),true);
+        shared_ptr<Engine> engine = make_shared<Engine>( State(Position(), make_shared<Map>("res/src/etage1.json")),true);
 
         // Create some AI players
         const unsigned int id = 1;

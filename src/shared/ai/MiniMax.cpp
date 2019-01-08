@@ -59,7 +59,7 @@ BestAction MinMaxGenerator::tour(State s, MinMax m, uint epoch, uint playerId, u
                 }
 
             }
-            Engine e( make_shared<mutex>(),newState);
+            Engine e( newState);
 
 
             auto actionType = static_cast<ActionType>(i);

@@ -228,10 +228,8 @@ int main(int argc, char *argv[]) {
         }
         if (!strcmp(argv[1], "render")) {
 
-            shared_ptr<mutex> m = make_shared<mutex>();
-            shared_ptr<mutex> m_exec = make_shared<mutex>();
             // Create our engine
-            shared_ptr<Engine> engine = make_shared<Engine>(m,
+            shared_ptr<Engine> engine = make_shared<Engine>(
                                                             State(Position(), make_shared<Map>("res/src/etage1.json")));
 
             // Create some players
@@ -278,11 +276,8 @@ int main(int argc, char *argv[]) {
         }
         if (!strcmp(argv[1], "engine")) {
             cout << "engine" << endl;
-            shared_ptr<mutex> m = make_shared<mutex>();
-            shared_ptr<mutex> m_exec = make_shared<mutex>();
             // Create our engine
-            shared_ptr<Engine> engine = make_shared<Engine>(m,
-                                                            State(Position(), make_shared<Map>("res/src/etage1.json")));
+            shared_ptr<Engine> engine = make_shared<Engine>(State(Position(), make_shared<Map>("res/src/etage1.json")));
 
             // Create some players
             const unsigned int id = 1;
@@ -333,11 +328,8 @@ int main(int argc, char *argv[]) {
 
         if (!strcmp(argv[1], "random_ai")) {
             cout << "random ai" << endl;
-            shared_ptr<mutex> m = make_shared<mutex>();
-            shared_ptr<mutex> m_exec = make_shared<mutex>();
             // Create our engine
-            shared_ptr<Engine> engine = make_shared<Engine>(m,
-                                                            State(Position(), make_shared<Map>("res/src/etage1.json")));
+            shared_ptr<Engine> engine = make_shared<Engine>(State(Position(), make_shared<Map>("res/src/etage1.json")));
 
             // Create some players
             const unsigned int id = 1;
@@ -394,10 +386,9 @@ int main(int argc, char *argv[]) {
 
         }
         if (!strcmp(argv[1], "heuristic_ai")) {
-            shared_ptr<mutex> m = make_shared<mutex>();
-            shared_ptr<mutex> m_exec = make_shared<mutex>();
+
             // Create our engine
-            shared_ptr<Engine> engine = make_shared<Engine>(m,
+            shared_ptr<Engine> engine = make_shared<Engine>(
                                                             State(Position(), make_shared<Map>("res/src/etage1.json")));
 
             // Create some players
@@ -460,10 +451,9 @@ int main(int argc, char *argv[]) {
     }
     if (!strcmp(argv[1], "rollback")) {
         cout << "ROLLBACK" << endl;
-        shared_ptr<mutex> m = make_shared<mutex>();
-        shared_ptr<mutex> m_exec = make_shared<mutex>();
+
         // Create our engine
-        shared_ptr<Engine> engine = make_shared<Engine>(m, State(Position(), make_shared<Map>("res/src/etage1.json")));
+        shared_ptr<Engine> engine = make_shared<Engine>(State(Position(), make_shared<Map>("res/src/etage1.json")));
 
         // Create some AI players
         const unsigned int id = 1;
@@ -535,8 +525,8 @@ int main(int argc, char *argv[]) {
     }
     if (!strcmp(argv[1], "deep_ai")) {
         cout << "DEEP AI" << endl;
-        shared_ptr<mutex> m = make_shared<mutex>();
-        shared_ptr<Engine> engine = make_shared<Engine>(m, State(Position(), make_shared<Map>("res/src/etage1.json")));
+
+        shared_ptr<Engine> engine = make_shared<Engine>(State(Position(), make_shared<Map>("res/src/etage1.json")));
 
         // Create some AI players
         const unsigned int id = 1;
@@ -594,8 +584,8 @@ int main(int argc, char *argv[]) {
         cout << "thread" << endl;
 
 
-        shared_ptr<mutex> m = make_shared<mutex>();
-        shared_ptr<Engine> engine = make_shared<Engine>(m, State(Position(), make_shared<Map>("res/src/etage1.json")));
+
+        shared_ptr<Engine> engine = make_shared<Engine>( State(Position(), make_shared<Map>("res/src/etage1.json")));
 
         // Create some AI players
         const unsigned int id = 1;
@@ -634,7 +624,7 @@ int main(int argc, char *argv[]) {
         aiTest->restrictArea = false;
         cerr << "render running" << endl;
         sf::RenderWindow window(sf::VideoMode(600, 600), "thread window");
-        thread eng([engine, aiTest, m] {
+        thread eng([engine, aiTest] {
             while (1) {
                 cerr << "engine running" << endl;
                 unique_ptr<unsigned int> enemyId;
@@ -672,9 +662,7 @@ int main(int argc, char *argv[]) {
 
     }
     if (!strcmp(argv[1], "play")) {
-
-        shared_ptr<mutex> m = make_shared<mutex>();
-        shared_ptr<Engine> engine = make_shared<Engine>(m, State(Position(), make_shared<Map>("res/src/etage1.json")));
+        shared_ptr<Engine> engine = make_shared<Engine>( State(Position(), make_shared<Map>("res/src/etage1.json")));
 
         // Create some AI players
         const unsigned int id = 1;
@@ -710,7 +698,7 @@ int main(int argc, char *argv[]) {
         sf::RenderWindow window(sf::VideoMode(600, 600), "deep_ai window");
 
 
-        thread eng([engine, m] {
+        thread eng([engine] {
             ifstream ifsMap("replay.txt", std::ifstream::in);
             Json::Reader reader;
             Json::Value obj;
