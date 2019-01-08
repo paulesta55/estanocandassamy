@@ -16,6 +16,7 @@
 #include <mutex>
 #include <fstream>
 #include <json/json.h>
+#include "client.h"
 
 sf::Clock clock1;
 
@@ -27,13 +28,14 @@ void testSFML() {
 
 #undef NDEBUG
 
+using namespace client;
 using namespace std;
 using namespace state;
 using namespace render;
 using namespace engine;
 using namespace ai;
 
-void handleInputs(shared_ptr<Engine> engine, sf::Window &window, unsigned int playerTarId) {
+void handleInputs(shared_ptr<Engine> engine, sf::Window& window, unsigned int playerTarId) {
 
     if (engine->getState().menu) {
         sf::Event event1;
@@ -583,82 +585,8 @@ int main(int argc, char *argv[]) {
     if (!strcmp(argv[1], "thread")) {
         cout << "thread" << endl;
 
-
-
-        shared_ptr<Engine> engine = make_shared<Engine>( State(Position(), make_shared<Map>("res/src/etage1.json")));
-
-        // Create some AI players
-        const unsigned int id = 1;
-        unsigned int idPlayer1 = 1;
-        string player = "Alice";
-        const pair<const unsigned int, shared_ptr<Player>> pair1 = make_pair(id, make_shared<Player>(true, player,
-                                                                                                     idPlayer1,
-                                                                                                     make_shared<Bulbizarre>(
-                                                                                                             WEST, 200,
-                                                                                                             Position(3,
-                                                                                                                      9))));
-        engine->getState().getPlayers().insert(pair1);
-        const unsigned int id2 = 0;
-        unsigned int idPlayer2 = 0;
-        string player2 = "Bob";
-        const pair<const unsigned int, shared_ptr<Player>> pair2 = make_pair(id2, make_shared<Player>(true, player2,
-                                                                                                      idPlayer2,
-                                                                                                      make_shared<Salameche>(
-                                                                                                              EST, 150,
-                                                                                                              Position(
-                                                                                                                      20,
-                                                                                                                      20))));
-        engine->getState().getPlayers().insert(pair2);
-        engine->getState().center = Position(7, 7);
-
-        // Set up the render
-        shared_ptr<Scene> scene3;
-        scene3.reset(new Scene(engine, "res/src/tilemap2.png", 0));
-        engine->getState().registerObserver(scene3.get());
-
-        engine->getState().menu = false;
-
-        // Call our AI computer
-        shared_ptr<AI> aiTest;
-        aiTest.reset(new HeuristicAI);
-        aiTest->restrictArea = false;
-        cerr << "render running" << endl;
-        sf::RenderWindow window(sf::VideoMode(600, 600), "thread window");
-        thread eng([engine, aiTest] {
-            while (1) {
-                cerr << "engine running" << endl;
-                unique_ptr<unsigned int> enemyId;
-                //if (!(engine->getState().menu) && !(engine->getCommands().empty())) {
-                for (auto player : engine->getState().getPlayers()) {
-                    if (player.second && player.second->getIA() && player.second->getPokemon()->getAlive()) {
-                        cerr << "run ai" << endl;
-                        unsigned int pId = player.first;
-                        enemyId.reset(new unsigned int(findEnemy(engine->getState().getPlayers(), pId)));
-                        aiTest->run(*engine, player.first, *enemyId);
-
-                    }
-                }
-                cout << "about to sleep" << endl;
-                usleep(1000000);
-                engine->runCommands(false);
-                //}
-                cout << "end commands" << endl;
-                if (engine->getState().isGameFinished()) return 0;
-            }
-
-            //  }
-
-        });
-        while (window.isOpen()) {
-
-
-            handleInputs(engine, window, 0);
-
-            scene3->draw(window);
-
-
-        }
-        eng.join();
+        Client client1;
+        client1.run();
 
     }
     if (!strcmp(argv[1], "play")) {
