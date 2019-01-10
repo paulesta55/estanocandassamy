@@ -354,21 +354,40 @@ Lors de l'exécution de chaque commande, on crée un objet associé à la comman
     \label{sec:module}
 
     \subsection{Organisation des modules}
-
+	On veut ici lancer le moteur et le rendu dans deux threads différents. Le thread principal sera celui du rendu (contrainte matérielle) et le secondaire celui du moteur. Deux types de données transitent entre le moteur et le rendu : 
+\begin{itemize}
+\item Les commandes, qui transistent du rendu vers le moteur
+\item Les évènements notifiant le rendu d'un changement d'état
+\end{itemize}
+\subsubsection{Commandes}
+    Les commandes peuvent arriver à tout moment et l'ajout d'une commande à la map contenant les commandes lors d'une mise à jour de l'état de jeu pourrait engendrer des conflits. Pour palier à ce problème, on utilise un double buffer : lorsqu'une mise à jour de l'état a lieu, on vide la map dans un buffer, que l'on va ensuite utiliser pour exécuter l'ensemble des commandes. Pour empêcher l'ajout d'une commande dans la map lors de la copie dans le buffer, on utilise un mutex (\emph{commands\_mutex}) qui bloque l'exécution de la méthode \emph{addCommand} pendant toute la durée de la copie. Le temps de copie restant négligeable, l'utilisateur peut ajouter des commandes aussi rapidement qu'il le souhaite presque sans aucune latence.
+\subsubsection{Notifications de rendu}   
+    Lors d'une mise à jour, l'état notifie le rendu par le biais d'\emph{events}. Pour le moment, le traitement de ces notifications bloque le rendu des Pokemons et de l'environnement et inversement, le rendu des pokemons et de l'environnement bloque le traitement des notifications. Ce mécanisme de verrou est implémenté à l'aide d'un mutex et est coûteux en termes de performances. Pour remédier à ce problème on pourra à l'avenir utiliser une liste stockant l'ensemble des notifications ainsi qu'un signal permettant de signaler la présence d'un évènement qui doit être traité au rendu. Ainsi, lorsque le rendu a fini sa dernière tâche et que le signal est actif, il vide la liste, traite les notifications et réarme le signal. Ce mécanisme devrait permettre d'améliorer notablement les performances.
     \clearpage
     \subsection{Conception logiciel}
+    Le diagramme des classes pour la modularisation est présenté en Figure 7.
+    \emph{Client} La classe Client contient le moteur de jeu, les intelligences artificielles et les rendus. Elle utilise ces différents éléments dans deux threads distincts. Dans le thread principal gérant l'affichage on procède selon l'ordre suivant :
+\begin{enumerate}
+\item La méthode \emph{handleInputs} gère l'ajout des commandes au moteur lorsqu'un utilisateur appuie sur un touche.
+\item On affiche le rendu à l'aide de la méthode \emph{Scene::draw}
+\end{enumerate}
+
+ Dans le thread secondaire on gère principalement les IA et le moteur. En particulier, on  utilise l'IA pour ajouter les commandes automatisé au moteur avant d'éxecuter la méthode \emph{Engine::runCommands} qui applique les changements d'état.
+    La méthode \emph{Client::run} permet d'exécuter le client. 
+    
+    \begin{landscape}
+    \begin{figure}[p]
+    \includegraphics[width=0.9\paperheight]{module.png}
+    \caption{\label{uml:module}Diagramme des classes pour la modularisation.}
+    \end{figure}
+    \end{landscape}
     
     \clearpage
     \section{Annexe}
     \label{sec:Annexe}
     \subsection{Bibliographie}
 
-    %
-    %\begin{landscape}
-    %\begin{figure}[p]
-    %\includegraphics[width=0.9\paperheight]{module.pdf}
-    %\caption{\label{uml:module}Diagramme des classes pour la modularisation.}
-    %\end{figure}
-    %\end{landscape}
+    
+
 
 \end{document}

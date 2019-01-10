@@ -128,7 +128,6 @@ void Scene::draw(sf::RenderWindow &window) {
 
         window.draw(text);
         window.draw(t2);
-//        count--;
         window.setView(view2);
         window.display();
     }
@@ -143,8 +142,6 @@ void Scene::updateMap() {
     uint tileWidth = engine->getState().getMap()->getTileWidth();
     uint tileHeight = engine->getState().getMap()->getTileHeight();
 
-//    this->xCenter = engine->getState().getPlayers().at(0)->getPokemon()->getPosition().x*tileWidth;
-//    this->yCenter = engine->getState().getPlayers().at(0)->getPokemon()->getPosition().y*tileHeight;
 
     for (auto layer: *(engine->getState().getMap()->getLayers())) {
         shared_ptr<LayerRender> layerRend;
@@ -156,10 +153,6 @@ void Scene::updateMap() {
         layerVec.push_back(layerRend);
     }
     string tileset2 = "res/src/tilestPokemon.png";
-}
-
-void movePokeRender(unsigned int pokeId) {
-
 }
 
 
