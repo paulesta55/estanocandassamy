@@ -678,7 +678,14 @@ int main(int argc, char *argv[]) {
 
         eng.join();
 
-    } else {
+    }
+    if (!strcmp(argv[1], "network")) {
+        cout << "network" << endl;
+
+        Client client1;
+        client1.connectNetwork();
+    }
+    else {
         cout << "I don't understand" << endl;
         cout << "you can only say hello" << endl;
     }
