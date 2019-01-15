@@ -11,7 +11,7 @@ using namespace server;
 #include <iostream>
 #include <string>
 
-UserDB::UserDB() : idseq(1) {
+UserDB::UserDB() : idseq(0) {
     
 }
 
@@ -23,8 +23,9 @@ const User* UserDB::getUser (int id) const {
 }
 
 int UserDB::addUser (unique_ptr<User> user) {
-    int id = idseq++;
+    int id = idseq+1;
     if(id<=this->maxPlayers){
+        idseq++;
         users.insert(std::make_pair(id,std::move(user)));
         return id;
     }
@@ -32,6 +33,10 @@ int UserDB::addUser (unique_ptr<User> user) {
         return -1;
     }
     
+}
+
+int UserDB::getStatus(){
+    return idseq;
 }
 
 void UserDB::setUser (int id, unique_ptr<User> user) {

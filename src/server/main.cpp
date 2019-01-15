@@ -145,7 +145,6 @@ int main(int argc, char *argv[]) {
         servicesManager.registerService(make_unique<VersionService>());
 
         UserDB userDB;
-        userDB.addUser(make_unique<User>(1,1,1,1));
         servicesManager.registerService(make_unique<UserService>(std::ref(userDB)));
 
         struct MHD_Daemon *d;

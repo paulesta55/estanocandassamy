@@ -108,14 +108,243 @@ void client::Client::run()
 
 void client::Client::connectNetwork()
 {
-    this->addPlayer();
+    this->addPlayer(0, 1, 100, 1, 1);
     int id = 1;
     int lock = 1;
-    while(lock == 1){
+    while (lock == 1)
+    {
         lock = this->getPlayer(id);
-        id+=1;
+        id += 1;
     }
-    this->addPlayer();
+    this->addPlayer(0, 1, 100, 1, 1);
+}
+
+int client::Client::connectAsFirst()
+{
+    int idPlayer = this->addPlayer(0, 2, 200, 3, 9);
+    const unsigned int id1 = idPlayer;
+    unsigned int idPlayer1 = idPlayer;
+    string player = "Alice";
+    const pair<const unsigned int, shared_ptr<Player>> pair1 = make_pair(id1, make_shared<Player>(false, player,
+                                                                                                  idPlayer1,
+                                                                                                  make_shared<Bulbizarre>(
+                                                                                                      WEST, 200,
+                                                                                                      Position(3,
+                                                                                                               9))));
+    engine->getState().getPlayers().insert(pair1);
+
+    int idEnnemi = 2;
+    int test = this->getPlayer(0);
+    while (test != 2)
+    {
+        test = this->getPlayer(0);
+        cout << "waiting" << endl;
+        usleep(10000);
+    }
+
+    cout << "ready to start" << endl;
+    std::vector<int> statsEnnemi = this->getPlayerStats(idEnnemi);
+    if (!statsEnnemi.empty())
+    {
+        const unsigned int id2 = idEnnemi;
+        unsigned int idPlayer2 = idEnnemi;
+        string player2 = "Bob";
+        if (statsEnnemi[0] == 0)
+        {
+            const pair<const unsigned int, shared_ptr<Player>> pair2 = make_pair(id2, make_shared<Player>(false, player2,
+                                                                                                          idPlayer2,
+                                                                                                          make_shared<Bulbizarre>(
+                                                                                                              static_cast<state::Orientation>(statsEnnemi[1]), statsEnnemi[2],
+                                                                                                              Position(
+                                                                                                                  statsEnnemi[3],
+                                                                                                                  statsEnnemi[4]))));
+            engine->getState().getPlayers().insert(pair2);
+        }
+        else if (statsEnnemi[0] == 1)
+        {
+            const pair<const unsigned int, shared_ptr<Player>> pair2 = make_pair(id2, make_shared<Player>(false, player2,
+                                                                                                          idPlayer2,
+                                                                                                          make_shared<Salameche>(
+                                                                                                              static_cast<state::Orientation>(statsEnnemi[1]), statsEnnemi[2],
+                                                                                                              Position(
+                                                                                                                  statsEnnemi[3],
+                                                                                                                  statsEnnemi[4]))));
+            engine->getState().getPlayers().insert(pair2);
+        }
+        else
+        {
+            const pair<const unsigned int, shared_ptr<Player>> pair2 = make_pair(id2, make_shared<Player>(false, player2,
+                                                                                                          idPlayer2,
+                                                                                                          make_shared<Carapuce>(
+                                                                                                              static_cast<state::Orientation>(statsEnnemi[1]), statsEnnemi[2],
+                                                                                                              Position(
+                                                                                                                  statsEnnemi[3],
+                                                                                                                  statsEnnemi[4]))));
+            engine->getState().getPlayers().insert(pair2);
+        }
+
+        engine->getState().center = Position(7, 7);
+
+        shared_ptr<Scene> scene4;
+        scene4.reset(new Scene(engine, "res/src/tilemap2.png", idPlayer));
+        engine->getState().registerObserver(scene4.get());
+
+        engine->getState().menu = false;
+
+        cerr << "render running" << endl;
+        sf::RenderWindow window(sf::VideoMode(600, 600), "thread window");
+        shared_ptr<Engine> enginePtr = engine;
+        // thread eng([this] {
+        //     while (1)
+        //     {
+        //         cerr << "engine running" << endl;
+        //         unique_ptr<unsigned int> enemyId;
+        //         cout << "about to sleep" << endl;
+        //         usleep(1000000);
+        //         engine->runCommands(false);
+        //         //}
+        //         cout << "end commands" << endl;
+        //         if (engine->getState().isGameFinished())
+        //             return 0;
+        //     }
+
+        //     //  }
+        // });
+        while (window.isOpen())
+        {
+
+            handleInputs(enginePtr, window, 0);
+
+            scene4->draw(window);
+        }
+        // eng.join();
+    }
+    else
+    {
+        cout << "Error can't acces network" << endl;
+    }
+
+    return 0;
+}
+
+int client::Client::connectAsSecond()
+{
+    int idPlayer = this->addPlayer(1, 3, 150, 20, 20);
+    const unsigned int id1 = idPlayer;
+    unsigned int idPlayer1 = idPlayer;
+    cout << this->getPlayer(0) << endl;
+    int idEnnemi = 1;
+    string player = "Bob";
+    const pair<const unsigned int, shared_ptr<Player>> pair1 = make_pair(id1, make_shared<Player>(false, player,
+                                                                                                  idPlayer1,
+                                                                                                  make_shared<Salameche>(
+                                                                                                      EST, 150,
+                                                                                                      Position(20,
+                                                                                                               20))));
+    engine->getState().getPlayers().insert(pair1);                                                                                               
+
+    cout << "ready to start" << endl;
+
+    std::vector<int> statsEnnemi = this->getPlayerStats(idEnnemi);
+    if (!statsEnnemi.empty())
+    {
+        const unsigned int id2 = idEnnemi;
+        unsigned int idPlayer2 = idEnnemi;
+        string player2 = "Bob";
+        if (statsEnnemi[0] == 0)
+        {
+            const pair<const unsigned int, shared_ptr<Player>> pair2 = make_pair(id2, make_shared<Player>(false, player2,
+                                                                                                          idPlayer2,
+                                                                                                          make_shared<Bulbizarre>(
+                                                                                                              static_cast<state::Orientation>(statsEnnemi[1]), statsEnnemi[2],
+                                                                                                              Position(
+                                                                                                                  statsEnnemi[3],
+                                                                                                                  statsEnnemi[4]))));
+            engine->getState().getPlayers().insert(pair2);
+        }
+        else if (statsEnnemi[0] == 1)
+        {
+            const pair<const unsigned int, shared_ptr<Player>> pair2 = make_pair(id2, make_shared<Player>(false, player2,
+                                                                                                          idPlayer2,
+                                                                                                          make_shared<Salameche>(
+                                                                                                              static_cast<state::Orientation>(statsEnnemi[1]), statsEnnemi[2],
+                                                                                                              Position(
+                                                                                                                  statsEnnemi[3],
+                                                                                                                  statsEnnemi[4]))));
+            engine->getState().getPlayers().insert(pair2);
+        }
+        else
+        {
+            const pair<const unsigned int, shared_ptr<Player>> pair2 = make_pair(id2, make_shared<Player>(false, player2,
+                                                                                                          idPlayer2,
+                                                                                                          make_shared<Carapuce>(
+                                                                                                              static_cast<state::Orientation>(statsEnnemi[1]), statsEnnemi[2],
+                                                                                                              Position(
+                                                                                                                  statsEnnemi[3],
+                                                                                                                  statsEnnemi[4]))));
+            engine->getState().getPlayers().insert(pair2);
+        }
+        engine->getState().center = Position(7, 7);
+
+        shared_ptr<Scene> scene3;
+        scene3.reset(new Scene(engine, "res/src/tilemap2.png", idPlayer));
+        engine->getState().registerObserver(scene3.get());
+
+        engine->getState().menu = false;
+
+        cerr << "render running" << endl;
+        sf::RenderWindow window(sf::VideoMode(600, 600), "thread window");
+        shared_ptr<Engine> enginePtr = engine;
+        // thread eng([this] {
+        //     while (1)
+        //     {
+        //         cerr << "engine running" << endl;
+        //         unique_ptr<unsigned int> enemyId;
+        //         cout << "about to sleep" << endl;
+        //         usleep(1000000);
+        //         engine->runCommands(false);
+        //         //}
+        //         cout << "end commands" << endl;
+        //         if (engine->getState().isGameFinished())
+        //             return 0;
+        //     }
+
+        //     //  }
+        // });
+        while (window.isOpen())
+        {
+
+            handleInputs(enginePtr, window, 0);
+
+            scene3->draw(window);
+        }
+        // eng.join();
+    }
+    else
+    {
+        cout << "Error can't acces network" << endl;
+    }
+
+    return 0;
+}
+
+int client::Client::connect()
+{
+    int nbPlayer = this->getPlayer(0);
+    cout << nbPlayer << endl;
+    if (nbPlayer == 1)
+    {
+        this->connectAsSecond();
+    }
+    else if (nbPlayer == 0)
+    {
+        this->connectAsFirst();
+    }
+    else
+    {
+        cout << "No more connections possible" << endl;
+    }
+    return 0;
 }
 
 void client::Client::deletePlayer(int id)
@@ -131,16 +360,17 @@ void client::Client::deletePlayer(int id)
     response = http.sendRequest(req3);
 }
 
-int client::Client::addPlayer()
+int client::Client::addPlayer(int idPoke, int orientation, int currentLife, int x, int y)
 {
     sf::Http http("http://localhost", 8080);
     sf::Http::Response response;
     sf::Http::Request req3;
     Json::Value User;
-    User["orientation"] = 4;
-    User["currentLife"] = 3;
-    User["x"] = 1;
-    User["y"] = 12;
+    User["idPoke"] = idPoke;
+    User["orientation"] = orientation;
+    User["currentLife"] = currentLife;
+    User["x"] = x;
+    User["y"] = y;
     req3.setUri("/user");
     req3.setMethod(sf::Http::Request::Put);
     req3.setBody(User.toStyledString());
@@ -180,17 +410,61 @@ int client::Client::getPlayer(int id)
 {
     sf::Http http("http://localhost", 8080);
     sf::Http::Response response;
-    sf::Http::Request req("/user/"+to_string(id), sf::Http::Request::Get);
+    sf::Http::Request req("/user/" + to_string(id), sf::Http::Request::Get);
     response = http.sendRequest(req);
 
     if (response.getStatus() == sf::Http::Response::Ok)
     {
-        cout << response.getBody() << endl;
-        return 1;
+        Json::Value root;
+        Json::Value players;
+        Json::Reader reader;
+        if (!reader.parse(response.getBody(), root, false))
+        {
+            cout << reader.getFormattedErrorMessages() << endl;
+        }
+        if (id == 0)
+        {
+            int nbPlayer = root["status"].asInt();
+            cout << response.getBody() << endl;
+            return nbPlayer;
+        }
+        else
+        {
+            return -1;
+        }
     }
     else
     {
-        return 0;
+        return -1;
+    }
+}
+
+std::vector<int> client::Client::getPlayerStats(int id)
+{
+    sf::Http http("http://localhost", 8080);
+    sf::Http::Response response;
+    sf::Http::Request req("/user/" + to_string(id), sf::Http::Request::Get);
+    response = http.sendRequest(req);
+    std::vector<int> stats;
+    if (response.getStatus() == sf::Http::Response::Ok)
+    {
+        Json::Value root;
+        Json::Value players;
+        Json::Reader reader;
+        if (!reader.parse(response.getBody(), root, false))
+        {
+            cout << reader.getFormattedErrorMessages() << endl;
+        }
+        stats.push_back(root["idPoke"].asInt());
+        stats.push_back(root["orientation"].asInt());
+        stats.push_back(root["currentLife"].asInt());
+        stats.push_back(root["x"].asInt());
+        stats.push_back(root["y"].asInt());
+        return stats;
+    }
+    else
+    {
+        return stats;
     }
 }
 

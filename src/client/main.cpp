@@ -683,7 +683,7 @@ int main(int argc, char *argv[]) {
         cout << "network" << endl;
 
         Client client1;
-        client1.connectNetwork();
+        client1.connect();
     }
     else {
         cout << "I don't understand" << endl;
