@@ -124,6 +124,7 @@ int client::Client::connectAsFirst()
     int idPlayer = this->addPlayer(0, 2, 200, 3, 9);
     const unsigned int id1 = idPlayer;
     unsigned int idPlayer1 = idPlayer;
+    localPlayerId = idPlayer;
     string player = "Alice";
     const pair<const unsigned int, shared_ptr<Player>> pair1 = make_pair(id1, make_shared<Player>(false, player,
                                                                                                   idPlayer1,
@@ -194,22 +195,26 @@ int client::Client::connectAsFirst()
         cerr << "render running" << endl;
         sf::RenderWindow window(sf::VideoMode(600, 600), "thread window");
         shared_ptr<Engine> enginePtr = engine;
-        // thread eng([this] {
-        //     while (1)
-        //     {
-        //         cerr << "engine running" << endl;
-        //         unique_ptr<unsigned int> enemyId;
-        //         cout << "about to sleep" << endl;
-        //         usleep(1000000);
-        //         engine->runCommands(false);
-        //         //}
-        //         cout << "end commands" << endl;
-        //         if (engine->getState().isGameFinished())
-        //             return 0;
-        //     }
+//         thread eng([this] {
+//             while (1)
+//             {
+//                 if(this->tour%2 == 0) {
+//                     this->getCommand();
+//                     engine->runCommands();
+//                 }
+//                 cerr << "engine running" << endl;
+//                 unique_ptr<unsigned int> enemyId;
+//                 cout << "about to sleep" << endl;
+//                 usleep(1000000);
+//                 engine->runCommands(false);
+//                 //}
+//                 cout << "end commands" << endl;
+//                 if (engine->getState().isGameFinished())
+//                     return 0;
+//             }
 
-        //     //  }
-        // });
+             //  }
+//         });
         while (window.isOpen())
         {
 
@@ -232,6 +237,7 @@ int client::Client::connectAsSecond()
     int idPlayer = this->addPlayer(1, 3, 150, 20, 20);
     const unsigned int id1 = idPlayer;
     unsigned int idPlayer1 = idPlayer;
+    localPlayerId = idPlayer;
     cout << this->getPlayer(0) << endl;
     int idEnnemi = 1;
     string player = "Bob";
@@ -295,22 +301,22 @@ int client::Client::connectAsSecond()
         cerr << "render running" << endl;
         sf::RenderWindow window(sf::VideoMode(600, 600), "thread window");
         shared_ptr<Engine> enginePtr = engine;
-        // thread eng([this] {
-        //     while (1)
-        //     {
-        //         cerr << "engine running" << endl;
-        //         unique_ptr<unsigned int> enemyId;
-        //         cout << "about to sleep" << endl;
-        //         usleep(1000000);
-        //         engine->runCommands(false);
-        //         //}
-        //         cout << "end commands" << endl;
-        //         if (engine->getState().isGameFinished())
-        //             return 0;
-        //     }
-
-        //     //  }
-        // });
+//         thread eng([this] {
+//             while (1)
+//             {
+//                 cerr << "engine running" << endl;
+//                 unique_ptr<unsigned int> enemyId;
+//                 cout << "about to sleep" << endl;
+//                 usleep(1000000);
+//                 engine->runCommands(false);
+//                 //}
+//                 cout << "end commands" << endl;
+//                 if (engine->getState().isGameFinished())
+//                     return 0;
+//             }
+//
+//             //  }
+//         });
         while (window.isOpen())
         {
 
@@ -623,4 +629,32 @@ client::Client::findEnemy(std::map<unsigned int, std::shared_ptr<state::Player>>
 client::Client::Client()
 {
     engine = make_shared<Engine>(State(Position(), make_shared<Map>("res/src/etage1.json")));
+}
+
+void client::Client::getCommand() {
+    sf::Http http("http://localhost", 8080);
+    sf::Http::Response response;
+    sf::Http::Request req("/command/" + localPlayerId, sf::Http::Request::Get);
+    response = http.sendRequest(req);
+    std::vector<int> stats;
+    if (response.getStatus() == sf::Http::Response::Ok)
+    {
+        Json::Value root;
+        Json::Value players;
+        Json::Reader reader;
+        if (!reader.parse(response.getBody(), root, false))
+        {
+            cout << reader.getFormattedErrorMessages() << endl;
+        }
+        stats.push_back(root["idPoke"].asInt());
+        stats.push_back(root["orientation"].asInt());
+        stats.push_back(root["currentLife"].asInt());
+        stats.push_back(root["x"].asInt());
+        stats.push_back(root["y"].asInt());
+       return;
+    }
+    else
+    {
+        return;
+    }
 }
