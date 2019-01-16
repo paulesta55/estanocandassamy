@@ -39,11 +39,16 @@ int UserDB::getStatus(){
     return idseq;
 }
 
+int UserDB::getTour(){
+    return this->tour;
+}
+
 void UserDB::setUser (int id, unique_ptr<User> user) {
     users[id] = std::move(user);
     if (id > idseq) {
         idseq = id;
     }
+    this->tour += 1;
 }
 
 void UserDB::removeUser (int id) {

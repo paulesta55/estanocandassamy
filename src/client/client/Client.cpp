@@ -72,7 +72,6 @@ void client::Client::run()
     thread eng([this] {
         while (1)
         {
-            cerr << "engine running" << endl;
             unique_ptr<unsigned int> enemyId;
             //if (!(engine->getState().menu) && !(engine->getCommands().empty())) {
             for (auto player : engine->getState().getPlayers())
@@ -85,11 +84,9 @@ void client::Client::run()
                     ai->run(*engine, player.first, *enemyId);
                 }
             }
-            cout << "about to sleep" << endl;
             usleep(1000000);
             engine->runCommands(false);
             //}
-            cout << "end commands" << endl;
             if (engine->getState().isGameFinished())
                 return 0;
         }
@@ -98,7 +95,6 @@ void client::Client::run()
     });
     while (window.isOpen())
     {
-
         handleInputs(enginePtr, window, 0);
 
         scene3->draw(window);
@@ -122,6 +118,7 @@ void client::Client::connectNetwork()
 int client::Client::connectAsFirst()
 {
     int idPlayer = this->addPlayer(0, 2, 200, 3, 9);
+    this->tour = this->getTour();
     const unsigned int id1 = idPlayer;
     unsigned int idPlayer1 = idPlayer;
     string player = "Alice";
@@ -194,30 +191,40 @@ int client::Client::connectAsFirst()
         cerr << "render running" << endl;
         sf::RenderWindow window(sf::VideoMode(600, 600), "thread window");
         shared_ptr<Engine> enginePtr = engine;
-        // thread eng([this] {
-        //     while (1)
-        //     {
-        //         cerr << "engine running" << endl;
-        //         unique_ptr<unsigned int> enemyId;
-        //         cout << "about to sleep" << endl;
-        //         usleep(1000000);
-        //         engine->runCommands(false);
-        //         //}
-        //         cout << "end commands" << endl;
-        //         if (engine->getState().isGameFinished())
-        //             return 0;
-        //     }
+        thread eng([this] {
+            while (1)
+            {
+                unique_ptr<unsigned int> enemyId;
+                usleep(1000000);
+                engine->runCommands(false);
+                //}
+                if (engine->getState().isGameFinished())
+                    return 0;
+            }
 
-        //     //  }
-        // });
+            //  }
+        });
         while (window.isOpen())
         {
-
-            handleInputs(enginePtr, window, 0);
-
+            this->tour = this->getTour();
+            if (this->tour % 2 == 0)
+            {
+                if(this->tour > 2 && this->ennemiMove == true){
+                    this->handleInputsServer(enginePtr, window,id2,this->getCommand(id2));
+                    this->ennemiMove = false;
+                }
+                cout << "my turn" << endl;
+                handleInputsNetwork(enginePtr, window, idPlayer);
+            }
+            else
+            {
+                this->ennemiMove = true;
+                cout << "waiting on else tour :" << this->tour << endl;
+                this->tourFinished = true;
+            }
             scene4->draw(window);
         }
-        // eng.join();
+        eng.join();
     }
     else
     {
@@ -232,6 +239,7 @@ int client::Client::connectAsSecond()
     int idPlayer = this->addPlayer(1, 3, 150, 20, 20);
     const unsigned int id1 = idPlayer;
     unsigned int idPlayer1 = idPlayer;
+    this->tour = this->getTour();
     cout << this->getPlayer(0) << endl;
     int idEnnemi = 1;
     string player = "Bob";
@@ -241,7 +249,7 @@ int client::Client::connectAsSecond()
                                                                                                       EST, 150,
                                                                                                       Position(20,
                                                                                                                20))));
-    engine->getState().getPlayers().insert(pair1);                                                                                               
+    engine->getState().getPlayers().insert(pair1);
 
     cout << "ready to start" << endl;
 
@@ -295,30 +303,41 @@ int client::Client::connectAsSecond()
         cerr << "render running" << endl;
         sf::RenderWindow window(sf::VideoMode(600, 600), "thread window");
         shared_ptr<Engine> enginePtr = engine;
-        // thread eng([this] {
-        //     while (1)
-        //     {
-        //         cerr << "engine running" << endl;
-        //         unique_ptr<unsigned int> enemyId;
-        //         cout << "about to sleep" << endl;
-        //         usleep(1000000);
-        //         engine->runCommands(false);
-        //         //}
-        //         cout << "end commands" << endl;
-        //         if (engine->getState().isGameFinished())
-        //             return 0;
-        //     }
+        thread eng([this] {
+            while (1)
+            {
+                unique_ptr<unsigned int> enemyId;
+                usleep(1000000);
+                engine->runCommands(false);
+                //}
+                if (engine->getState().isGameFinished())
+                    return 0;
+            }
 
-        //     //  }
-        // });
+            //  }
+        });
         while (window.isOpen())
         {
-
-            handleInputs(enginePtr, window, 0);
+            this->tour = this->getTour();
+           if (this->tour % 2 != 0)
+            {
+                if(this->tour > 2 && this->ennemiMove == true){
+                    this->handleInputsServer(enginePtr, window,id2,this->getCommand(id2));
+                    this->ennemiMove = false;
+                }
+                cout << "my turn" << endl;
+                handleInputsNetwork(enginePtr, window, idPlayer);
+            }
+            else
+            {
+                this->ennemiMove = true;
+                cout << "waiting on else tour :" << this->tour << endl;
+                this->tourFinished = true;
+            }
 
             scene3->draw(window);
         }
-        // eng.join();
+        eng.join();
     }
     else
     {
@@ -439,6 +458,62 @@ int client::Client::getPlayer(int id)
     }
 }
 
+int client::Client::getTour()
+{
+    sf::Http http("http://localhost", 8080);
+    sf::Http::Response response;
+    sf::Http::Request req("/user/0", sf::Http::Request::Get);
+    response = http.sendRequest(req);
+
+    if (response.getStatus() == sf::Http::Response::Ok)
+    {
+        Json::Value root;
+        Json::Value players;
+        Json::Reader reader;
+        if (!reader.parse(response.getBody(), root, false))
+        {
+            cout << reader.getFormattedErrorMessages() << endl;
+        }
+
+        int tour = root["tour"].asInt();
+        return tour;
+    }
+    else
+    {
+        return -1;
+    }
+}
+
+int client::Client::postCommand(int idPlayer, int command, int arg1)
+{
+
+    sf::Http http("http://localhost", 8080);
+    sf::Http::Response response;
+    sf::Http::Request req6;
+    Json::Value User;
+    User["command"] = command;
+    User["arg1"] = arg1;
+    req6.setUri("/user/" + to_string(idPlayer));
+    req6.setMethod(sf::Http::Request::Post);
+    req6.setBody(User.toStyledString());
+    req6.setField("Content-Type", "application/json");
+    req6.setHttpVersion(1, 1);
+    response = http.sendRequest(req6);
+    if (response.getStatus() == sf::Http::Response::Ok)
+    {
+        //cout<< response.getBody()<<endl;
+        //Get This player Id
+        cout << "success" << endl;
+        this->tourFinished = false;
+        return 1;
+    }
+    else
+    {
+        cout << "Post Request Failed: " << response.getStatus() << endl;
+        return -1;
+    }
+}
+
 std::vector<int> client::Client::getPlayerStats(int id)
 {
     sf::Http http("http://localhost", 8080);
@@ -460,6 +535,32 @@ std::vector<int> client::Client::getPlayerStats(int id)
         stats.push_back(root["currentLife"].asInt());
         stats.push_back(root["x"].asInt());
         stats.push_back(root["y"].asInt());
+        return stats;
+    }
+    else
+    {
+        return stats;
+    }
+}
+
+std::vector<int> client::Client::getCommand(int id)
+{
+    sf::Http http("http://localhost", 8080);
+    sf::Http::Response response;
+    sf::Http::Request req("/user/" + to_string(id), sf::Http::Request::Get);
+    response = http.sendRequest(req);
+    std::vector<int> stats;
+    if (response.getStatus() == sf::Http::Response::Ok)
+    {
+        Json::Value root;
+        Json::Value players;
+        Json::Reader reader;
+        if (!reader.parse(response.getBody(), root, false))
+        {
+            cout << reader.getFormattedErrorMessages() << endl;
+        }
+        stats.push_back(root["command"].asInt());
+        stats.push_back(root["arg1"].asInt());
         return stats;
     }
     else
@@ -599,6 +700,188 @@ void client::Client::handleInputs(std::shared_ptr<Engine> engine, sf::Window &wi
                     clock1.restart();
                 }
                 break;
+            }
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+    }
+}
+
+void client::Client::handleInputsServer(std::shared_ptr<Engine> engine, sf::Window &window, unsigned int playerTarId, std::vector<int> command)
+{
+    int commandType = command[0];
+    int arg1 = command[1];
+
+    if (commandType == 2)
+    {
+        engine->addCommand(make_shared<HealCommand>(playerTarId), playerTarId);
+    }
+    if (commandType == 1)
+    {
+        engine->addCommand(make_shared<AttackCommand>(playerTarId), playerTarId);
+    }
+    if (commandType == 0)
+    {
+        if (arg1 == 3)
+        {
+            engine->addCommand(make_shared<MoveCommand>(EST, playerTarId), playerTarId);
+        }
+        if (arg1 == 2)
+        {
+            engine->addCommand(make_shared<MoveCommand>(WEST, playerTarId), playerTarId);
+        }
+        if (arg1 == 1)
+        {
+
+            engine->addCommand(make_shared<MoveCommand>(NORTH, playerTarId), playerTarId);
+        }
+        if (arg1 == 0)
+        {
+
+            engine->addCommand(make_shared<MoveCommand>(SOUTH, playerTarId), playerTarId);
+        }
+    }
+}
+
+void client::Client::handleInputsNetwork(std::shared_ptr<Engine> engine, sf::Window &window, unsigned int playerTarId)
+{
+    if (engine->getState().menu)
+    {
+        sf::Event event1;
+        while (window.pollEvent(event1))
+        {
+            switch (event1.type)
+            {
+            case sf::Event::Closed:
+                window.close();
+                break;
+            default:
+                break;
+            case sf::Event::KeyPressed:
+                sf::Keyboard::Key k1 = event1.key.code;
+                switch (k1)
+                {
+                default:
+                    break;
+                case sf::Keyboard::Return:
+                    engine->getState().menu = false;
+                    break;
+                }
+                break;
+            }
+        }
+    }
+    else if (engine->getState().isGameFinished())
+    {
+        if (engine->getState().gameWon)
+        {
+            sf::Event event;
+            while (window.pollEvent(event))
+            {
+                switch (event.type)
+                {
+                case sf::Event::Closed:
+                    window.close();
+                    break;
+                default:
+                    break;
+                case sf::Event::KeyPressed:
+                    sf::Keyboard::Key k1 = event.key.code;
+                    switch (k1)
+                    {
+                    default:
+                        break;
+                    case sf::Keyboard::Return:
+                        window.close();
+                        break;
+                    }
+                    break;
+                }
+            }
+        }
+        else
+        {
+            sf::Event event;
+            while (window.pollEvent(event))
+            {
+                switch (event.type)
+                {
+                case sf::Event::Closed:
+                    window.close();
+                    break;
+                default:
+                    break;
+                case sf::Event::KeyPressed:
+                    sf::Keyboard::Key k1 = event.key.code;
+                    switch (k1)
+                    {
+                    default:
+                        break;
+                    case sf::Keyboard::Return:
+                        window.close();
+                        break;
+                    }
+                    break;
+                }
+            }
+        }
+    }
+    else
+    {
+
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            switch (event.type)
+            {
+            default:
+                break;
+            case sf::Event::Closed:
+                window.close();
+                break;
+            case sf::Event::KeyPressed:
+
+                sf::Keyboard::Key k = event.key.code;
+                if (clock1.getElapsedTime().asMilliseconds() > 110)
+                {
+                    if (this->tourFinished == true)
+                    {
+                        switch (k)
+                        {
+                        case sf::Keyboard::Key::Right:
+                            engine->addCommand(make_shared<MoveCommand>(EST, playerTarId), playerTarId);
+                            this->postCommand(playerTarId, 0, 3);
+                            break;
+                        case sf::Keyboard::Key::Left:
+                            engine->addCommand(make_shared<MoveCommand>(WEST, playerTarId), playerTarId);
+                            postCommand(playerTarId, 0, 2);
+                            break;
+                        case sf::Keyboard::Key::Up:
+                            engine->addCommand(make_shared<MoveCommand>(NORTH, playerTarId), playerTarId);
+                            this->postCommand(playerTarId, 0, 1);
+                            break;
+                        case sf::Keyboard::Key::Down:
+                            engine->addCommand(make_shared<MoveCommand>(SOUTH, playerTarId), playerTarId);
+                            this->postCommand(playerTarId, 0, 0);
+                            break;
+                        case sf::Keyboard::Key::A:
+                            engine->addCommand(make_shared<AttackCommand>(playerTarId), playerTarId);
+                            this->postCommand(playerTarId, 1, 0);
+                            break;
+                        case sf::Keyboard::Key::H:
+                            engine->addCommand(make_shared<HealCommand>(playerTarId), playerTarId);
+                            this->postCommand(playerTarId, 2, 0);
+                            break;
+                        // case sf::Keyboard::Key::R:
+                        //     engine->undoCommands();
+                        //     break;
+                        default:
+                            break;
+                        }
+                        clock1.restart();
+                    }
+                    break;
+                }
             }
             if (event.type == sf::Event::Closed)
                 window.close();

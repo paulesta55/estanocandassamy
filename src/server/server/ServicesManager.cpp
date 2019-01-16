@@ -60,6 +60,7 @@ HttpStatus ServicesManager::queryService (string& out, const string& in, const s
     }
     else if (method == "POST") {
         cerr << "Requête POST " << pattern << " avec contenu: " << in << endl;
+        cerr << "FIN POST : " << id << endl;
         Json::Reader jsonReader;
         Json::Value jsonIn;
         if (!jsonReader.parse(in,jsonIn))

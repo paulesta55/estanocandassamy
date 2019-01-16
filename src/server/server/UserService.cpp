@@ -26,15 +26,18 @@ HttpStatus UserService::get(Json::Value &out, int id) const
         out["currentLife"] = user->currentLife;
         out["x"] = user->x;
         out["y"] = user->y;
+        out["command"] = user->command;
+        out["arg1"] = user-> arg1;
         return HttpStatus::OK;
     }
     else
     {
         int status = userDB.getStatus();
-        cout << status << endl;
+        int tour = userDB.getTour();
         if (status<0)
             throw ServiceException(HttpStatus::NOT_FOUND, "Invalid status id");
         out["status"] = status;
+        out["tour"] = tour;
         return HttpStatus::OK;
     }
 }
@@ -65,8 +68,14 @@ HttpStatus UserService::post(const Json::Value &in, int id)
     {
         usermod->idPoke = in["idPoke"].asInt();
     }
+    if(in.isMember("command")){
+        usermod->command = in["command"].asInt();
+        if(in.isMember("arg1")){
+            usermod->arg1 = in["arg1"].asInt();
+        }
+    }
     userDB.setUser(id, std::move(usermod));
-    return HttpStatus::NO_CONTENT;
+    return HttpStatus::OK;
 }
 
 HttpStatus UserService::put(Json::Value &out, const Json::Value &in)
