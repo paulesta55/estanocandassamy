@@ -209,7 +209,7 @@ int client::Client::connectAsFirst()
             this->tour = this->getTour();
             if (this->tour % 2 == 0)
             {
-                if(this->tour > 2 && this->ennemiMove == true){
+                if(this->tour >= 2 && this->ennemiMove == true){
                     this->handleInputsServer(enginePtr, window,id2,this->getCommand(id2));
                     this->ennemiMove = false;
                 }
@@ -321,7 +321,7 @@ int client::Client::connectAsSecond()
             this->tour = this->getTour();
            if (this->tour % 2 != 0)
             {
-                if(this->tour > 2 && this->ennemiMove == true){
+                if(this->tour >= 2 && this->ennemiMove == true){
                     this->handleInputsServer(enginePtr, window,id2,this->getCommand(id2));
                     this->ennemiMove = false;
                 }
