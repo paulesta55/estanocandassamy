@@ -363,6 +363,34 @@ Lors de l'exécution de chaque commande, on crée un objet associé à la comman
     Les commandes peuvent arriver à tout moment et l'ajout d'une commande à la map contenant les commandes lors d'une mise à jour de l'état de jeu pourrait engendrer des conflits. Pour palier à ce problème, on utilise un double buffer : lorsqu'une mise à jour de l'état a lieu, on vide la map dans un buffer, que l'on va ensuite utiliser pour exécuter l'ensemble des commandes. Pour empêcher l'ajout d'une commande dans la map lors de la copie dans le buffer, on utilise un mutex (\emph{commands\_mutex}) qui bloque l'exécution de la méthode \emph{addCommand} pendant toute la durée de la copie. Le temps de copie restant négligeable, l'utilisateur peut ajouter des commandes aussi rapidement qu'il le souhaite presque sans aucune latence.
 \subsubsection{Notifications de rendu}   
     Lors d'une mise à jour, l'état notifie le rendu par le biais d'\emph{events}. Pour le moment, le traitement de ces notifications bloque le rendu des Pokemons et de l'environnement et inversement, le rendu des pokemons et de l'environnement bloque le traitement des notifications. Ce mécanisme de verrou est implémenté à l'aide d'un mutex et est coûteux en termes de performances. Pour remédier à ce problème on pourra à l'avenir utiliser une liste stockant l'ensemble des notifications ainsi qu'un signal permettant de signaler la présence d'un évènement qui doit être traité au rendu. Ainsi, lorsque le rendu a fini sa dernière tâche et que le signal est actif, il vide la liste, traite les notifications et réarme le signal. Ce mécanisme devrait permettre d'améliorer notablement les performances.
+    
+    \subsection{Répartition sur différentes machines : mode joueur contre joueur}
+    
+    Nous avons crée une base de données d'utilisateurs sur notre serveur. Pour gérer les données qui transistent entre les clients et notre serveur, nous formons des services CRUD sur la donnée "user" via une API Web REST :
+    
+    \begin{figure}[p]
+    \includegraphics{GET.png}
+    \caption{\label{uml:module}Méthode GET}
+    \end{figure}
+
+    \begin{figure}[p]
+    \includegraphics{POST.png}
+    \caption{\label{uml:module}Méthode POST}
+    \end{figure}
+    
+    \begin{figure}[p]
+    \includegraphics{PUT.png}
+    \caption{\label{uml:module}Méthode PUT}
+    \end{figure}
+    
+    \begin{figure}[p]
+    \includegraphics{DELETE.png}
+    \caption{\label{uml:module}Méthode DELETE}
+    \end{figure}
+    
+    
+    
+    
     \clearpage
     \subsection{Conception logiciel}
     Le diagramme des classes pour la modularisation est présenté en Figure 7.
@@ -374,10 +402,30 @@ Lors de l'exécution de chaque commande, on crée un objet associé à la comman
 
  Dans le thread secondaire on gère principalement les IA et le moteur. En particulier, on  utilise l'IA pour ajouter les commandes automatisé au moteur avant d'éxecuter la méthode \emph{Engine::runCommands} qui applique les changements d'état.
     La méthode \emph{Client::run} permet d'exécuter le client. 
+    Les services REST implémentés dans le serveur héritent tous de la classe abstraite \emph{AbstractService}.  La classe \emph{ServiceManager} permet de gérer l'ensemble des services disponibles sur le server :
+    
+\begin{itemize}
+\item elle permet d'ajouter de nouveaux services REST grace à la méthode \emph{registerService}
+\item d'accéder à la méthode GET du service spécifié (i.e. en fonction de son url) en paramètre de la méthode \emph{findService}
+\item  d'accéder à une méthode d'un des services en fonction des paramètres du requête reçue par le serveur grâce à la méthode \emph{queryService}
+\end{itemize}
+    
+    Pour l'instant nous utilisons deux services :
+    
+\begin{itemize}
+\item Un service \emph{UserService} qui permet de gérer les utilisateurs du jeu
+\item Un service \emph{VersionService} qui renvoie la version du serveur.
+\end{itemize} \\
+
+    Trois méthodes ont été rajoutés à \emph{Client} afin de pouvoir envoyer des requêtes à notre API : \begin{itemize}
+        \item \emph{addPlayer}, qui envoie une requête PUT sur le serveur pour ajouter un utilisateur, et qui renvoie l'idPlayer que le serveur lui a attribué.
+        \item \emph{getPlayer}, qui envoie une requête GET sur le serveur afin d'afficher les données de l'utilisateur dont l'id a été passé en paramètre de la fonction.
+        \item \emph{deletePlayer}, qui envoie une requête DELETE sur le serveur pour retirer le joueur dont l'id a été passé en paramètre de la liste des joueurs connectés à notre serveur.
+    \end{itemize}
     
     \begin{landscape}
     \begin{figure}[p]
-    \includegraphics[width=0.9\paperheight]{module.png}
+    \includegraphics[width=0.8\paperheight]{module.png}
     \caption{\label{uml:module}Diagramme des classes pour la modularisation.}
     \end{figure}
     \end{landscape}
