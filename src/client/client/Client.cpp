@@ -368,7 +368,7 @@ int client::Client::connect()
 
 void client::Client::deletePlayer(int id)
 {
-    sf::Http http("159.89.167.0", 8080);
+    sf::Http http("http://localhost", 8080);
     sf::Http::Response response;
     sf::Http::Request req3;
     req3.setMethod(sf::Http::Request::Delete);
@@ -381,7 +381,7 @@ void client::Client::deletePlayer(int id)
 
 int client::Client::addPlayer(int idPoke, int orientation, int currentLife, int x, int y)
 {
-    sf::Http http("159.89.167.0", 8080);
+    sf::Http http("http://localhost", 8080);
     sf::Http::Response response;
     sf::Http::Request req3;
     Json::Value User;
@@ -427,7 +427,7 @@ int client::Client::addPlayer(int idPoke, int orientation, int currentLife, int 
 
 int client::Client::getPlayer(int id)
 {
-    sf::Http http("159.89.167.0", 8080);
+    sf::Http http("http://localhost", 8080);
     sf::Http::Response response;
     sf::Http::Request req("/user/" + to_string(id), sf::Http::Request::Get);
     response = http.sendRequest(req);
@@ -460,7 +460,7 @@ int client::Client::getPlayer(int id)
 
 int client::Client::getTour()
 {
-    sf::Http http("159.89.167.0", 8080);
+    sf::Http http("http://localhost", 8080);
     sf::Http::Response response;
     sf::Http::Request req("/user/0", sf::Http::Request::Get);
     response = http.sendRequest(req);
@@ -487,7 +487,7 @@ int client::Client::getTour()
 int client::Client::postCommand(int idPlayer, int command, int arg1)
 {
 
-    sf::Http http("159.89.167.0", 8080);
+    sf::Http http("http://localhost", 8080);
     sf::Http::Response response;
     sf::Http::Request req6;
     Json::Value User;
@@ -516,7 +516,7 @@ int client::Client::postCommand(int idPlayer, int command, int arg1)
 
 std::vector<int> client::Client::getPlayerStats(int id)
 {
-    sf::Http http("159.89.167.0", 8080);
+    sf::Http http("http://localhost", 8080);
     sf::Http::Response response;
     sf::Http::Request req("/user/" + to_string(id), sf::Http::Request::Get);
     response = http.sendRequest(req);
@@ -545,7 +545,7 @@ std::vector<int> client::Client::getPlayerStats(int id)
 
 std::vector<int> client::Client::getCommand(int id)
 {
-    sf::Http http("159.89.167.0", 8080);
+    sf::Http http("http://localhost", 8080);
     sf::Http::Response response;
     sf::Http::Request req("/user/" + to_string(id), sf::Http::Request::Get);
     response = http.sendRequest(req);
