@@ -390,6 +390,10 @@ Lors de l'exécution de chaque commande, on crée un objet associé à la comman
     
     
     
+<<<<<<< HEAD
+=======
+    
+>>>>>>> master
     \clearpage
     \subsection{Conception logiciel}
     Le diagramme des classes pour la modularisation est présenté en Figure 7.
@@ -414,6 +418,7 @@ Lors de l'exécution de chaque commande, on crée un objet associé à la comman
 \begin{itemize}
 \item Un service \emph{UserService} qui permet de gérer les utilisateurs du jeu
 \item Un service \emph{VersionService} qui renvoie la version du serveur.
+<<<<<<< HEAD
 \end{itemize} 
 
     Plusieurs méthodes ont été rajoutés à \emph{Client} afin de pouvoir envoyer des requêtes à notre API : \begin{itemize}
@@ -422,12 +427,23 @@ Lors de l'exécution de chaque commande, on crée un objet associé à la comman
         \item \emph{addCommand}, qui envoie une requête POST sur le serveur pour envoyer la commande actuelle joué par le joueur.
         \item \emph{getCommand}, qui envoie une requête GET sur le serveur pour demander la dernière commande joué par un joueur
         \item \emph{getTour}, qui envoie une requête GET sur le serveur pour demander le numéro du tour de jeu actuelle.
+=======
+\end{itemize} \\
+
+    Trois méthodes ont été rajoutés à \emph{Client} afin de pouvoir envoyer des requêtes à notre API : \begin{itemize}
+        \item \emph{addPlayer}, qui envoie une requête PUT sur le serveur pour ajouter un utilisateur, et qui renvoie l'idPlayer que le serveur lui a attribué.
+        \item \emph{getPlayer}, qui envoie une requête GET sur le serveur afin d'afficher les données de l'utilisateur dont l'id a été passé en paramètre de la fonction.
+>>>>>>> master
         \item \emph{deletePlayer}, qui envoie une requête DELETE sur le serveur pour retirer le joueur dont l'id a été passé en paramètre de la liste des joueurs connectés à notre serveur.
     \end{itemize}
     
     \begin{landscape}
     \begin{figure}[p]
+<<<<<<< HEAD
     \includegraphics[width=0.7\paperheight]{module.png}
+=======
+    \includegraphics[width=0.8\paperheight]{module.png}
+>>>>>>> master
     \caption{\label{uml:module}Diagramme des classes pour la modularisation.}
     \end{figure}
     \end{landscape}
