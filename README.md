@@ -1,6 +1,9 @@
 # estanocandassamy
 final year  ENSEA/IS project
 # Get Started
+
+You will need to install SFML 
+
 ```sh 
 $ git clone <projectUrl>
 ```
